@@ -9,16 +9,25 @@ import {
   IconCrane,
   IconDeal,
   IconScale,
+  IconShield,
   IconSolar,
 } from "./Icons";
 
-const WORDS = ["XÂY DỰNG", "BẤT ĐỘNG SẢN", "TỐ TỤNG", "ĐIỆN MẶT TRỜI", "THƯƠNG MẠI"];
+const WORDS = [
+  "XÂY DỰNG",
+  "BẤT ĐỘNG SẢN",
+  "TỐ TỤNG",
+  "ĐIỆN MẶT TRỜI",
+  "THƯƠNG MẠI",
+  "BẢO MẬT DỮ LIỆU",
+];
 
 const SERVICE_ICONS = {
   crane: IconCrane,
   scale: IconScale,
   solar: IconSolar,
   deal: IconDeal,
+  shield: IconShield,
 } as const;
 
 /* ================= HERO ================= */
@@ -62,8 +71,8 @@ export function Hero() {
               <span className="animate-blink ml-1 inline-block h-4 w-2 translate-y-0.5 bg-brass-400" />
             </p>
             <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-fog-400">
-              Kiến Pháp đồng hành cùng doanh nghiệp từ giấy phép đầu tiên đến phiên tòa cuối cùng —
-              xây dựng, bất động sản, năng lượng tái tạo và thương mại.
+              LHPT đồng hành cùng doanh nghiệp từ giấy phép đầu tiên đến phiên tòa cuối cùng —
+              xây dựng, bất động sản, năng lượng tái tạo, thương mại và bảo mật dữ liệu.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <a
@@ -136,10 +145,11 @@ export function Hero() {
               </div>
               <div className="mt-6 space-y-3.5 px-6">
                 {[
-                  ["Xây dựng — BĐS", 46, "bg-brass-500"],
-                  ["Tố tụng", 22, "bg-jade-500"],
-                  ["Năng lượng", 20, "bg-jade-600"],
+                  ["Xây dựng — BĐS", 40, "bg-brass-500"],
+                  ["Tố tụng", 20, "bg-jade-500"],
+                  ["Năng lượng", 18, "bg-jade-600"],
                   ["Thương mại", 12, "bg-ink-600"],
+                  ["Dữ liệu", 10, "bg-fog-500"],
                 ].map(([label, w, color], i) => (
                   <div key={label as string}>
                     <div className="mb-1.5 flex justify-between font-mono text-[10px] tracking-wider text-fog-400 uppercase">
@@ -163,7 +173,7 @@ export function Hero() {
                   Số liệu nội bộ · 02.2026
                 </span>
                 <span className="font-mono text-[9px] tracking-[0.22em] text-brass-500 uppercase">
-                  KP-CAP-26
+                  LHPT-CAP-26
                 </span>
               </div>
             </div>
@@ -257,7 +267,7 @@ export function Services() {
                 kicker="Dịch vụ pháp lý"
                 title={
                   <>
-                    Bốn trụ cột.
+                    Năm trụ cột.
                     <br />
                     <span className="text-brass-400">Một chuẩn mực.</span>
                   </>
@@ -287,11 +297,16 @@ export function Services() {
           <div className="space-y-6 lg:col-span-8">
             {SERVICES.map((s, idx) => {
               const Icon = SERVICE_ICONS[s.icon];
+              const isNew = s.num === "05";
               return (
                 <Reveal key={s.num} delay={idx * 60}>
                   <article
                     id={`dv-${s.num}`}
-                    className="group relative scroll-mt-28 overflow-hidden border border-snow/10 bg-ink-850/80 p-7 transition-all duration-500 hover:-translate-y-1 hover:border-brass-500/60 hover:shadow-[0_25px_70px_-30px_rgba(201,164,76,0.35)] sm:p-9"
+                    className={`group relative scroll-mt-28 overflow-hidden border bg-ink-850/80 p-7 transition-all duration-500 hover:-translate-y-1 sm:p-9 ${
+                      isNew
+                        ? "border-jade-500/40 hover:border-jade-400/80 hover:shadow-[0_25px_70px_-30px_rgba(34,196,156,0.4)]"
+                        : "border-snow/10 hover:border-brass-500/60 hover:shadow-[0_25px_70px_-30px_rgba(201,164,76,0.35)]"
+                    }`}
                   >
                     <span
                       className="font-display pointer-events-none absolute -top-5 right-4 text-[7rem] leading-none font-black text-outline select-none"
@@ -301,7 +316,13 @@ export function Services() {
                     </span>
                     <div className="relative">
                       <div className="flex items-center gap-5">
-                        <span className="flex h-14 w-14 shrink-0 items-center justify-center border border-brass-500/40 text-brass-400 transition-all duration-500 group-hover:bg-brass-500 group-hover:text-ink-950">
+                        <span
+                          className={`flex h-14 w-14 shrink-0 items-center justify-center border transition-all duration-500 ${
+                            isNew
+                              ? "border-jade-500/50 text-jade-400 group-hover:bg-jade-500 group-hover:text-ink-950"
+                              : "border-brass-500/40 text-brass-400 group-hover:bg-brass-500 group-hover:text-ink-950"
+                          }`}
+                        >
                           <Icon className="h-7 w-7" />
                         </span>
                         <div>
@@ -310,6 +331,12 @@ export function Services() {
                           </h3>
                           <p className="mt-1 text-sm text-fog-400">{s.tagline}</p>
                         </div>
+                        {isNew && (
+                          <span className="font-mono ml-auto hidden shrink-0 animate-pulse items-center gap-2 border border-jade-500/60 px-2.5 py-1 text-[9px] tracking-[0.2em] text-jade-300 uppercase sm:inline-flex">
+                            <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-jade-500" />
+                            Mới · 2026
+                          </span>
+                        )}
                       </div>
                       <ul className="mt-7 grid gap-x-8 gap-y-3 sm:grid-cols-2">
                         {s.items.map((it) => (
@@ -323,7 +350,11 @@ export function Services() {
                         {s.tags.map((t) => (
                           <span
                             key={t}
-                            className="font-mono border border-snow/15 px-2.5 py-1 text-[10px] tracking-[0.2em] text-fog-400 uppercase transition-colors group-hover:border-brass-500/40 group-hover:text-brass-300"
+                            className={`font-mono border border-snow/15 px-2.5 py-1 text-[10px] tracking-[0.2em] text-fog-400 uppercase transition-colors ${
+                              isNew
+                                ? "group-hover:border-jade-500/50 group-hover:text-jade-300"
+                                : "group-hover:border-brass-500/40 group-hover:text-brass-300"
+                            }`}
                           >
                             {t}
                           </span>

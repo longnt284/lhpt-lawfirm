@@ -104,11 +104,11 @@ export function Header() {
         />
       </div>
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 lg:px-8">
-        <a href="#top" className="group flex items-center gap-3" aria-label="Kiến Pháp Law">
+        <a href="#top" className="group flex items-center gap-3" aria-label="LHPT Law Firm">
           <LogoMark className="h-9 w-9 text-snow transition-colors group-hover:text-brass-400" />
           <span className="leading-none">
             <span className="font-display block text-[17px] font-black tracking-tight text-snow">
-              KIẾN PHÁP
+              LHPT
             </span>
             <span className="font-mono mt-1 block text-[9px] tracking-[0.32em] text-fog-500">
               LAW FIRM · EST. 2011
@@ -275,7 +275,7 @@ export function Footer() {
               <LogoMark className="h-10 w-10 text-snow" />
               <span className="leading-none">
                 <span className="font-display block text-lg font-black tracking-tight text-snow">
-                  KIẾN PHÁP
+                  LHPT
                 </span>
                 <span className="font-mono mt-1 block text-[9px] tracking-[0.32em] text-fog-500">
                   LAW FIRM · EST. 2011
@@ -283,8 +283,8 @@ export function Footer() {
               </span>
             </a>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-fog-400">
-              Hãng luật chuyên sâu về xây dựng — bất động sản, tố tụng, năng lượng tái tạo và
-              thương mại. Pháp lý vững, nền móng bền.
+              Hãng luật chuyên sâu về xây dựng — bất động sản, tố tụng, năng lượng tái tạo,
+              thương mại và bảo mật dữ liệu. Pháp lý vững, nền móng bền.
             </p>
             <p className="font-mono mt-6 text-[10px] leading-relaxed tracking-wider text-fog-500">
               GPHĐ SỐ 41.02.1688/TP/ĐKHĐ · ĐOÀN LS TP.HCM
@@ -300,6 +300,7 @@ export function Footer() {
                 "Tố tụng & tranh chấp",
                 "Điện mặt trời",
                 "Thương mại — dịch vụ",
+                "Bảo mật dữ liệu",
               ].map((t) => (
                 <li key={t}>
                   <a href="#dich-vu" className="transition-colors hover:text-brass-300">
@@ -349,7 +350,7 @@ export function Footer() {
         </div>
         <div className="mt-12 flex flex-col gap-3 border-t border-snow/10 pt-6 md:flex-row md:items-center md:justify-between">
           <p className="font-mono text-[11px] tracking-wider text-fog-500">
-            © 2026 KIẾN PHÁP LAW — MỌI QUYỀN ĐƯỢC BẢO LƯU
+            © 2026 LHPT LAW FIRM — MỌI QUYỀN ĐƯỢC BẢO LƯU
           </p>
           <p className="max-w-xl text-[11px] leading-relaxed text-fog-500">
             Nội dung trên website là thông tin pháp lý tham khảo, không cấu thành ý kiến pháp lý

@@ -28,7 +28,7 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "02/2026",
     read: "6 phút",
-    author: "LS. Trần Kiến Văn",
+    author: "LS. Long Nguyễn",
   },
   {
     id: "a2",
@@ -44,7 +44,7 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "01/2026",
     read: "7 phút",
-    author: "LS. Phạm Minh Châu",
+    author: "LS. Trung Phạm",
   },
   {
     id: "a3",
@@ -60,7 +60,7 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "12/2025",
     read: "5 phút",
-    author: "LS. Lê Nhật Hạ",
+    author: "LS. Hoàng Phú",
   },
   {
     id: "a4",
@@ -76,7 +76,7 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "11/2025",
     read: "6 phút",
-    author: "LS. Hoàng Đức Tín",
+    author: "LS. Huy Đặng",
   },
   {
     id: "a5",
@@ -92,7 +92,7 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "10/2025",
     read: "8 phút",
-    author: "LS. Trần Kiến Văn",
+    author: "LS. Long Nguyễn",
   },
   {
     id: "a6",
@@ -108,7 +108,7 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "09/2025",
     read: "6 phút",
-    author: "LS. Phạm Minh Châu",
+    author: "LS. Trung Phạm",
   },
   {
     id: "a7",
@@ -124,7 +124,7 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "08/2025",
     read: "5 phút",
-    author: "LS. Lê Nhật Hạ",
+    author: "LS. Hoàng Phú",
   },
   {
     id: "a8",
@@ -140,7 +140,23 @@ export const ARTICLES: DocItem[] = [
     ],
     date: "07/2025",
     read: "4 phút",
-    author: "LS. Hoàng Đức Tín",
+    author: "LS. Huy Đặng",
+  },
+  {
+    id: "a9",
+    kind: "article",
+    category: "Bảo mật dữ liệu",
+    title: "DPIA theo Luật Bảo vệ dữ liệu cá nhân: khi nào bắt buộc, hồ sơ gồm gì?",
+    excerpt:
+      "Từ 2026, đánh giá tác động xử lý dữ liệu là nghĩa vụ của hầu hết doanh nghiệp — thiếu hồ sơ đúng chuẩn có thể bị phạt tới 5% doanh thu.",
+    content: [
+      "Luật Bảo vệ dữ liệu cá nhân 2025 kế thừa và nâng cấp Nghị định 13/2023: mọi bên kiểm soát, bên xử lý dữ liệu phải lập hồ sơ đánh giá tác động (DPIA) và lưu trữ sẵn sàng xuất trình khi cơ quan chức năng yêu cầu.",
+      "Một DPIA đúng chuẩn cần tối thiểu: mô tả hoạt động xử lý, đánh giá rủi ro với quyền của chủ thể dữ liệu, biện pháp giảm thiểu, và quy trình thông báo sự cố trong 72 giờ. Với dữ liệu nhạy cảm (sinh trắc học, sức khỏe, tài chính), yêu cầu thẩm định chặt hơn.",
+      "Khuyến nghị: doanh nghiệp nên gắn DPIA với từng hệ thống (CRM, HRM, app khách hàng) thay vì một hồ sơ chung, và rà soát lại chuỗi hợp đồng với bên xử lý thuê trước 30/06/2026.",
+    ],
+    date: "01/2026",
+    read: "5 phút",
+    author: "LS. Huy Đặng",
   },
 ];
 
@@ -156,7 +172,7 @@ export const NEWS: DocItem[] = [
     content: [
       "Luật Điện lực số 61/2024/QH15 được Quốc hội thông qua tháng 11/2024, hiệu lực từ 01/02/2025. Điểm nhấn lớn nhất là cơ sở pháp lý cho mua bán điện trực tiếp (DPPA) và lộ trình thị trường điện cạnh tranh đầy đủ.",
       "Với doanh nghiệp sản xuất, DPPA qua lưới quốc gia cho phép ký hợp đồng dài hạn với đơn vị phát điện tái tạo — yếu tố then chốt để đáp ứng cam kết RE100 và thuế carbon biên giới (CBAM).",
-      "Kiến Pháp đánh giá: các nhà máy trong khu công nghiệp nên khởi động đàm phán PPA ngay trong 2026 để khóa giá trước khi nhu cầu DPPA tăng mạnh.",
+      "LHPT đánh giá: các nhà máy trong khu công nghiệp nên khởi động đàm phán PPA ngay trong 2026 để khóa giá trước khi nhu cầu DPPA tăng mạnh.",
     ],
     date: "03/02/2026",
     read: "4 phút",
@@ -191,6 +207,22 @@ export const NEWS: DocItem[] = [
     ],
     date: "15/01/2026",
     read: "3 phút",
+  },
+  {
+    id: "n6",
+    kind: "news",
+    category: "Dữ liệu",
+    title:
+      "Luật Bảo vệ dữ liệu cá nhân chính thức hiệu lực: doanh nghiệp có 12 tháng để hoàn tất DPIA",
+    excerpt:
+      "Từ 01/01/2026, Luật số 91/2025/QH15 áp dụng trực tiếp — mọi doanh nghiệp xử lý dữ liệu khách hàng, nhân sự phải có hồ sơ đánh giá tác động.",
+    content: [
+      "Luật Bảo vệ dữ liệu cá nhân 2025 nâng khung pháp lý từ Nghị định 13/2023 lên tầm luật: xác lập quyền của chủ thể dữ liệu, nghĩa vụ của bên kiểm soát — xử lý, và chế tài với hành vi mua bán dữ liệu trái phép.",
+      "Doanh nghiệp cần ưu tiên ba việc trong 2026: (1) lập hồ sơ đánh giá tác động xử lý dữ liệu (DPIA); (2) rà soát chuỗi hợp đồng với bên xử lý thuê; (3) thiết lập quy trình thông báo sự cố rò rỉ trong 72 giờ.",
+      "LHPT đánh giá: các nền tảng thương mại điện tử, fintech và đơn vị vận hành tòa nhà thông minh thuộc nhóm rủi ro cao nhất và nên hoàn tất DPIA trước quý III/2026.",
+    ],
+    date: "12/02/2026",
+    read: "4 phút",
   },
   {
     id: "n4",
@@ -392,13 +424,46 @@ export const LEGAL_DOCS: LegalDoc[] = [
     summary:
       "Nghiệm thu công trình, giám sát thi công, bảo hành — bảo trì và trách nhiệm các chủ thể trong sự cố công trình xây dựng.",
   },
+  {
+    id: "d15",
+    code: "91/2025/QH15",
+    name: "Luật Bảo vệ dữ liệu cá nhân 2025",
+    type: "Luật",
+    field: "Dữ liệu",
+    effective: "01/01/2026",
+    status: "Còn hiệu lực",
+    summary:
+      "Quyền của chủ thể dữ liệu; nghĩa vụ của bên kiểm soát — xử lý dữ liệu; đánh giá tác động (DPIA); chuyển dữ liệu xuyên biên giới và chế tài với hành vi mua bán dữ liệu trái phép.",
+  },
+  {
+    id: "d16",
+    code: "13/2023/NĐ-CP",
+    name: "Nghị định về bảo vệ dữ liệu cá nhân",
+    type: "Nghị định",
+    field: "Dữ liệu",
+    effective: "01/07/2023",
+    status: "Còn hiệu lực",
+    summary:
+      "Nền tảng pháp lý đầu tiên về dữ liệu cá nhân tại Việt Nam: phân loại dữ liệu cơ bản — nhạy cảm, đồng ý của chủ thể, thông báo xử lý và hồ sơ đánh giá tác động.",
+  },
+  {
+    id: "d17",
+    code: "85/2016/NĐ-CP",
+    name: "Nghị định về bảo đảm an toàn hệ thống thông tin theo cấp độ",
+    type: "Nghị định",
+    field: "Dữ liệu",
+    effective: "01/07/2016",
+    status: "Còn hiệu lực",
+    summary:
+      "Phân loại và bảo vệ hệ thống thông tin theo 5 cấp độ; phương án bảo đảm an toàn, ứng cứu sự cố — nghĩa vụ song hành với bảo vệ dữ liệu cá nhân.",
+  },
 ];
 
 /* ================= DỊCH VỤ ================= */
 
 export type Service = {
   num: string;
-  icon: "crane" | "scale" | "solar" | "deal";
+  icon: "crane" | "scale" | "solar" | "deal" | "shield";
   title: string;
   tagline: string;
   items: string[];
@@ -458,6 +523,19 @@ export const SERVICES: Service[] = [
     ],
     tags: ["Doanh nghiệp", "M&A", "Lao động"],
   },
+  {
+    num: "05",
+    icon: "shield",
+    title: "Bảo mật dữ liệu & Công nghệ",
+    tagline: "Tuân thủ dữ liệu cá nhân trước khi bị phạt — không phải sau.",
+    items: [
+      "Tuân thủ Luật Bảo vệ dữ liệu cá nhân & NĐ 13",
+      "Đánh giá tác động xử lý dữ liệu (DPIA)",
+      "Chính sách quyền riêng tư, điều khoản nền tảng",
+      "Ứng phó sự cố rò rỉ dữ liệu, làm việc với A05",
+    ],
+    tags: ["Dữ liệu cá nhân", "NĐ 13", "Cyber"],
+  },
 ];
 
 /* ================= GÓI PHÁP CHẾ ================= */
@@ -488,6 +566,7 @@ export const PLANS: Plan[] = [
       "Công văn, ý kiến pháp lý bằng văn bản",
       "Hotline trong giờ hành chính",
       "Báo cáo rủi ro pháp lý hàng tháng",
+      "Rà soát tuân thủ dữ liệu cá nhân (NĐ 13)",
     ],
   },
   {
@@ -504,6 +583,7 @@ export const PLANS: Plan[] = [
       "Đào tạo pháp lý nội bộ mỗi quý",
       "Rà soát tuân thủ toàn diện 2 lần/năm",
       "Hotline ưu tiên 24/7",
+      "DPIA & đăng ký xử lý dữ liệu với cơ quan chức năng",
     ],
     highlight: true,
     badge: "TỐI ƯU NHẤT",
@@ -525,38 +605,38 @@ export type Lawyer = {
 export const LAWYERS: Lawyer[] = [
   {
     id: "l1",
-    name: "LS. Trần Kiến Văn",
+    name: "LS. Long Nguyễn",
     role: "Luật sư sáng lập — Điều hành",
     years: "18 năm",
     focus: ["Dự án xây dựng", "M&A bất động sản"],
-    email: "van.tran@kienphap.law",
+    email: "long.nguyen@lhpt.law",
     img: "https://image.qwenlm.ai/generated-images/fc83b875-7e91-42ad-93ba-bfc160182bed/_result.png",
   },
   {
     id: "l2",
-    name: "LS. Phạm Minh Châu",
+    name: "LS. Trung Phạm",
     role: "Trưởng bộ phận Tố tụng",
     years: "15 năm",
     focus: ["Tranh chấp EPC", "Trọng tài thương mại"],
-    email: "chau.pham@kienphap.law",
+    email: "trung.pham@lhpt.law",
     img: "https://image.qwenlm.ai/generated-images/3c41f737-4fcc-4446-97df-195124e93314/_result.png",
   },
   {
     id: "l3",
-    name: "LS. Lê Nhật Hạ",
+    name: "LS. Hoàng Phú",
     role: "Trưởng bộ phận Năng lượng",
     years: "12 năm",
     focus: ["PPA / DPPA", "Điện tái tạo"],
-    email: "ha.le@kienphap.law",
+    email: "hoang.phu@lhpt.law",
     img: "https://image.qwenlm.ai/generated-images/58dccf45-0bd4-41c1-bcb8-1ac6fc62e729/_result.png",
   },
   {
     id: "l4",
-    name: "LS. Hoàng Đức Tín",
-    role: "Trưởng bộ phận Thương mại",
+    name: "LS. Huy Đặng",
+    role: "Trưởng bộ phận Thương mại & Dữ liệu",
     years: "14 năm",
-    focus: ["Quản trị doanh nghiệp", "Hợp đồng — M&A"],
-    email: "tin.hoang@kienphap.law",
+    focus: ["Bảo mật dữ liệu", "Hợp đồng — M&A"],
+    email: "huy.dang@lhpt.law",
     img: "https://image.qwenlm.ai/generated-images/51bf88d8-6b96-48b7-92e0-a31a173e83ed/_result.png",
   },
 ];
@@ -568,7 +648,7 @@ export type PolicyItem = { q: string; a: string };
 export const POLICIES_SERVICE: PolicyItem[] = [
   {
     q: "Phạm vi dịch vụ",
-    a: "Kiến Pháp cung cấp tư vấn pháp lý, soạn thảo — rà soát văn bản, đại diện đàm phán và tranh tụng trong các lĩnh vực xây dựng, bất động sản, năng lượng và thương mại trên phạm vi toàn quốc.",
+    a: "LHPT cung cấp tư vấn pháp lý, soạn thảo — rà soát văn bản, đại diện đàm phán và tranh tụng trong các lĩnh vực xây dựng, bất động sản, năng lượng, thương mại và bảo mật dữ liệu trên phạm vi toàn quốc.",
   },
   {
     q: "Quy trình tiếp nhận",
@@ -599,7 +679,7 @@ export const POLICIES_PRIVACY: PolicyItem[] = [
   },
   {
     q: "Quyền của khách hàng",
-    a: "Khách hàng có quyền truy cập, yêu cầu chỉnh sửa, xóa dữ liệu hoặc rút lại ủy quyền bất kỳ lúc nào bằng văn bản gửi tới dpo@kienphap.law.",
+    a: "Khách hàng có quyền truy cập, yêu cầu chỉnh sửa, xóa dữ liệu hoặc rút lại ủy quyền bất kỳ lúc nào bằng văn bản gửi tới dpo@lhpt.law.",
   },
   {
     q: "Cookie & theo dõi",
@@ -610,6 +690,7 @@ export const POLICIES_PRIVACY: PolicyItem[] = [
 /* ================= TICKER ================= */
 
 export const TICKER: string[] = [
+  "LUẬT BẢO VỆ DỮ LIỆU CÁ NHÂN 2025 · HIỆU LỰC 01.01.2026",
   "LUẬT ĐẤT ĐAI 2024 · HIỆU LỰC 01.08.2024",
   "LUẬT ĐIỆN LỰC 2024 · HIỆU LỰC 01.02.2025",
   "LUẬT KINH DOANH BĐS 2023 · HIỆU LỰC 01.08.2024",
@@ -632,6 +713,4 @@ export const NAV_LINKS = [
   { href: "#chinh-sach", label: "Chính sách" },
 ];
 
-export const IMG = {
-  logoK: "KP",
-};
+

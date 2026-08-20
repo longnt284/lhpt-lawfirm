@@ -12,11 +12,22 @@ export const LogoMark = ({ className }: P) => (
   <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
     <rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.4" />
     <path
-      d="M8.5 17V7.5h2.4v3.6l3.3-3.6h2.9l-3.9 4.2 4.3 5.3h-3l-3.2-4V17H8.5z"
-      fill="#c9a44c"
-      stroke="none"
+      d="M5.5 9 12 4.6 18.5 9"
+      fill="none"
+      stroke="#c9a44c"
+      strokeWidth="1.5"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
     />
-    <rect x="15.2" y="5.2" width="2.4" height="2.4" fill="#22c49c" stroke="none" />
+    <path d="M6 11.2h12" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+    <path
+      d="M7.4 11.2v6.3M10.5 11.2v6.3M13.5 11.2v6.3M16.6 11.2v6.3"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="square"
+    />
+    <path d="M5.5 17.5h13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="square" />
+    <rect x="16.8" y="18.6" width="1.7" height="1.7" fill="#22c49c" stroke="none" />
   </svg>
 );
 

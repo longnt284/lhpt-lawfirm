@@ -110,7 +110,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
 }
 
 /* ================= BÀI VIẾT PHÁP LÝ ================= */
-const CATEGORIES = ["Tất cả", "Bất động sản", "Tố tụng", "Năng lượng", "Thương mại"];
+const CATEGORIES = ["Tất cả", "Bất động sản", "Tố tụng", "Năng lượng", "Thương mại", "Bảo mật dữ liệu"];
 
 export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
   const [cat, setCat] = useState("Tất cả");
@@ -514,7 +514,7 @@ export function Policies() {
         </div>
         <Reveal delay={160}>
           <div className="mt-12 flex flex-wrap items-center gap-3">
-            {["Bảo mật hồ sơ tuyệt đối", "Không chia sẻ dữ liệu", "Tuân thủ Luật An ninh mạng", "DPO: dpo@kienphap.law"].map(
+            {["Bảo mật hồ sơ tuyệt đối", "Không chia sẻ dữ liệu", "Tuân thủ Luật Bảo vệ dữ liệu cá nhân 2025", "DPO: dpo@lhpt.law"].map(
               (t) => (
                 <span
                   key={t}
@@ -538,11 +538,11 @@ export function Contact() {
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`[Kiến Pháp] ${form.area} — ${form.name || "Khách hàng"}`);
+    const subject = encodeURIComponent(`[LHPT] ${form.area} — ${form.name || "Khách hàng"}`);
     const body = encodeURIComponent(
       `Liên hệ: ${form.name}\nSĐT/Email: ${form.phone}\nLĩnh vực: ${form.area}\n\nNội dung:\n${form.msg}`
     );
-    window.location.href = `mailto:contact@kienphap.law?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:contact@lhpt.law?subject=${subject}&body=${body}`;
     setSent(true);
   };
 
@@ -577,8 +577,8 @@ export function Contact() {
                 {
                   icon: IconMail,
                   label: "Email",
-                  value: "contact@kienphap.law",
-                  href: "mailto:contact@kienphap.law",
+                  value: "contact@lhpt.law",
+                  href: "mailto:contact@lhpt.law",
                 },
               ].map((c) => (
                 <a
@@ -671,6 +671,7 @@ export function Contact() {
                     "Tố tụng & tranh chấp",
                     "Điện mặt trời & năng lượng",
                     "Thương mại — dịch vụ",
+                    "Bảo mật dữ liệu & công nghệ",
                     "Gói pháp chế 100tr/tháng",
                     "Gói pháp chế 1 tỷ/năm",
                   ].map((o) => (
