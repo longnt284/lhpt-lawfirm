@@ -1,0 +1,172 @@
+type P = { className?: string };
+
+const base = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.6,
+  strokeLinecap: "square" as const,
+  strokeLinejoin: "miter" as const,
+};
+
+export const LogoMark = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+    <rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.4" />
+    <path
+      d="M8.5 17V7.5h2.4v3.6l3.3-3.6h2.9l-3.9 4.2 4.3 5.3h-3l-3.2-4V17H8.5z"
+      fill="#c9a44c"
+      stroke="none"
+    />
+    <rect x="15.2" y="5.2" width="2.4" height="2.4" fill="#22c49c" stroke="none" />
+  </svg>
+);
+
+export const IconCrane = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M5 21h14" />
+    <path d="M9 21V4" />
+    <path d="M9 4h10" />
+    <path d="M9 4 6 8h3" />
+    <path d="M17 4v6" />
+    <path d="M15.4 10a1.6 1.6 0 0 0 3.2 0" />
+    <path d="M5 21v-4h3v4" />
+    <path d="M13 21v-3h3v3" />
+  </svg>
+);
+
+export const IconScale = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M12 4v14" />
+    <path d="M8 21h8" />
+    <path d="M4 7h16" />
+    <path d="M4 7 2.3 11.3" />
+    <path d="M4 7l1.7 4.3" />
+    <path d="M2.3 11.3a1.8 1.8 0 0 0 3.4 0" />
+    <path d="M20 7l-1.7 4.3" />
+    <path d="M20 7l1.7 4.3" />
+    <path d="M18.3 11.3a1.8 1.8 0 0 0 3.4 0" />
+    <path d="M9.5 18h5" />
+  </svg>
+);
+
+export const IconSolar = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <circle cx="12" cy="6" r="2.6" />
+    <path d="M12 1.4v1.1" />
+    <path d="M12 9.5v1.1" />
+    <path d="M16.6 6h1.1" />
+    <path d="M6.3 6h1.1" />
+    <path d="M15.3 2.7l-.8.8" />
+    <path d="M8.7 2.7l.8.8" />
+    <rect x="4" y="13" width="16" height="7.5" />
+    <path d="M4 16.7h16" />
+    <path d="M9.3 13v7.5" />
+    <path d="M14.7 13v7.5" />
+  </svg>
+);
+
+export const IconDeal = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <rect x="3.5" y="7.5" width="17" height="12" />
+    <path d="M9 7.5V5.8A1.8 1.8 0 0 1 10.8 4h2.4A1.8 1.8 0 0 1 15 5.8v1.7" />
+    <path d="M3.5 12.5h17" />
+    <path d="M10.5 11v3h3v-3z" />
+  </svg>
+);
+
+export const IconArrowUpRight = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.8} aria-hidden="true">
+    <path d="M7 17 17 7" />
+    <path d="M9 7h8v8" />
+  </svg>
+);
+
+export const IconArrowRight = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.8} aria-hidden="true">
+    <path d="M4 12h16" />
+    <path d="M14 6l6 6-6 6" />
+  </svg>
+);
+
+export const IconSearch = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <circle cx="11" cy="11" r="6.2" />
+    <path d="M15.8 15.8 21 21" />
+  </svg>
+);
+
+export const IconChevron = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M6 9.5l6 6 6-6" />
+  </svg>
+);
+
+export const IconPlus = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.8} aria-hidden="true">
+    <path d="M12 5v14" />
+    <path d="M5 12h14" />
+  </svg>
+);
+
+export const IconDoc = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M6 3h8l4 4v14H6z" />
+    <path d="M14 3v4h4" />
+    <path d="M9 12h6" />
+    <path d="M9 15.5h6" />
+  </svg>
+);
+
+export const IconShield = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M12 3l7 2.7v5.5c0 4.5-2.9 7.9-7 9.8-4.1-1.9-7-5.3-7-9.8V5.7z" />
+    <path d="M9 11.6l2.1 2.1 4-4.2" />
+  </svg>
+);
+
+export const IconPhone = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M5 4h4l1.6 4.2-2.3 1.7a12.5 12.5 0 0 0 5.8 5.8l1.7-2.3L20 15v4a1.7 1.7 0 0 1-1.9 1.7C10.5 20 4 13.5 3.3 5.9A1.7 1.7 0 0 1 5 4z" />
+  </svg>
+);
+
+export const IconMail = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <rect x="3.5" y="5.5" width="17" height="13" />
+    <path d="M4 7l8 6 8-6" />
+  </svg>
+);
+
+export const IconPin = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M12 21s-6.5-5.1-6.5-10a6.5 6.5 0 0 1 13 0c0 4.9-6.5 10-6.5 10z" />
+    <circle cx="12" cy="11" r="2.2" />
+  </svg>
+);
+
+export const IconCheck = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={2} aria-hidden="true">
+    <path d="M4.5 12.5l5 5L19.5 7" />
+  </svg>
+);
+
+export const IconClock = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <circle cx="12" cy="12" r="8.2" />
+    <path d="M12 7.5V12l3.4 2" />
+  </svg>
+);
+
+export const IconClose = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.8} aria-hidden="true">
+    <path d="M6 6l12 12" />
+    <path d="M18 6 6 18" />
+  </svg>
+);
+
+export const IconMenu = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.8} aria-hidden="true">
+    <path d="M4 7h16" />
+    <path d="M4 12h16" />
+    <path d="M4 17h10" />
+  </svg>
+);
