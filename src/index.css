@@ -1,9 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Archivo", "Be Vietnam Pro", system-ui, sans-serif;
-  --font-body: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  /*
+   * Bộ chữ: ưu tiên phông có bộ dấu tiếng Việt đầy đủ.
+   * Lora (serif) cho tiêu đề tạo sắc thái trang trọng của hãng luật; Be Vietnam Pro
+   * được thiết kế riêng cho tiếng Việt nên dựng dấu chuẩn ở mọi cỡ chữ.
+   * IBM Plex Mono có bộ Vietnamese, thay cho JetBrains Mono vốn thiếu một số dấu.
+   */
+  --font-display: "Lora", Georgia, "Times New Roman", serif;
+  --font-body:
+    "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  /*
+   * Chỉ dùng cho chuỗi kỹ thuật thuần ASCII: số hiệu văn bản, ngày tháng, phần
+   * trăm. Phông monospace hệ thống không có ký tự tiếng Việt dựng sẵn (Ố, Ế, Ồ)
+   * nên khi thiếu glyph, trình duyệt tách dấu ra thành ký tự rời và dấu chồng
+   * lên chữ. Mọi chuỗi có tiếng Việt phải dùng --font-body.
+   */
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --color-ink-950: #050b13;
   --color-ink-900: #0a1420;
@@ -12,10 +25,10 @@
   --color-ink-700: #17293f;
   --color-ink-600: #213752;
 
-  --color-fog-500: #7d92a8;
-  --color-fog-400: #94a8bd;
-  --color-fog-300: #b9c8d9;
-  --color-snow: #eaf1f8;
+  --color-fog-500: #8095ab;
+  --color-fog-400: #9db0c4;
+  --color-fog-300: #c2cfdd;
+  --color-snow: #eef4fa;
 
   --color-brass-300: #ecd7a0;
   --color-brass-400: #dfc27d;
@@ -28,20 +41,21 @@
   --color-jade-500: #22c49c;
   --color-jade-600: #17997b;
 
-  --color-mist-50: #f3f6fa;
-  --color-mist-100: #edf1f7;
+  --color-mist-50: #f5f8fb;
+  --color-mist-100: #eef3f8;
   --color-mist-200: #e1e8f0;
   --color-mist-300: #cfd9e5;
-  --color-paper: #f9fbfd;
+  --color-paper: #fbfcfe;
 
-  --animate-marquee: marquee 46s linear infinite;
-  --animate-floaty: floaty 7s ease-in-out infinite;
-  --animate-floaty-b: floaty 9s ease-in-out infinite reverse;
-  --animate-drift-a: drift-a 26s ease-in-out infinite alternate;
-  --animate-drift-b: drift-b 32s ease-in-out infinite alternate;
-  --animate-blink: blink 1.1s steps(2, start) infinite;
-  --animate-pulse-dot: pulse-dot 2.2s ease-in-out infinite;
-  --animate-spin-slow: spin 22s linear infinite;
+  --animate-marquee: marquee 52s linear infinite;
+  --animate-floaty: floaty 8s ease-in-out infinite;
+  --animate-floaty-b: floaty 11s ease-in-out infinite reverse;
+  --animate-aurora-a: aurora-a 30s ease-in-out infinite alternate;
+  --animate-aurora-b: aurora-b 38s ease-in-out infinite alternate;
+  --animate-aurora-c: aurora-c 34s ease-in-out infinite alternate;
+  --animate-caret: caret 1.15s steps(2, start) infinite;
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+  --animate-sheen: sheen 2.6s ease-in-out infinite;
 
   @keyframes marquee {
     to {
@@ -54,26 +68,34 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-9px);
+      transform: translateY(-10px);
     }
   }
-  @keyframes drift-a {
+  @keyframes aurora-a {
     from {
-      transform: translate3d(-4%, -2%, 0) scale(1);
+      transform: translate3d(-5%, -3%, 0) scale(1) rotate(0deg);
     }
     to {
-      transform: translate3d(5%, 4%, 0) scale(1.12);
+      transform: translate3d(6%, 5%, 0) scale(1.18) rotate(12deg);
     }
   }
-  @keyframes drift-b {
+  @keyframes aurora-b {
     from {
-      transform: translate3d(3%, 4%, 0) scale(1.08);
+      transform: translate3d(4%, 5%, 0) scale(1.12) rotate(0deg);
     }
     to {
-      transform: translate3d(-5%, -3%, 0) scale(1);
+      transform: translate3d(-6%, -4%, 0) scale(1) rotate(-14deg);
     }
   }
-  @keyframes blink {
+  @keyframes aurora-c {
+    from {
+      transform: translate3d(0, 4%, 0) scale(0.95);
+    }
+    to {
+      transform: translate3d(-4%, -5%, 0) scale(1.15);
+    }
+  }
+  @keyframes caret {
     50% {
       opacity: 0;
     }
@@ -81,10 +103,19 @@
   @keyframes pulse-dot {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(34, 196, 156, 0.55);
+      box-shadow: 0 0 0 0 rgba(34, 196, 156, 0.5);
     }
     55% {
-      box-shadow: 0 0 0 7px rgba(34, 196, 156, 0);
+      box-shadow: 0 0 0 8px rgba(34, 196, 156, 0);
+    }
+  }
+  @keyframes sheen {
+    0% {
+      transform: translateX(-120%) skewX(-18deg);
+    }
+    60%,
+    100% {
+      transform: translateX(240%) skewX(-18deg);
     }
   }
 }
@@ -97,13 +128,46 @@ body {
   background-color: var(--color-ink-950);
   color: var(--color-snow);
   font-family: var(--font-body);
+  /*
+   * Tiếng Việt xếp dấu chồng lên nguyên âm (Ế, Ộ, Ữ). Line-height dưới 1.15 làm
+   * dấu bị cắt hoặc chạm vào dòng trên, nên toàn trang lấy mốc an toàn 1.6 và
+   * các tiêu đề ghi đè lên mức riêng, không bao giờ thấp hơn 1.15.
+   */
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+
+/*
+ * Chặn tình trạng chữ đè nhau ở tiêu đề: mọi thẻ tiêu đề có sàn line-height
+ * và bỏ letter-spacing âm, vì dấu tiếng Việt cần chỗ thở theo cả chiều ngang.
+ */
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.18;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  line-height: 1.14;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 ::selection {
   background: rgba(201, 164, 76, 0.35);
   color: #fdf7e8;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brass-400);
+  outline-offset: 3px;
 }
 
 ::-webkit-scrollbar {
@@ -120,18 +184,37 @@ body {
   background: #2c4767;
 }
 
-/* ---------- layered ambient background ---------- */
+/* ---------- nhãn nhỏ dạng chữ hoa giãn cách ---------- */
+/*
+ * Chữ hoa tiếng Việt có dấu cần thêm khoảng dòng, nếu không dấu sẽ chạm mép
+ * trên của khối. Class này gom sẵn mức an toàn cho toàn bộ nhãn của trang.
+ */
+.label {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+/* Chuỗi kỹ thuật thuần ASCII: số hiệu, ngày tháng, phần trăm. */
+.code {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- nền ambient nhiều lớp ---------- */
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgba(148, 178, 208, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 178, 208, 0.055) 1px, transparent 1px);
-  background-size: 46px 46px;
+    linear-gradient(to right, rgba(148, 178, 208, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 178, 208, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 .bg-grid-light {
   background-image:
-    linear-gradient(to right, rgba(16, 30, 48, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(16, 30, 48, 0.05) 1px, transparent 1px);
-  background-size: 46px 46px;
+    linear-gradient(to right, rgba(16, 30, 48, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 30, 48, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
 .noise::after {
@@ -140,35 +223,43 @@ body {
   inset: 0;
   z-index: 70;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
 }
 
 /* ---------- scroll reveal ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(22px);
   transition:
-    opacity 0.75s ease,
-    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s ease;
+  filter: blur(6px);
+  will-change: opacity, transform;
 }
 .reveal-in {
   opacity: 1;
   transform: none;
+  filter: none;
 }
 
-/* ---------- hero line mask ---------- */
+/* ---------- hero: hiện dòng không dùng overflow ---------- */
+/*
+ * Bản trước dùng overflow:hidden để che dòng chữ khi trượt lên. Với chữ hoa
+ * tiếng Việt, khung che cắt mất dấu phía trên. Ở đây dùng mờ dần cộng trượt
+ * nhẹ, cho hiệu ứng tương đương mà không cắt bất kỳ nét nào của con chữ.
+ */
 .hero-line {
   display: block;
-  overflow: hidden;
-  padding-bottom: 0.08em;
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.hero-line-inner {
-  display: block;
-  transform: translateY(112%);
-  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.hero-in .hero-line-inner {
+.hero-in .hero-line {
+  opacity: 1;
   transform: none;
 }
 
@@ -187,7 +278,7 @@ body {
   animation-play-state: paused;
 }
 
-/* ---------- accordion (grid-rows trick) ---------- */
+/* ---------- accordion (grid-rows) ---------- */
 .acc-body {
   display: grid;
   grid-template-rows: 0fr;
@@ -200,17 +291,76 @@ body {
   overflow: hidden;
 }
 
+/* ---------- thẻ có vệt sáng theo con trỏ ---------- */
+/*
+ * --mx/--my do JS gán theo vị trí chuột trong thẻ. Khi chưa có, giá trị mặc
+ * định đặt vệt sáng ra ngoài khung nên thẻ hiển thị bình thường.
+ */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  background: radial-gradient(
+    22rem circle at var(--mx, -100%) var(--my, -100%),
+    rgba(201, 164, 76, 0.16),
+    transparent 65%
+  );
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+.spotlight-jade::before {
+  background: radial-gradient(
+    22rem circle at var(--mx, -100%) var(--my, -100%),
+    rgba(34, 196, 156, 0.16),
+    transparent 65%
+  );
+}
+
+/* ---------- nút có vệt loang khi hover ---------- */
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+.sheen:hover::after {
+  animation: var(--animate-sheen);
+}
+
 /* ---------- misc ---------- */
 .ring-anim {
-  transition: stroke-dashoffset 1.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .bar-anim {
-  transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .text-outline {
-  -webkit-text-stroke: 1px rgba(148, 178, 208, 0.22);
+  -webkit-text-stroke: 1px rgba(148, 178, 208, 0.16);
   color: transparent;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -227,11 +377,16 @@ body {
   .reveal {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
-  .hero-line-inner {
+  .hero-line {
+    opacity: 1 !important;
     transform: none !important;
   }
   .marquee-track {
     animation: none !important;
+  }
+  .spotlight::before {
+    display: none;
   }
 }

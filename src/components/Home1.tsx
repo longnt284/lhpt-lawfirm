@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { PLANS, SERVICES, TICKER } from "../data";
-import { useCountUp, useInView, useScrambleCycle } from "../hooks";
-import { Reveal, SectionHead } from "./Chrome";
+import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../data";
+import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
+import { Kicker, Reveal, SectionHead } from "./Chrome";
 import {
   IconArrowRight,
   IconArrowUpRight,
@@ -18,7 +18,7 @@ const WORDS = [
   "BẤT ĐỘNG SẢN",
   "TỐ TỤNG",
   "ĐIỆN MẶT TRỜI",
-  "THƯƠNG MẠI",
+  "DOANH NGHIỆP",
   "BẢO MẬT DỮ LIỆU",
 ];
 
@@ -40,8 +40,8 @@ export function Hero() {
 
   const word = useScrambleCycle(WORDS);
   const { ref, inView } = useInView<HTMLDivElement>(0.3);
-
   const count = useCountUp(600, inView, 1800);
+  const onMove = useSpotlight<HTMLDivElement>();
 
   return (
     <section id="top" className="relative z-10 overflow-hidden pt-[128px] pb-0 lg:pt-[150px]">
@@ -49,49 +49,51 @@ export function Hero() {
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-8">
           {/* trái */}
           <div className="lg:col-span-7">
-            <p className="font-mono flex items-center gap-3 text-[11px] tracking-[0.3em] text-fog-400 uppercase">
-              <span className="animate-pulse-dot inline-block h-2 w-2 rounded-full bg-jade-500" />
-              Hãng luật doanh nghiệp — TP.HCM · Hà Nội
+            <p className="label flex items-center gap-3 text-[11px] text-fog-400">
+              <span className="animate-pulse-dot inline-block h-2 w-2 shrink-0 rounded-full bg-jade-500" />
+              Hãng luật doanh nghiệp · {FIRM.scope}
             </p>
-            <h1 className="font-display mt-7 text-[clamp(2.5rem,6.6vw,4.9rem)] leading-[0.98] font-black tracking-tight text-snow uppercase">
-              <span className="hero-line">
-                <span className="hero-line-inner" style={{ transitionDelay: "120ms" }}>
-                  Nền pháp lý vững,
-                </span>
+            {/*
+              Tiêu đề chuyển sang serif chữ thường, leading 1.14. Bản trước dùng
+              chữ hoa với leading 0.98 trong khung overflow:hidden nên dấu tiếng
+              Việt bị cắt mất phần trên.
+            */}
+            <h1 className="font-display mt-6 text-[clamp(2.25rem,5.4vw,4rem)] leading-[1.14] font-semibold text-snow">
+              <span className="hero-line" style={{ transitionDelay: "120ms" }}>
+                Nền pháp lý vững,
               </span>
-              <span className="hero-line">
-                <span className="hero-line-inner" style={{ transitionDelay: "280ms" }}>
-                  cho mọi <span className="text-brass-400">công trình.</span>
-                </span>
+              <span className="hero-line" style={{ transitionDelay: "280ms" }}>
+                cho mọi <span className="text-brass-400 italic">công trình.</span>
               </span>
             </h1>
-            <p className="font-mono mt-7 text-sm tracking-wider text-fog-300">
-              <span className="text-fog-500">TRỌNG TÂM ▸</span>{" "}
+            <p className="label mt-7 text-[12px] text-fog-300">
+              <span className="text-fog-500">Trọng tâm</span>{" "}
               <span className="text-jade-400">[ {word} ]</span>
-              <span className="animate-blink ml-1 inline-block h-4 w-2 translate-y-0.5 bg-brass-400" />
+              <span className="animate-caret ml-1 inline-block h-3.5 w-2 translate-y-0.5 bg-brass-400" />
             </p>
-            <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-fog-400">
-              LHPT đồng hành cùng doanh nghiệp từ giấy phép đầu tiên đến phiên tòa cuối cùng —
-              xây dựng, bất động sản, năng lượng tái tạo, thương mại và bảo mật dữ liệu.
+            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-fog-400">
+              LHPT đồng hành cùng doanh nghiệp từ giấy phép đầu tiên đến phiên tòa cuối cùng:
+              xây dựng, bất động sản, điện mặt trời, doanh nghiệp, tuân thủ và bảo vệ dữ liệu
+              cá nhân.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <a
                 href="#lien-he"
-                className="group inline-flex items-center gap-2.5 bg-brass-500 px-6 py-3.5 text-sm font-bold text-ink-950 transition-all duration-300 hover:bg-brass-400 hover:shadow-[0_12px_40px_-10px_rgba(201,164,76,0.55)]"
+                className="sheen group inline-flex items-center gap-2.5 bg-brass-500 px-6 py-3.5 text-[14px] font-semibold text-ink-950 transition-all duration-300 hover:bg-brass-400 hover:shadow-[0_14px_44px_-10px_rgba(201,164,76,0.6)]"
               >
                 Đặt lịch tư vấn
                 <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
                 href="#dich-vu"
-                className="group inline-flex items-center gap-2.5 border border-snow/20 px-6 py-3.5 text-sm font-semibold text-snow transition-all duration-300 hover:border-jade-500 hover:text-jade-300"
+                className="group inline-flex items-center gap-2.5 border border-snow/20 px-6 py-3.5 text-[14px] font-medium text-snow transition-all duration-300 hover:border-jade-500 hover:text-jade-300"
               >
                 Khám phá dịch vụ
                 <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </div>
-            <p className="font-mono mt-8 text-[10px] tracking-[0.28em] text-fog-500 uppercase">
-              Phản hồi trong 24 giờ · Bảo mật tuyệt đối hồ sơ
+            <p className="label mt-8 text-[10px] text-fog-500">
+              Phản hồi trong {FIRM.responseTime} · Bảo mật tuyệt đối hồ sơ
             </p>
           </div>
 
@@ -101,27 +103,28 @@ export function Hero() {
               className="animate-floaty-b absolute top-6 -right-3 h-full w-full rotate-2 border border-snow/10 bg-ink-800/30"
               aria-hidden="true"
             />
-            <div ref={ref} className="animate-floaty relative border border-snow/15 bg-ink-850/90 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] backdrop-blur-sm">
+            <div
+              ref={ref}
+              onPointerMove={onMove}
+              className="spotlight animate-floaty relative border border-snow/15 bg-ink-850/90 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] backdrop-blur-sm"
+            >
               <div className="flex items-center justify-between border-b border-snow/10 px-6 py-4">
-                <span className="font-mono text-[10px] tracking-[0.3em] text-fog-400 uppercase">
-                  Hồ sơ năng lực
-                </span>
-                <span className="font-mono flex items-center gap-2 text-[10px] tracking-widest text-jade-400">
+                <span className="label text-[10px] text-fog-400">Hồ sơ năng lực</span>
+                <span className="label flex items-center gap-2 text-[10px] text-jade-400">
                   <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-jade-500" />
-                  LIVE · 2026
+                  Live · 2026
                 </span>
               </div>
               <div className="flex items-end justify-between gap-4 px-6 pt-6">
                 <div>
-                  <p className="font-display text-[3.4rem] leading-none font-black text-snow">
+                  <p className="font-display text-[3.2rem] leading-none font-bold text-snow">
                     {count}
                     <span className="text-brass-400">+</span>
                   </p>
-                  <p className="mt-2 text-xs font-medium text-fog-400">
+                  <p className="mt-2.5 text-[13px] leading-[1.5] text-fog-400">
                     Vụ việc &amp; dự án đã xử lý
                   </p>
                 </div>
-                {/* vòng 98% */}
                 <div className="relative h-[104px] w-[104px] shrink-0">
                   <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
                     <circle cx="60" cy="60" r="52" fill="none" stroke="#17293f" strokeWidth="8" />
@@ -132,27 +135,30 @@ export function Hero() {
                       fill="none"
                       stroke="#22c49c"
                       strokeWidth="8"
+                      strokeLinecap="round"
                       pathLength={100}
                       strokeDasharray="100"
                       strokeDashoffset={inView ? 2 : 100}
                       className="ring-anim"
                     />
                   </svg>
-                  <span className="font-mono absolute inset-0 flex flex-col items-center justify-center text-sm font-bold text-jade-300">
+                  <span className="code absolute inset-0 flex items-center justify-center text-[15px] font-semibold text-jade-300">
                     98%
                   </span>
                 </div>
               </div>
               <div className="mt-6 space-y-3.5 px-6">
-                {[
-                  ["Xây dựng — BĐS", 40, "bg-brass-500"],
-                  ["Tố tụng", 20, "bg-jade-500"],
-                  ["Năng lượng", 18, "bg-jade-600"],
-                  ["Thương mại", 12, "bg-ink-600"],
-                  ["Dữ liệu", 10, "bg-fog-500"],
-                ].map(([label, w, color], i) => (
-                  <div key={label as string}>
-                    <div className="mb-1.5 flex justify-between font-mono text-[10px] tracking-wider text-fog-400 uppercase">
+                {(
+                  [
+                    ["Xây dựng · BĐS", 40, "bg-brass-500"],
+                    ["Tố tụng", 20, "bg-jade-500"],
+                    ["Năng lượng", 18, "bg-jade-600"],
+                    ["Doanh nghiệp", 12, "bg-ink-600"],
+                    ["Dữ liệu", 10, "bg-fog-500"],
+                  ] as const
+                ).map(([label, w, color], i) => (
+                  <div key={label}>
+                    <div className="label mb-1.5 flex justify-between text-[9.5px] text-fog-400">
                       <span>{label}</span>
                       <span>{w}%</span>
                     </div>
@@ -169,12 +175,8 @@ export function Hero() {
                 ))}
               </div>
               <div className="mt-6 flex items-center justify-between border-t border-snow/10 px-6 py-3.5">
-                <span className="font-mono text-[9px] tracking-[0.22em] text-fog-500 uppercase">
-                  Số liệu nội bộ · 02.2026
-                </span>
-                <span className="font-mono text-[9px] tracking-[0.22em] text-brass-500 uppercase">
-                  LHPT-CAP-26
-                </span>
+                <span className="label text-[9px] text-fog-500">Số liệu nội bộ · 2026</span>
+                <span className="label text-[9px] text-brass-500">LHPT-CAP-26</span>
               </div>
             </div>
           </div>
@@ -189,7 +191,7 @@ export function Hero() {
               {TICKER.map((t) => (
                 <span
                   key={`${dup}-${t}`}
-                  className="font-mono flex items-center gap-3 pr-3 text-[11px] tracking-[0.18em] whitespace-nowrap text-fog-300"
+                  className="flex items-center gap-3 pr-3 text-[11px] font-medium tracking-[0.12em] whitespace-nowrap text-fog-300"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-jade-500" />
                   {t}
@@ -205,10 +207,14 @@ export function Hero() {
 }
 
 /* ================= STATS ================= */
+/*
+ * Chỉ số "2,4 GW công suất NLTT đã tư vấn" được thay bằng cam kết thời gian
+ * phản hồi hồ sơ, thống nhất với cam kết dịch vụ nêu ở phần chính sách.
+ */
 const STATS = [
   { v: 15, suffix: "+", label: "Năm hành nghề", decimals: 0 },
-  { v: 600, suffix: "+", label: "Vụ việc & dự án", decimals: 0 },
-  { v: 2.4, suffix: " GW", label: "Công suất NLTT đã tư vấn", decimals: 1 },
+  { v: 600, suffix: "+", label: "Vụ việc & dự án đã xử lý", decimals: 0 },
+  { v: 24, suffix: " giờ", label: "Cam kết phản hồi hồ sơ", decimals: 0 },
   { v: 98, suffix: "%", label: "Khách hàng quay lại", decimals: 0 },
 ];
 
@@ -242,25 +248,25 @@ function StatCell({
   return (
     <div
       ref={ref}
-      className={`reveal ${inView ? "reveal-in" : ""} group border-b border-l border-snow/10 px-6 py-8 transition-colors hover:bg-ink-900/60 lg:border-b-0`}
+      className={`reveal ${inView ? "reveal-in" : ""} group border-b border-l border-snow/10 px-6 py-8 transition-colors duration-300 hover:bg-ink-900/60 lg:border-b-0`}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <p className="font-mono text-4xl font-bold text-snow transition-colors group-hover:text-brass-300 lg:text-[2.6rem]">
+      <p className="font-display text-[2.2rem] leading-tight font-bold text-snow transition-colors duration-300 group-hover:text-brass-300 lg:text-[2.5rem]">
         {decimals > 0 ? val.toFixed(decimals) : val}
         <span className="text-jade-400">{suffix}</span>
       </p>
-      <p className="mt-3 text-[13px] font-medium text-fog-400">{label}</p>
+      <p className="mt-3 text-[13px] leading-[1.55] text-fog-400">{label}</p>
     </div>
   );
 }
 
 /* ================= DỊCH VỤ ================= */
 export function Services() {
+  const onMove = useSpotlight<HTMLElement>();
   return (
     <section id="dich-vu" className="relative z-10 scroll-mt-24 py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
-          {/* trái sticky */}
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-28">
               <SectionHead
@@ -269,10 +275,10 @@ export function Services() {
                   <>
                     Năm trụ cột.
                     <br />
-                    <span className="text-brass-400">Một chuẩn mực.</span>
+                    <span className="text-brass-400 italic">Một chuẩn mực.</span>
                   </>
                 }
-                sub="Mỗi mảng do một luật sư trưởng phụ trách — chịu trách nhiệm đến cùng trên một hồ sơ."
+                sub="Mỗi mảng do luật sư thành viên phụ trách trực tiếp, chịu trách nhiệm đến cùng trên một hồ sơ."
               />
               <Reveal delay={200}>
                 <ul className="mt-10 space-y-1">
@@ -282,8 +288,8 @@ export function Services() {
                         href={`#dv-${s.num}`}
                         className="group flex items-baseline gap-4 border-l border-snow/10 py-2.5 pl-5 transition-all duration-300 hover:border-brass-400 hover:pl-7"
                       >
-                        <span className="font-mono text-xs text-brass-500">{s.num}</span>
-                        <span className="font-display text-sm font-bold tracking-wide text-fog-300 uppercase transition-colors group-hover:text-snow">
+                        <span className="code text-[11px] text-brass-500">{s.num}</span>
+                        <span className="text-[13.5px] font-medium text-fog-300 transition-colors duration-300 group-hover:text-snow">
                           {s.title}
                         </span>
                       </a>
@@ -293,7 +299,6 @@ export function Services() {
               </Reveal>
             </div>
           </div>
-          {/* phải — cards */}
           <div className="space-y-6 lg:col-span-8">
             {SERVICES.map((s, idx) => {
               const Icon = SERVICE_ICONS[s.icon];
@@ -302,20 +307,27 @@ export function Services() {
                 <Reveal key={s.num} delay={idx * 60}>
                   <article
                     id={`dv-${s.num}`}
-                    className={`group relative scroll-mt-28 overflow-hidden border bg-ink-850/80 p-7 transition-all duration-500 hover:-translate-y-1 sm:p-9 ${
+                    onPointerMove={onMove}
+                    className={`spotlight ${
+                      isNew ? "spotlight-jade" : ""
+                    } group relative scroll-mt-28 overflow-hidden border bg-ink-850/80 p-7 transition-all duration-500 hover:-translate-y-1 sm:p-9 ${
                       isNew
                         ? "border-jade-500/40 hover:border-jade-400/80 hover:shadow-[0_25px_70px_-30px_rgba(34,196,156,0.4)]"
                         : "border-snow/10 hover:border-brass-500/60 hover:shadow-[0_25px_70px_-30px_rgba(201,164,76,0.35)]"
                     }`}
                   >
+                    {/*
+                      Số thứ tự lớn được đẩy hẳn ra rìa phải và hạ độ đậm, tránh
+                      chồng lên tiêu đề như bản trước.
+                    */}
                     <span
-                      className="font-display pointer-events-none absolute -top-5 right-4 text-[7rem] leading-none font-black text-outline select-none"
+                      className="font-display pointer-events-none absolute -top-2 right-3 text-[5.5rem] leading-none font-bold text-outline select-none sm:text-[6.5rem]"
                       aria-hidden="true"
                     >
                       {s.num}
                     </span>
                     <div className="relative">
-                      <div className="flex items-center gap-5">
+                      <div className="flex flex-wrap items-center gap-5">
                         <span
                           className={`flex h-14 w-14 shrink-0 items-center justify-center border transition-all duration-500 ${
                             isNew
@@ -325,14 +337,16 @@ export function Services() {
                         >
                           <Icon className="h-7 w-7" />
                         </span>
-                        <div>
-                          <h3 className="font-display text-xl font-black tracking-tight text-snow uppercase sm:text-2xl">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-display text-[1.2rem] leading-[1.25] font-semibold text-snow sm:text-[1.4rem]">
                             {s.title}
                           </h3>
-                          <p className="mt-1 text-sm text-fog-400">{s.tagline}</p>
+                          <p className="mt-1.5 text-[13.5px] leading-[1.6] text-fog-400">
+                            {s.tagline}
+                          </p>
                         </div>
                         {isNew && (
-                          <span className="font-mono ml-auto hidden shrink-0 animate-pulse items-center gap-2 border border-jade-500/60 px-2.5 py-1 text-[9px] tracking-[0.2em] text-jade-300 uppercase sm:inline-flex">
+                          <span className="label hidden shrink-0 items-center gap-2 border border-jade-500/60 px-2.5 py-1 text-[9px] text-jade-300 sm:inline-flex">
                             <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-jade-500" />
                             Mới · 2026
                           </span>
@@ -340,17 +354,20 @@ export function Services() {
                       </div>
                       <ul className="mt-7 grid gap-x-8 gap-y-3 sm:grid-cols-2">
                         {s.items.map((it) => (
-                          <li key={it} className="flex items-start gap-3 text-[14px] text-fog-300">
-                            <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-jade-500" />
+                          <li
+                            key={it}
+                            className="flex items-start gap-3 text-[14px] leading-[1.6] text-fog-300"
+                          >
+                            <IconCheck className="mt-1 h-4 w-4 shrink-0 text-jade-500" />
                             {it}
                           </li>
                         ))}
                       </ul>
-                      <div className="mt-7 flex flex-wrap gap-2">
+                      <div className="mt-7 flex flex-wrap items-center gap-2">
                         {s.tags.map((t) => (
                           <span
                             key={t}
-                            className={`font-mono border border-snow/15 px-2.5 py-1 text-[10px] tracking-[0.2em] text-fog-400 uppercase transition-colors ${
+                            className={`label border border-snow/15 px-2.5 py-1 text-[9px] text-fog-400 transition-colors duration-300 ${
                               isNew
                                 ? "group-hover:border-jade-500/50 group-hover:text-jade-300"
                                 : "group-hover:border-brass-500/40 group-hover:text-brass-300"
@@ -359,6 +376,9 @@ export function Services() {
                             {t}
                           </span>
                         ))}
+                        <span className="ml-auto text-[11.5px] text-fog-500">
+                          Phụ trách: {s.leads.join(" · ")}
+                        </span>
                       </div>
                     </div>
                   </article>
@@ -374,6 +394,7 @@ export function Services() {
 
 /* ================= BẢNG PHÍ ================= */
 export function Pricing() {
+  const onMove = useSpotlight<HTMLElement>();
   return (
     <section id="bang-phi" className="relative z-10 scroll-mt-24 py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-[30rem] max-w-4xl rounded-full bg-brass-500/6 blur-[120px]" />
@@ -385,52 +406,74 @@ export function Pricing() {
             <>
               Một phòng pháp chế,
               <br />
-              <span className="text-jade-400">không cần phòng nhân sự.</span>
+              <span className="text-jade-400 italic">không cần phòng nhân sự.</span>
             </>
           }
-          sub="Gói trọn tháng hoặc trọn năm — chi phí cố định, phạm vi rõ ràng, không phát sinh ngoài báo giá."
+          sub="Ba gói theo năm, chi phí cố định và phạm vi rõ ràng, không phát sinh ngoài báo giá đã xác nhận."
         />
-        <div className="mx-auto mt-14 grid max-w-4xl gap-6 lg:grid-cols-2">
+
+        {/* ưu đãi lần đầu */}
+        <Reveal delay={120}>
+          <div className="mx-auto mt-10 flex max-w-3xl flex-col items-center gap-3 border border-jade-500/40 bg-jade-500/[0.07] px-6 py-5 text-center sm:flex-row sm:text-left">
+            <span className="font-display shrink-0 text-[2.1rem] leading-none font-bold text-jade-300">
+              −{FIRST_TIME_DISCOUNT.percent}%
+            </span>
+            <div className="sm:pl-5">
+              <p className="text-[14.5px] font-semibold text-snow">{FIRST_TIME_DISCOUNT.label}</p>
+              <p className="mt-1 text-[13px] leading-[1.65] text-fog-400">
+                {FIRST_TIME_DISCOUNT.detail}
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        <div className="mt-12 grid items-stretch gap-6 lg:grid-cols-3">
           {PLANS.map((p, i) => (
-            <Reveal key={p.id} delay={i * 120}>
+            <Reveal key={p.id} delay={i * 120} className="h-full">
               <article
-                className={`relative flex h-full flex-col p-8 transition-all duration-500 hover:-translate-y-1.5 sm:p-9 ${
+                onPointerMove={onMove}
+                className={`spotlight ${
+                  p.highlight ? "" : "spotlight-jade"
+                } relative flex h-full flex-col p-8 transition-all duration-500 hover:-translate-y-1.5 sm:p-9 ${
                   p.highlight
                     ? "border border-brass-500/70 bg-ink-800 shadow-[0_30px_90px_-35px_rgba(201,164,76,0.5)] hover:shadow-[0_35px_100px_-35px_rgba(201,164,76,0.65)]"
                     : "border border-snow/12 bg-ink-850 hover:border-jade-500/50"
                 }`}
               >
                 {p.badge && (
-                  <span className="font-mono absolute -top-3.5 left-8 bg-brass-500 px-3 py-1.5 text-[10px] font-bold tracking-[0.22em] text-ink-950 uppercase">
+                  <span className="label absolute -top-3 left-8 bg-brass-500 px-3 py-1.5 text-[9px] font-semibold text-ink-950">
                     {p.badge}
                   </span>
                 )}
                 <p
-                  className={`font-mono text-[11px] tracking-[0.28em] uppercase ${
+                  className={`label text-[10.5px] ${
                     p.highlight ? "text-brass-400" : "text-jade-400"
                   }`}
                 >
                   {p.name}
                 </p>
-                <div className="mt-6 flex items-baseline gap-2">
-                  <span className="font-mono text-[2rem] leading-none font-bold text-snow sm:text-[2.35rem]">
+                <div className="mt-6 flex flex-wrap items-baseline gap-x-2">
+                  <span className="font-display text-[1.85rem] leading-tight font-bold text-snow sm:text-[2.1rem]">
                     {p.price}
                   </span>
-                  <span className="font-mono text-sm text-fog-400">{p.unit}</span>
+                  <span className="text-[13.5px] text-fog-400">{p.unit}</span>
                 </div>
                 <p
-                  className={`font-mono mt-3 text-[11px] tracking-wider ${
+                  className={`mt-3 text-[12.5px] leading-[1.6] ${
                     p.highlight ? "text-brass-300" : "text-fog-400"
                   }`}
                 >
                   {p.approx}
                 </p>
-                <p className="mt-5 text-sm leading-relaxed text-fog-400">{p.note}</p>
+                <p className="mt-5 text-[13.5px] leading-[1.7] text-fog-400">{p.note}</p>
                 <ul className="mt-7 flex-1 space-y-3.5 border-t border-snow/10 pt-7">
                   {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-[14px] text-fog-300">
+                    <li
+                      key={f}
+                      className="flex items-start gap-3 text-[13.5px] leading-[1.6] text-fog-300"
+                    >
                       <IconCheck
-                        className={`mt-0.5 h-4 w-4 shrink-0 ${
+                        className={`mt-1 h-4 w-4 shrink-0 ${
                           p.highlight ? "text-brass-400" : "text-jade-500"
                         }`}
                       />
@@ -440,23 +483,28 @@ export function Pricing() {
                 </ul>
                 <a
                   href="#lien-he"
-                  className={`group mt-9 inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 text-sm font-bold transition-all duration-300 ${
+                  className={`sheen group mt-9 inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 text-[14px] font-semibold transition-all duration-300 ${
                     p.highlight
                       ? "bg-brass-500 text-ink-950 hover:bg-brass-400"
                       : "border border-snow/20 text-snow hover:border-jade-500 hover:text-jade-300"
                   }`}
                 >
                   Nhận đề xuất gói
-                  <IconArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </article>
             </Reveal>
           ))}
         </div>
         <Reveal delay={150}>
-          <p className="font-mono mx-auto mt-8 max-w-2xl text-center text-[10px] leading-relaxed tracking-[0.18em] text-fog-500 uppercase">
-            * Chưa gồm VAT, án phí, phí trọng tài &amp; chi phí nhà nước · Gói năm thanh toán theo quý
-          </p>
+          <div className="mx-auto mt-8 max-w-2xl text-center">
+            <Kicker rule={false}>
+              <span className="mx-auto text-[9.5px] leading-[1.8] text-fog-500">
+                Chưa gồm thuế giá trị gia tăng, án phí, phí trọng tài &amp; chi phí nhà nước ·
+                Thanh toán theo quý
+              </span>
+            </Kicker>
+          </div>
         </Reveal>
       </div>
     </section>
