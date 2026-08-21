@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 
 export function usePrefersReducedMotion(): boolean {
   const [reduced, setReduced] = useState<boolean>(() =>
@@ -125,4 +125,22 @@ export function useScrollProgress() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return { progress, scrolled };
+}
+
+/**
+ * Gán toạ độ con trỏ vào biến CSS --mx/--my của thẻ để lớp .spotlight vẽ vệt sáng.
+ * Trả về no-op khi người dùng chọn giảm chuyển động.
+ */
+export function useSpotlight<T extends HTMLElement>() {
+  const reduced = usePrefersReducedMotion();
+  return useCallback(
+    (e: PointerEvent<T>) => {
+      if (reduced) return;
+      const el = e.currentTarget;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      el.style.setProperty("--my", `${e.clientY - r.top}px`);
+    },
+    [reduced]
+  );
 }
