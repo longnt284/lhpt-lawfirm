@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   ARTICLES,
@@ -14,7 +15,9 @@ import {
   type PolicyItem,
 } from "../data";
 import { useSpotlight } from "../hooks";
+import { EASE_LUXE, SOFT, VIEWPORT, cardIn, fadeUpSmall, stagger } from "../motion";
 import { Kicker, Reveal, SectionHead } from "./Chrome";
+import { GoldRule, Magnetic } from "./Motion";
 import {
   IconArrowRight,
   IconArrowUpRight,
@@ -28,6 +31,14 @@ import {
   IconSearch,
   IconShield,
 } from "./Icons";
+
+/** Chuyển động đóng/mở dùng chung cho mọi khối gập trên trang. */
+const collapse = {
+  initial: { height: 0, opacity: 0 },
+  animate: { height: "auto" as const, opacity: 1 },
+  exit: { height: 0, opacity: 0 },
+  transition: { duration: 0.42, ease: EASE_LUXE },
+};
 
 /* ================= TIN TỨC PHÁP LÝ ================= */
 export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
@@ -46,7 +57,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
               <>
                 Chuyển động chính sách,
                 <br />
-                <span className="text-brass-700 italic">cập nhật trước khi bạn hỏi.</span>
+                <span className="gilded-ink italic">cập nhật trước khi bạn hỏi.</span>
               </>
             }
           />
@@ -57,27 +68,36 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
-            <button
+            <motion.button
               onClick={() => onOpen(featured)}
               onPointerMove={onMove}
-              className="spotlight group relative flex h-full w-full flex-col overflow-hidden bg-ink-900 p-8 text-left text-snow transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_35px_80px_-30px_rgba(10,20,32,0.6)] sm:p-10"
+              whileHover="hover"
+              whileTap={{ scale: 0.995 }}
+              className="spotlight group relative flex h-full w-full flex-col overflow-hidden bg-ink-900 p-8 text-left text-snow transition-shadow duration-500 hover:shadow-[0_45px_90px_-35px_rgba(10,20,32,0.75)] sm:p-10"
             >
-              <div
+              <motion.span
+                variants={{ hover: { y: -6, scale: 1.02 } }}
+                transition={{ type: "spring", ...SOFT }}
+                className="absolute inset-0"
+              />
+              <motion.div
+                variants={{ hover: { scale: 1.12, rotate: -4, opacity: 0.09 } }}
+                transition={{ type: "spring", ...SOFT }}
                 className="font-display pointer-events-none absolute -top-6 right-0 text-[9rem] leading-none font-bold text-snow/[0.04] select-none"
                 aria-hidden="true"
               >
                 §
-              </div>
-              <span className="label w-fit border border-jade-500/50 px-2.5 py-1 text-[9.5px] text-jade-300">
+              </motion.div>
+              <span className="label relative w-fit border border-jade-500/50 px-2.5 py-1 text-[9.5px] text-jade-300">
                 Nổi bật · {featured.category}
               </span>
-              <h3 className="font-display mt-6 max-w-lg text-[1.4rem] leading-[1.3] font-semibold sm:text-[1.65rem]">
+              <h3 className="font-display relative mt-6 max-w-lg text-[1.4rem] leading-[1.3] font-semibold sm:text-[1.65rem]">
                 {featured.title}
               </h3>
-              <p className="mt-4 max-w-lg text-[14px] leading-[1.75] text-fog-300">
+              <p className="relative mt-4 max-w-lg text-[14px] leading-[1.75] text-fog-300">
                 {featured.excerpt}
               </p>
-              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-8">
+              <div className="relative mt-auto flex flex-wrap items-center justify-between gap-3 pt-8">
                 <span className="label text-[10px] text-fog-500">
                   {featured.date} · Đọc {featured.read}
                 </span>
@@ -86,28 +106,36 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
                   <IconArrowRight className="h-4 w-4" />
                 </span>
               </div>
-            </button>
+            </motion.button>
           </Reveal>
-          <div className="lg:col-span-5">
-            {rest.map((n, i) => (
-              <Reveal key={n.id} delay={i * 70}>
-                <button
-                  onClick={() => onOpen(n)}
-                  className="group flex w-full items-start justify-between gap-5 border-b border-ink-900/10 py-5 text-left transition-colors first:border-t"
-                >
-                  <div>
-                    <p className="label text-[9.5px] text-brass-700">
-                      {n.date} · {n.category} · {n.read}
-                    </p>
-                    <h4 className="mt-2 text-[14.5px] leading-[1.55] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
-                      {n.title}
-                    </h4>
-                  </div>
-                  <IconArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-ink-900/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass-600" />
-                </button>
-              </Reveal>
+          <motion.div
+            variants={stagger(0.07, 0.1)}
+            initial="hidden"
+            whileInView="show"
+            viewport={VIEWPORT}
+            className="lg:col-span-5"
+          >
+            {rest.map((n) => (
+              <motion.button
+                key={n.id}
+                variants={fadeUpSmall}
+                onClick={() => onOpen(n)}
+                whileHover={{ x: 6 }}
+                transition={{ type: "spring", ...SOFT }}
+                className="group flex w-full items-start justify-between gap-5 border-b border-ink-900/10 py-5 text-left transition-colors first:border-t"
+              >
+                <div>
+                  <p className="label text-[9.5px] text-brass-700">
+                    {n.date} · {n.category} · {n.read}
+                  </p>
+                  <h4 className="mt-2 text-[14.5px] leading-[1.55] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
+                    {n.title}
+                  </h4>
+                </div>
+                <IconArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-ink-900/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass-600" />
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -150,7 +178,7 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
             <>
               Phân tích ngắn,
               <br />
-              <span className="text-brass-700 italic">quyết định nhanh.</span>
+              <span className="gilded-ink italic">quyết định nhanh.</span>
             </>
           }
           sub="Mỗi bài nêu cơ sở pháp lý và vấn đề cần xử lý, đọc trong vài phút trước khi ký."
@@ -174,12 +202,20 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                   key={c}
                   onClick={() => setCat(c)}
                   aria-pressed={cat === c}
-                  className={`label px-3.5 py-2 text-[10px] transition-all duration-300 ${
+                  className={`label relative px-3.5 py-2 text-[10px] transition-colors duration-300 ${
                     cat === c
-                      ? "bg-ink-900 text-snow shadow-[0_10px_30px_-12px_rgba(10,20,32,0.5)]"
+                      ? "text-snow"
                       : "border border-ink-900/15 text-ink-900/60 hover:border-brass-500 hover:text-brass-700"
                   }`}
                 >
+                  {/* Khối nền trượt sang mục vừa chọn thay vì nhảy cóc. */}
+                  {cat === c && (
+                    <motion.span
+                      layoutId="article-chip"
+                      className="absolute inset-0 -z-10 bg-ink-900 shadow-[0_10px_30px_-12px_rgba(10,20,32,0.5)]"
+                      transition={{ type: "spring", stiffness: 400, damping: 36 }}
+                    />
+                  )}
                   {c}
                 </button>
               ))}
@@ -191,20 +227,31 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
         </Reveal>
 
         {list.length === 0 ? (
-          <div className="mt-12 flex flex-col items-center gap-3 border border-ink-900/10 bg-paper px-6 py-16 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-12 flex flex-col items-center gap-3 border border-ink-900/10 bg-paper px-6 py-16 text-center"
+          >
             <IconDoc className="h-8 w-8 text-ink-900/30" />
             <p className="text-[14px] text-ink-900/60">
               Không có bài viết phù hợp. Thử từ khóa khác hoặc chọn lĩnh vực khác.
             </p>
-          </div>
+          </motion.div>
         ) : (
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {visible.map((a, i) => (
-              <Reveal key={a.id} delay={(i % 4) * 70} className="h-full">
-                <button
+          <motion.div layout className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            <AnimatePresence mode="popLayout">
+              {visible.map((a, i) => (
+                <motion.button
+                  key={a.id}
+                  layout
+                  initial={{ opacity: 0, y: 22, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
+                  transition={{ duration: 0.55, ease: EASE_LUXE, delay: (i % 4) * 0.05 }}
+                  whileHover={{ y: -8 }}
                   onClick={() => onOpen(a)}
                   onPointerMove={onMove}
-                  className="spotlight group flex h-full w-full flex-col border border-mist-300 bg-paper p-6 text-left transition-all duration-500 hover:-translate-y-1.5 hover:border-ink-900/70 hover:shadow-[0_25px_60px_-25px_rgba(10,20,32,0.35)]"
+                  className="spotlight group flex h-full w-full flex-col border border-mist-300 bg-paper p-6 text-left transition-[border-color,box-shadow] duration-500 hover:border-ink-900/70 hover:shadow-[0_30px_65px_-25px_rgba(10,20,32,0.4)]"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <span className="label text-[9px] text-brass-700">{a.category}</span>
@@ -222,22 +269,24 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                     </span>
                     <IconArrowUpRight className="h-4 w-4 shrink-0 text-ink-900/25 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass-600" />
                   </div>
-                </button>
-              </Reveal>
-            ))}
-          </div>
+                </motion.button>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         )}
 
         {shown < list.length && (
           <Reveal delay={100}>
             <div className="mt-10 flex justify-center">
-              <button
-                onClick={() => setShown((n) => n + PAGE_SIZE)}
-                className="sheen group inline-flex items-center gap-2.5 border border-ink-900/20 px-7 py-3.5 text-[13.5px] font-semibold text-ink-900 transition-all duration-300 hover:border-brass-600 hover:text-brass-700"
-              >
-                Xem thêm {Math.min(PAGE_SIZE, list.length - shown)} bài
-                <IconChevron className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
-              </button>
+              <Magnetic>
+                <button
+                  onClick={() => setShown((n) => n + PAGE_SIZE)}
+                  className="sheen group inline-flex items-center gap-2.5 border border-ink-900/20 px-7 py-3.5 text-[13.5px] font-semibold text-ink-900 transition-all duration-300 hover:border-brass-600 hover:text-brass-700"
+                >
+                  Xem thêm {Math.min(PAGE_SIZE, list.length - shown)} bài
+                  <IconChevron className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                </button>
+              </Magnetic>
             </div>
           </Reveal>
         )}
@@ -327,12 +376,19 @@ export function Documents() {
                   key={f}
                   onClick={() => setField(f)}
                   aria-pressed={field === f}
-                  className={`label px-3.5 py-2 text-[9.5px] transition-all duration-300 ${
+                  className={`label relative px-3.5 py-2 text-[9.5px] transition-colors duration-300 ${
                     field === f
-                      ? "bg-jade-500 text-ink-950"
+                      ? "text-ink-950"
                       : "border border-snow/15 text-fog-400 hover:border-jade-500/60 hover:text-jade-300"
                   }`}
                 >
+                  {field === f && (
+                    <motion.span
+                      layoutId="doc-chip"
+                      className="absolute inset-0 -z-10 bg-jade-500"
+                      transition={{ type: "spring", stiffness: 400, damping: 36 }}
+                    />
+                  )}
                   {f}
                 </button>
               ))}
@@ -341,7 +397,7 @@ export function Documents() {
         </Reveal>
 
         <Reveal delay={180}>
-          <div className="mt-8 border border-snow/10 bg-ink-900/60">
+          <motion.div layout className="mt-8 border border-snow/10 bg-ink-900/60">
             <div className="label hidden grid-cols-12 gap-3 border-b border-snow/10 px-6 py-3.5 text-[9.5px] text-fog-500 md:grid">
               <span className="col-span-2">Số hiệu</span>
               <span className="col-span-4">Văn bản</span>
@@ -359,98 +415,113 @@ export function Documents() {
               </div>
             )}
 
-            {list.map((d) => {
-              const open = openId === d.id;
-              const expired = d.status === "Hết hiệu lực";
-              return (
-                <div
-                  key={d.id}
-                  className={`border-b border-snow/8 transition-colors last:border-b-0 ${
-                    open ? "border-l-2 border-l-jade-500 bg-ink-850" : "hover:bg-ink-850/60"
-                  }`}
-                >
-                  <button
-                    onClick={() => setOpenId(open ? null : d.id)}
-                    aria-expanded={open}
-                    className="grid w-full grid-cols-1 items-start gap-1.5 px-5 py-4 text-left md:grid-cols-12 md:items-center md:gap-3 md:px-6"
+            <AnimatePresence initial={false} mode="popLayout">
+              {list.map((d) => {
+                const open = openId === d.id;
+                const expired = d.status === "Hết hiệu lực";
+                return (
+                  <motion.div
+                    key={d.id}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                    transition={{ duration: 0.35, ease: EASE_LUXE }}
+                    className={`border-b border-snow/8 transition-colors last:border-b-0 ${
+                      open ? "border-l-2 border-l-jade-500 bg-ink-850" : "hover:bg-ink-850/60"
+                    }`}
                   >
-                    <span
-                      className={`code text-[12px] font-semibold md:col-span-2 ${
-                        expired ? "text-fog-500 line-through decoration-fog-500/50" : "text-jade-400"
-                      }`}
+                    <button
+                      onClick={() => setOpenId(open ? null : d.id)}
+                      aria-expanded={open}
+                      className="grid w-full grid-cols-1 items-start gap-1.5 px-5 py-4 text-left md:grid-cols-12 md:items-center md:gap-3 md:px-6"
                     >
-                      {d.code}
-                    </span>
-                    <span
-                      className={`text-[13.5px] leading-[1.5] font-medium md:col-span-4 ${
-                        expired ? "text-fog-400" : "text-snow"
-                      }`}
-                    >
-                      {d.name}
-                    </span>
-                    <span className="text-[11.5px] text-fog-400 md:col-span-2">
-                      {d.type} · {d.field}
-                    </span>
-                    <span className="code text-[11px] text-fog-400 md:col-span-2">
-                      {d.effective}
-                      {d.expired ? ` → ${d.expired}` : ""}
-                    </span>
-                    <span className="flex items-center gap-2 md:col-span-2 md:justify-end">
                       <span
-                        className={`label inline-flex items-center gap-2 border px-2 py-1 text-[8.5px] leading-none whitespace-nowrap ${
-                          STATUS_STYLE[d.status]
+                        className={`code text-[12px] font-semibold md:col-span-2 ${
+                          expired
+                            ? "text-fog-500 line-through decoration-fog-500/50"
+                            : "text-jade-400"
                         }`}
                       >
-                        <span
-                          className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[d.status]}`}
-                        />
-                        {STATUS_SHORT[d.status]}
+                        {d.code}
                       </span>
-                      <IconChevron
-                        className={`h-4 w-4 shrink-0 text-fog-500 transition-transform duration-300 ${
-                          open ? "rotate-180 text-jade-400" : ""
+                      <span
+                        className={`text-[13.5px] leading-[1.5] font-medium md:col-span-4 ${
+                          expired ? "text-fog-400" : "text-snow"
                         }`}
-                      />
-                    </span>
-                  </button>
-                  <div className={`acc-body ${open ? "open" : ""}`}>
-                    <div className="acc-inner">
-                      <div className="px-5 pb-6 md:px-6">
-                        <p className="max-w-3xl text-[13.5px] leading-[1.75] text-fog-300">
-                          {d.summary}
-                        </p>
+                      >
+                        {d.name}
+                      </span>
+                      <span className="text-[11.5px] text-fog-400 md:col-span-2">
+                        {d.type} · {d.field}
+                      </span>
+                      <span className="code text-[11px] text-fog-400 md:col-span-2">
+                        {d.effective}
+                        {d.expired ? ` → ${d.expired}` : ""}
+                      </span>
+                      <span className="flex items-center gap-2 md:col-span-2 md:justify-end">
+                        <span
+                          className={`label inline-flex items-center gap-2 border px-2 py-1 text-[8.5px] leading-none whitespace-nowrap ${
+                            STATUS_STYLE[d.status]
+                          }`}
+                        >
+                          <span
+                            className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[d.status]}`}
+                          />
+                          {STATUS_SHORT[d.status]}
+                        </span>
+                        <motion.span
+                          animate={{ rotate: open ? 180 : 0 }}
+                          transition={{ duration: 0.35, ease: EASE_LUXE }}
+                          className="inline-flex"
+                        >
+                          <IconChevron
+                            className={`h-4 w-4 shrink-0 ${open ? "text-jade-400" : "text-fog-500"}`}
+                          />
+                        </motion.span>
+                      </span>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {open && (
+                        <motion.div {...collapse} className="overflow-hidden">
+                          <div className="px-5 pb-6 md:px-6">
+                            <p className="max-w-3xl text-[13.5px] leading-[1.75] text-fog-300">
+                              {d.summary}
+                            </p>
 
-                        {/* Điểm mới, điểm đáng chú ý của quy định */}
-                        <div className="mt-5 border-l-2 border-brass-500/50 pl-4">
-                          <p className="label text-[9.5px] text-brass-400">
-                            Điểm mới &amp; đáng chú ý
-                          </p>
-                          <ul className="mt-2.5 space-y-2">
-                            {d.highlights.map((h) => (
-                              <li
-                                key={h}
-                                className="flex gap-2.5 text-[13px] leading-[1.7] text-fog-300"
-                              >
-                                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-brass-500" />
-                                {h}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                            {/* Điểm mới, điểm đáng chú ý của quy định */}
+                            <div className="mt-5 border-l-2 border-brass-500/50 pl-4">
+                              <p className="label text-[9.5px] text-brass-400">
+                                Điểm mới &amp; đáng chú ý
+                              </p>
+                              <ul className="mt-2.5 space-y-2">
+                                {d.highlights.map((h) => (
+                                  <li
+                                    key={h}
+                                    className="flex gap-2.5 text-[13px] leading-[1.7] text-fog-300"
+                                  >
+                                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-brass-500" />
+                                    {h}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
 
-                        {d.replacedBy && (
-                          <p className="mt-4 text-[12.5px] leading-[1.65] text-fog-400">
-                            <span className="text-fog-500">Được thay thế bởi: </span>
-                            <span className="text-jade-300">{d.replacedBy}</span>
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                            {d.replacedBy && (
+                              <p className="mt-4 text-[12.5px] leading-[1.65] text-fog-400">
+                                <span className="text-fog-500">Được thay thế bởi: </span>
+                                <span className="text-jade-300">{d.replacedBy}</span>
+                              </p>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </motion.div>
         </Reveal>
         <Reveal delay={220}>
           <p className="label mt-5 text-[9.5px] text-fog-500">
@@ -482,17 +553,30 @@ export function Team() {
             <>
               Người chịu trách nhiệm
               <br />
-              <span className="text-brass-400 italic">trên từng hồ sơ.</span>
+              <span className="gilded italic">trên từng hồ sơ.</span>
             </>
           }
           sub="Một luật sư điều hành và ba luật sư thành viên. Hồ sơ của bạn luôn có một cái tên chịu trách nhiệm đến cùng."
         />
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {LAWYERS.map((l, i) => (
-            <Reveal key={l.id} delay={i * 90} className="h-full">
-              <article
-                onPointerMove={onMove}
-                className="spotlight group relative flex h-full flex-col overflow-hidden border border-snow/10 bg-ink-850 transition-all duration-500 hover:-translate-y-1.5 hover:border-brass-500/50 hover:shadow-[0_30px_70px_-30px_rgba(201,164,76,0.4)]"
+        <motion.div
+          variants={stagger(0.09)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {LAWYERS.map((l) => (
+            <motion.article
+              key={l.id}
+              variants={cardIn}
+              whileHover="hover"
+              onPointerMove={onMove}
+              className="spotlight group relative flex h-full flex-col overflow-hidden border border-snow/10 bg-ink-850 transition-[border-color,box-shadow] duration-500 hover:border-brass-500/50 hover:shadow-[0_35px_75px_-30px_rgba(201,164,76,0.45)]"
+            >
+              <motion.div
+                variants={{ hover: { y: -8 } }}
+                transition={{ type: "spring", ...SOFT }}
+                className="flex h-full flex-col"
               >
                 {/*
                   Ô chân dung để trống có chủ đích: ảnh của bốn luật sư sẽ được bổ
@@ -500,20 +584,24 @@ export function Team() {
                 */}
                 <div className="relative aspect-[4/5] overflow-hidden border-b border-snow/10 bg-ink-800">
                   {l.img ? (
-                    <img
+                    <motion.img
                       src={l.img}
                       alt={l.name}
                       loading="lazy"
-                      className="h-full w-full object-cover grayscale-[45%] transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
+                      variants={{ hover: { scale: 1.06 } }}
+                      transition={{ duration: 0.8, ease: EASE_LUXE }}
+                      className="h-full w-full object-cover grayscale-[45%] transition-[filter] duration-700 group-hover:grayscale-0"
                     />
                   ) : (
                     <div className="bg-grid absolute inset-0 flex items-center justify-center">
-                      <span
+                      <motion.span
+                        variants={{ hover: { scale: 1.08 } }}
+                        transition={{ type: "spring", ...SOFT }}
                         className="font-display text-[3.4rem] leading-none font-bold text-snow/12 transition-colors duration-500 group-hover:text-brass-400/30"
                         aria-hidden="true"
                       >
                         {initials(l.name)}
-                      </span>
+                      </motion.span>
                     </div>
                   )}
                   <span className="label absolute top-4 left-4 border border-snow/20 bg-ink-950/60 px-2 py-1 text-[9px] text-fog-300 backdrop-blur-sm">
@@ -543,10 +631,10 @@ export function Team() {
                     {l.email}
                   </a>
                 </div>
-              </article>
-            </Reveal>
+              </motion.div>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
         <Reveal delay={200}>
           <div className="mt-10 flex justify-center">
             <Kicker rule={false}>
@@ -576,19 +664,23 @@ function Accordion({ items }: { items: PolicyItem[] }) {
             <span className="font-display text-[14.5px] leading-[1.5] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
               {it.q}
             </span>
-            <span
-              className={`shrink-0 border border-ink-900/20 p-1.5 transition-all duration-300 ${
-                open === i ? "rotate-45 border-brass-600 text-brass-700" : "text-ink-900/50"
+            <motion.span
+              animate={{ rotate: open === i ? 45 : 0 }}
+              transition={{ duration: 0.35, ease: EASE_LUXE }}
+              className={`shrink-0 border border-ink-900/20 p-1.5 transition-colors duration-300 ${
+                open === i ? "border-brass-600 text-brass-700" : "text-ink-900/50"
               }`}
             >
               <IconPlus className="h-3.5 w-3.5" />
-            </span>
+            </motion.span>
           </button>
-          <div className={`acc-body ${open === i ? "open" : ""}`}>
-            <div className="acc-inner">
-              <p className="pr-10 pb-5 text-[13.5px] leading-[1.8] text-ink-900/68">{it.a}</p>
-            </div>
-          </div>
+          <AnimatePresence initial={false}>
+            {open === i && (
+              <motion.div {...collapse} className="overflow-hidden">
+                <p className="pr-10 pb-5 text-[13.5px] leading-[1.8] text-ink-900/68">{it.a}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       ))}
     </div>
@@ -607,7 +699,7 @@ export function Policies() {
             <>
               Minh bạch như cách
               <br />
-              <span className="text-brass-700 italic">chúng tôi tính phí.</span>
+              <span className="gilded-ink italic">chúng tôi tính phí.</span>
             </>
           }
           sub="Chính sách dịch vụ, bảo mật và quyền riêng tư, viết để khách hàng đọc chứ không phải để luật sư né trách nhiệm."
@@ -628,7 +720,9 @@ export function Policies() {
             <div className="border-t-2 border-jade-500 pt-6">
               <div className="flex items-center gap-3">
                 <IconShield className="h-5 w-5 shrink-0 text-jade-600" />
-                <h3 className="font-display text-[1.05rem] font-semibold">Bảo mật &amp; riêng tư</h3>
+                <h3 className="font-display text-[1.05rem] font-semibold">
+                  Bảo mật &amp; riêng tư
+                </h3>
               </div>
               <div className="mt-5">
                 <Accordion items={POLICIES_PRIVACY} />
@@ -636,23 +730,30 @@ export function Policies() {
             </div>
           </Reveal>
         </div>
-        <Reveal delay={160}>
-          <div className="mt-12 flex flex-wrap items-center gap-3">
-            {[
-              "Bảo mật hồ sơ tuyệt đối",
-              "Không chia sẻ dữ liệu",
-              "Tuân thủ Luật Bảo vệ dữ liệu cá nhân 2025",
-              `DPO: ${FIRM.dpoEmail}`,
-            ].map((t) => (
-              <span
-                key={t}
-                className="label border border-ink-900/15 px-3.5 py-2 text-[9.5px] text-ink-900/60"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        </Reveal>
+        <motion.div
+          variants={stagger(0.07, 0.1)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="mt-12 flex flex-wrap items-center gap-3"
+        >
+          {[
+            "Bảo mật hồ sơ tuyệt đối",
+            "Không chia sẻ dữ liệu",
+            "Tuân thủ Luật Bảo vệ dữ liệu cá nhân 2025",
+            `DPO: ${FIRM.dpoEmail}`,
+          ].map((t) => (
+            <motion.span
+              key={t}
+              variants={fadeUpSmall}
+              whileHover={{ y: -3 }}
+              transition={{ type: "spring", ...SOFT }}
+              className="label border border-ink-900/15 px-3.5 py-2 text-[9.5px] text-ink-900/60"
+            >
+              {t}
+            </motion.span>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
@@ -699,12 +800,18 @@ export function Contact() {
                 <>
                   Cần một quyết định
                   <br />
-                  pháp lý <span className="text-jade-400 italic">đúng lúc?</span>
+                  pháp lý <span className="gilded italic">đúng lúc?</span>
                 </>
               }
               sub={`Gửi yêu cầu, luật sư phụ trách mảng sẽ phản hồi trong ${FIRM.responseTime}.`}
             />
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            <motion.div
+              variants={stagger(0.08, 0.1)}
+              initial="hidden"
+              whileInView="show"
+              viewport={VIEWPORT}
+              className="mt-10 grid gap-4 sm:grid-cols-2"
+            >
               {cards.map((c) => {
                 const inner = (
                   <>
@@ -719,25 +826,36 @@ export function Contact() {
                 );
                 const cls = `spotlight ${
                   c.jade ? "spotlight-jade" : ""
-                } group block border border-snow/12 bg-ink-850 p-5 transition-all duration-300 hover:-translate-y-1 ${
+                } group block border border-snow/12 bg-ink-850 p-5 transition-colors duration-300 ${
                   c.jade ? "hover:border-jade-500/60" : "hover:border-brass-500/60"
                 }`;
+                const motionProps = {
+                  variants: cardIn,
+                  whileHover: { y: -6 },
+                  transition: { type: "spring" as const, ...SOFT },
+                  onPointerMove: onMove,
+                  className: cls,
+                };
                 return c.href ? (
-                  <a key={c.label} href={c.href} onPointerMove={onMove} className={cls}>
+                  <motion.a key={c.label} href={c.href} {...motionProps}>
                     {inner}
-                  </a>
+                  </motion.a>
                 ) : (
-                  <div key={c.label} onPointerMove={onMove} className={cls}>
+                  <motion.div key={c.label} {...motionProps}>
                     {inner}
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
 
           <Reveal delay={140} className="lg:col-span-6">
-            <form onSubmit={submit} className="border border-snow/12 bg-ink-850 p-7 sm:p-9">
+            <form
+              onSubmit={submit}
+              className="border border-snow/12 bg-ink-850 p-7 shadow-[0_40px_100px_-45px_rgba(0,0,0,0.9)] sm:p-9"
+            >
               <p className="label text-[10px] text-brass-400">Yêu cầu tư vấn</p>
+              <GoldRule className="mt-3 w-14" />
               <div className="mt-7 grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className="label mb-2 block text-[9.5px] text-fog-400" htmlFor="ct-name">
@@ -796,19 +914,30 @@ export function Contact() {
                   className={`${inputCls} resize-none`}
                 />
               </div>
-              <button
+              <motion.button
                 type="submit"
-                className="sheen group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-brass-500 px-6 py-4 text-[14px] font-semibold text-ink-950 transition-all duration-300 hover:bg-brass-400 hover:shadow-[0_15px_45px_-12px_rgba(201,164,76,0.6)]"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.985 }}
+                transition={{ type: "spring", ...SOFT }}
+                className="sheen group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-brass-500 px-6 py-4 text-[14px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400 hover:shadow-[0_15px_45px_-12px_rgba(201,164,76,0.6)]"
               >
                 Gửi yêu cầu · phản hồi trong 24h
                 <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-              {sent && (
-                <p className="label mt-4 flex items-center gap-2 text-[10px] text-jade-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-jade-500" />
-                  Đã mở trình soạn email · chúng tôi phản hồi trong 24 giờ
-                </p>
-              )}
+              </motion.button>
+              <AnimatePresence>
+                {sent && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -6, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.4, ease: EASE_LUXE }}
+                    className="label mt-4 flex items-center gap-2 overflow-hidden text-[10px] text-jade-300"
+                  >
+                    <span className="h-1.5 w-1.5 rounded-full bg-jade-500" />
+                    Đã mở trình soạn email · chúng tôi phản hồi trong 24 giờ
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </form>
           </Reveal>
         </div>
