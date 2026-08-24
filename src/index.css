@@ -111,11 +111,11 @@
   }
   @keyframes sheen {
     0% {
-      transform: translateX(-120%) skewX(-18deg);
+      transform: translateX(-160%) skewX(-18deg);
     }
     60%,
     100% {
-      transform: translateX(240%) skewX(-18deg);
+      transform: translateX(320%) skewX(-18deg);
     }
   }
 }
@@ -227,42 +227,6 @@ p {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
 }
 
-/* ---------- scroll reveal ---------- */
-.reveal {
-  opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.8s ease;
-  filter: blur(6px);
-  will-change: opacity, transform;
-}
-.reveal-in {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* ---------- hero: hiện dòng không dùng overflow ---------- */
-/*
- * Bản trước dùng overflow:hidden để che dòng chữ khi trượt lên. Với chữ hoa
- * tiếng Việt, khung che cắt mất dấu phía trên. Ở đây dùng mờ dần cộng trượt
- * nhẹ, cho hiệu ứng tương đương mà không cắt bất kỳ nét nào của con chữ.
- */
-.hero-line {
-  display: block;
-  opacity: 0;
-  transform: translateY(26px);
-  transition:
-    opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.hero-in .hero-line {
-  opacity: 1;
-  transform: none;
-}
-
 /* ---------- marquee ---------- */
 .marquee {
   overflow: hidden;
@@ -276,19 +240,6 @@ p {
 }
 .marquee:hover .marquee-track {
   animation-play-state: paused;
-}
-
-/* ---------- accordion (grid-rows) ---------- */
-.acc-body {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.acc-body.open {
-  grid-template-rows: 1fr;
-}
-.acc-inner {
-  overflow: hidden;
 }
 
 /* ---------- thẻ có vệt sáng theo con trỏ ---------- */
@@ -334,23 +285,101 @@ p {
   position: absolute;
   top: 0;
   bottom: 0;
+  /*
+   * Bắt buộc neo left:0. Thiếu nó, trình duyệt lấy vị trí tĩnh của pseudo —
+   * tức mép phải phần chữ bên trong nút — làm gốc, nên vệt sáng đứng yên ngay
+   * giữa nút thay vì nằm ngoài khung chờ hover.
+   */
+  left: 0;
   width: 45%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
-  transform: translateX(-120%) skewX(-18deg);
+  transform: translateX(-160%) skewX(-18deg);
   pointer-events: none;
 }
 .sheen:hover::after {
   animation: var(--animate-sheen);
 }
 
-/* ---------- misc ---------- */
-.ring-anim {
-  transition: stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.bar-anim {
-  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+/* ---------- chữ mạ vàng ---------- */
+/*
+ * Từ nhấn trong tiêu đề được tô bằng dải chuyển sắc đồng thau chạy chậm, thay
+ * cho một màu phẳng. Dải rộng 220% và trượt ngang nên ánh vàng lướt qua con chữ
+ * như kim loại bắt sáng. background-clip:text không cắt cụt dấu tiếng Việt vì
+ * chỉ giới hạn phần tô, không giới hạn hộp chữ.
+ */
+.gilded {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-brass-500) 0%,
+    var(--color-brass-300) 22%,
+    #fff6dd 34%,
+    var(--color-brass-400) 48%,
+    var(--color-brass-500) 70%,
+    var(--color-brass-400) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gild 9s ease-in-out infinite;
 }
 
+/* Bản cho nền sáng: hạ độ chói để chữ vẫn đạt độ tương phản khi đọc. */
+.gilded-ink {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-brass-700) 0%,
+    var(--color-brass-600) 26%,
+    var(--color-brass-500) 40%,
+    var(--color-brass-600) 60%,
+    var(--color-brass-700) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gild 11s ease-in-out infinite;
+}
+
+@keyframes gild {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ---------- viền tối bốn góc ---------- */
+/* Kéo ánh nhìn vào giữa trang, cho nền chiều sâu như ảnh chụp studio. */
+.vignette {
+  background: radial-gradient(
+    120% 90% at 50% 40%,
+    transparent 42%,
+    rgba(2, 6, 12, 0.42) 100%
+  );
+}
+
+/* ---------- gạch chân chạy từ trái ---------- */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 1px;
+  width: 0;
+  background: var(--color-brass-400);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* ---------- misc ---------- */
 .text-outline {
   -webkit-text-stroke: 1px rgba(148, 178, 208, 0.16);
   color: transparent;
@@ -374,14 +403,9 @@ p {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
-  .hero-line {
-    opacity: 1 !important;
-    transform: none !important;
+  .gilded,
+  .gilded-ink {
+    animation: none !important;
   }
   .marquee-track {
     animation: none !important;
