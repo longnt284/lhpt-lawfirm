@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../data";
+import { useRef } from "react";
+import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../firm";
 import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
 import { APPROACH_EN, localizeCategory, localizePlan, localizeService, useLocale } from "../i18n";
 import {
@@ -59,25 +60,60 @@ const SERVICE_ICONS = {
   shield: IconShield,
 } as const;
 
+/*
+ * Hai giá trị dưới đây đổi theo từng khung hình: chữ xáo trộn chạy lại sau mỗi
+ * 3,2 giây và con số đếm lên chạy 1,8 giây. Nếu gọi hook ngay trong Hero thì
+ * mỗi lần đổi sẽ dựng lại toàn bộ hero — thẻ nghiêng, vòng SVG, năm thanh tỉ
+ * trọng và dải ticker 24 mục. Tách ra thành lá riêng để React chỉ đụng vào đúng
+ * nút chữ cần thay.
+ */
+function ScrambleWord({ words }: { words: string[] }) {
+  const text = useScrambleCycle(words);
+  return <span className="text-jade-400">[ {text} ]</span>;
+}
+
+function CountUp({
+  target,
+  start,
+  duration,
+}: {
+  target: number;
+  start: boolean;
+  duration?: number;
+}) {
+  const value = useCountUp(target, start, duration);
+  return <>{value}</>;
+}
+
 /* ================= HERO ================= */
 export function Hero() {
   const { isEnglish, t } = useLocale();
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll();
-  /* Chữ và bảng số liệu trôi lệch tốc độ khi cuộn, tạo lớp gần — lớp xa. */
+  const sectionRef = useRef<HTMLElement | null>(null);
+  /*
+   * Chữ và bảng số liệu trôi lệch tốc độ khi cuộn, tạo lớp gần — lớp xa.
+   *
+   * Mốc đo phải là chính khối hero. Bản trước dùng scrollYProgress của cả trang:
+   * trang cao hơn 12.000px nên lúc hero rời khỏi màn hình, tiến trình mới đạt
+   * ~0,08 — chữ dịch được 5px và độ mờ còn 0,92, tức hiệu ứng gần như không xảy
+   * ra dù Motion vẫn tính lại ở mỗi khung hình cuộn.
+   */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
   const textY = useTransform(scrollYProgress, [0, 1], [0, -70]);
   const cardY = useTransform(scrollYProgress, [0, 1], [0, -140]);
   const heroFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
 
-  const word = useScrambleCycle(isEnglish ? WORDS_EN : WORDS);
   const ticker = isEnglish ? TICKER_EN : TICKER;
   const { ref, inView } = useInView<HTMLDivElement>(0.3);
-  const count = useCountUp(600, inView, 1800);
   const onMove = useSpotlight<HTMLDivElement>();
 
   return (
     <section
       id="top"
+      ref={sectionRef}
       className="relative z-10 pt-[128px] pb-0 lg:pt-[150px]"
     >
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -116,7 +152,7 @@ export function Hero() {
             </h1>
             <motion.p variants={fadeUpSmall} className="label mt-7 text-[12px] text-fog-300">
               <span className="text-fog-500">{t("focus")}</span>{" "}
-              <span className="text-jade-400">[ {word} ]</span>
+              <ScrambleWord words={isEnglish ? WORDS_EN : WORDS} />
               <span className="animate-caret ml-1 inline-block h-3.5 w-2 translate-y-0.5 bg-brass-400" />
             </motion.p>
             <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-fog-400">
@@ -175,7 +211,7 @@ export function Hero() {
                 <div className="flex items-end justify-between gap-4 px-6 pt-6">
                   <div>
                     <p className="font-display text-[3.2rem] leading-none font-bold text-snow">
-                      {count}
+                      <CountUp target={600} start={inView} duration={1800} />
                       <span className="text-brass-400">+</span>
                     </p>
                     <p className="mt-2.5 text-[13px] leading-[1.5] text-fog-400">

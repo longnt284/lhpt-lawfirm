@@ -1,7 +1,6 @@
 import {
   AnimatePresence,
   motion,
-  useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useScroll,
@@ -10,8 +9,9 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { FIRM, NAV_LINKS, type DocItem } from "../data";
-import { localizeDoc, useLocale } from "../i18n";
+import { FIRM, NAV_LINKS } from "../firm";
+import type { DocItem } from "../content/types";
+import { formatReadingTime, useLocale } from "../i18n";
 import { EASE_LUXE, SCROLL, SOFT, VIEWPORT, fadeUp, fadeUpSmall, stagger } from "../motion";
 import { useSpotlight } from "../hooks";
 import {
@@ -43,11 +43,17 @@ export function Ambient() {
 
   const mx = useSpring(useMotionValue(0), SOFT);
   const my = useSpring(useMotionValue(0), SOFT);
-  const cursorX = useSpring(useMotionValue(-500), { stiffness: 90, damping: 24 });
-  const cursorY = useSpring(useMotionValue(-500), { stiffness: 90, damping: 24 });
-  const cursorGlow = useMotionTemplate`radial-gradient(26rem circle at ${cursorX}px ${cursorY}px, rgba(201,164,76,0.075), transparent 68%)`;
+  /*
+   * Quầng sáng theo con trỏ là một khối có kích thước cố định, di chuyển bằng
+   * transform. Bản trước dựng chuỗi radial-gradient rồi gán vào `background`
+   * của một lớp phủ kín màn hình: đổi background-image thì trình duyệt phải vẽ
+   * lại toàn bộ viewport ở mỗi khung hình con trỏ di chuyển, còn transform thì
+   * compositor lo, không chạm tới luồng chính.
+   */
+  const cursorX = useSpring(useMotionValue(-1000), { stiffness: 90, damping: 24 });
+  const cursorY = useSpring(useMotionValue(-1000), { stiffness: 90, damping: 24 });
   const pointerFrame = useRef<number | null>(null);
-  const latestPointer = useRef({ x: -500, y: -500 });
+  const latestPointer = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     if (reduced) return;
@@ -86,7 +92,10 @@ export function Ambient() {
         <div className="animate-aurora-c absolute bottom-0 left-1/4 h-[30rem] w-[30rem] rounded-full bg-ink-600/25 blur-[120px]" />
       </motion.div>
       {!reduced && (
-        <motion.div className="absolute inset-0 hidden lg:block" style={{ background: cursorGlow }} />
+        <motion.div
+          className="absolute top-0 left-0 -mt-[26rem] -ml-[26rem] hidden h-[52rem] w-[52rem] rounded-full bg-[radial-gradient(circle_closest-side,rgba(201,164,76,0.075),transparent_68%)] lg:block"
+          style={{ x: cursorX, y: cursorY }}
+        />
       )}
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink-950 via-ink-950/60 to-transparent" />
       <div className="vignette absolute inset-0" />
@@ -416,7 +425,7 @@ export function ScrollTop() {
 
 /* ---------- modal đọc bài ---------- */
 export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose: () => void }) {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const readProgressRaw = useMotionValue(0);
   const readProgress = useSpring(readProgressRaw, SCROLL);
@@ -429,15 +438,28 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
       readProgressRaw.set(max > 0 ? panel.scrollTop / max : 0);
     };
     updateProgress();
+    // Đưa tiêu điểm vào panel để người dùng bàn phím ở trong hộp thoại, không
+    // còn đứng ở nút đã bị lớp phủ che.
+    panel.focus({ preventScroll: true });
     panel.addEventListener("scroll", updateProgress, { passive: true });
     return () => panel.removeEventListener("scroll", updateProgress);
   }, [item, readProgressRaw]);
 
+  /*
+   * Trả lại đúng giá trị cũ chứ không đặt về chuỗi rỗng: menu di động cũng khoá
+   * cuộn theo cách này, nên nếu modal xoá trắng thuộc tính thì khoá của menu bị
+   * gỡ mất khi đóng bài đọc.
+   */
   useEffect(() => {
     if (!item) return;
+    const previous = document.body.style.overflow;
+    const opener = document.activeElement as HTMLElement | null;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previous;
+      // Trả tiêu điểm về đúng thẻ bài vừa bấm, nếu không người dùng bàn phím bị
+      // đẩy về đầu trang mỗi lần đóng bài đọc.
+      opener?.focus?.({ preventScroll: true });
     };
   }, [item]);
 
@@ -460,9 +482,6 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
           transition={{ duration: 0.3, ease: EASE_LUXE }}
           className="fixed inset-0 z-[80] flex items-end justify-center bg-ink-950/85 p-0 backdrop-blur-md sm:items-center sm:p-6"
           onClick={onClose}
-          role="dialog"
-          aria-modal="true"
-          aria-label={item.title}
         >
           <motion.div
             key="panel"
@@ -471,7 +490,11 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
             exit={{ y: 28, opacity: 0, scale: 0.99 }}
             transition={{ duration: 0.5, ease: EASE_LUXE }}
             ref={scrollRef}
-            className="relative max-h-[88vh] w-full max-w-2xl overflow-y-auto border border-mist-300 bg-paper text-ink-900 shadow-[0_50px_120px_-30px_rgba(0,0,0,0.75)]"
+            role="dialog"
+            aria-modal="true"
+            aria-label={item.title}
+            tabIndex={-1}
+            className="relative max-h-[88vh] w-full max-w-2xl overflow-y-auto border border-mist-300 bg-paper text-ink-900 shadow-[0_50px_120px_-30px_rgba(0,0,0,0.75)] outline-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Thanh tiến trình đọc bám theo phần đã cuộn trong chính modal. */}
@@ -505,7 +528,7 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
                 {item.title}
               </motion.h3>
               <motion.p variants={fadeUpSmall} className="label mt-4 text-[10.5px] text-ink-900/50">
-                {item.date} · {t("read")} {item.read}
+                {item.date} · {t("read")} {formatReadingTime(item.readMinutes, locale)}
                 {item.author ? ` · ${item.author}` : ""}
               </motion.p>
               <motion.p

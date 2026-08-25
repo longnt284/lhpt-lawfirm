@@ -1,4 +1,4 @@
-import { readingTime } from "../lib/text";
+import { readingMinutes } from "../lib/text";
 import type { DocItem, DocSeed } from "./types";
 
 const SEEDS: DocSeed[] = [
@@ -136,5 +136,5 @@ export const NEWS: DocItem[] = SEEDS.map((seed, i) => ({
   ...seed,
   id: `n${i + 1}`,
   kind: "news" as const,
-  read: readingTime(seed.content),
+  readMinutes: readingMinutes(seed.content),
 }));

@@ -126,16 +126,6 @@ html {
   overscroll-behavior-y: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .marquee-track {
-    animation-play-state: paused;
-  }
-}
-
 body {
   background-color: var(--color-ink-950);
   color: var(--color-snow);
@@ -390,13 +380,6 @@ p {
 }
 .link-underline:hover::after {
   width: 100%;
-}
-
-/* ---------- trì hoãn layout dưới fold ---------- */
-/* Browser vẫn giữ chỗ bằng intrinsic size nhưng không layout/paint toàn bộ trang ngay lần đầu. */
-main > section:nth-of-type(n + 4) {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 900px;
 }
 
 /* ---------- misc ---------- */

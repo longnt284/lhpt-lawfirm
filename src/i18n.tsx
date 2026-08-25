@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { DocItem } from "./content/types";
 import type { LegalDoc } from "./content/legalDocs";
-import type { Lawyer, Plan, PolicyItem, Service } from "./data";
+import type { Lawyer, Plan, PolicyItem, Service } from "./firm";
 
 export type Locale = "vi" | "en";
 
@@ -226,6 +226,14 @@ type TranslationKey = keyof Dictionary;
 type LocaleContextValue = {
   locale: Locale;
   isEnglish: boolean;
+  /*
+   * Tăng lên một nấc khi kho nội dung tiếng Anh tải xong. Bản dịch bài viết, tin
+   * và văn bản nằm trong một module nạp động, tức chúng tới SAU khi `locale` đã
+   * đổi. Nơi nào bọc localizeDoc/localizeLegalDoc trong useMemo thì phải kê thêm
+   * giá trị này vào deps, nếu không memo giữ nguyên kết quả tiếng Việt tính lúc
+   * bản dịch chưa về và trang không bao giờ đổi sang tiếng Anh.
+   */
+  contentVersion: number;
   toggleLocale: () => void;
   t: <K extends TranslationKey>(key: K) => Dictionary[K];
 };
@@ -260,6 +268,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     () => ({
       locale,
       isEnglish: locale === "en",
+      contentVersion: translationVersion,
       toggleLocale: () => setLocale((current) => (current === "vi" ? "en" : "vi")),
       t: (key) => DICTIONARY[locale][key],
     }),
@@ -367,7 +376,7 @@ export function localizeDoc(item: DocItem, locale: Locale): DocItem {
         content: translated.content ? [...translated.content] : item.content,
         basis: translated.basis ? [...translated.basis] : item.basis,
         date: item.date,
-        read: item.read,
+        readMinutes: item.readMinutes,
         kind: item.kind,
       }
     : item;
@@ -446,6 +455,11 @@ export const APPROACH_EN = {
   "02": { title: "Close with the record", body: "Every recommendation resolves into a legal basis, a timeline, and one clearly responsible person." },
   "03": { title: "Stay through the finish", body: "From permits and contracts to disputes, the team keeps one consistent standard across the file." },
 };
+
+/** Ghép số phút đọc với đơn vị theo ngôn ngữ đang hiển thị. */
+export function formatReadingTime(minutes: number, locale: Locale) {
+  return locale === "en" ? `${minutes} min` : `${minutes} phút`;
+}
 
 export function interpolate(value: string, vars: Record<string, string>) {
   return Object.entries(vars).reduce((result, [key, replacement]) => result.replace(`{${key}}`, replacement), value);

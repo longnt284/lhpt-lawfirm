@@ -2,7 +2,7 @@ import { MotionConfig } from "framer-motion";
 import { lazy, Suspense, useState } from "react";
 import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } from "./components/Chrome";
 import { Approach, Hero, Pricing, Services, StatsBand } from "./components/Home1";
-import type { DocItem } from "./data";
+import type { DocItem } from "./content/types";
 import { LocaleProvider } from "./i18n";
 
 const SecondaryContent = lazy(() =>
