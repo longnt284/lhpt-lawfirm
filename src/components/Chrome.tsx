@@ -9,6 +9,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useAuth } from "../auth";
 import { FIRM, NAV_LINKS } from "../firm";
 import type { DocItem } from "../content/types";
 import { formatReadingTime, useLocale } from "../i18n";
@@ -19,13 +20,16 @@ import {
   IconClose,
   IconDiscord,
   IconFacebook,
+  IconGlobe,
   IconInstagram,
   IconLinkedin,
   IconMenu,
   IconPhone,
+  IconUser,
   LogoMark,
 } from "./Icons";
 import { GoldRule, Magnetic, Reveal } from "./Motion";
+import { Comments } from "./Comments";
 
 export { Reveal, RevealGroup, RevealItem } from "./Motion";
 
@@ -179,10 +183,75 @@ export function SectionHead({
   );
 }
 
+/* ---------- công tắc ngôn ngữ ---------- */
+/*
+ * Hiện cả hai lựa chọn thay vì một nút "EN" đổi qua đổi lại.
+ *
+ * Bản cũ chỉ in mã của ngôn ngữ *sẽ chuyển sang*, nên người đọc phải suy ra
+ * mình đang ở đâu và bấm vào thì đi đâu. Dạng hai ô kề nhau bỏ hẳn bước suy
+ * luận đó: ô đang chọn được tô nền đồng thau, ô còn lại là đích đến. Vì cả hai
+ * mã luôn hiển thị nên nút cũng bắt mắt hơn hẳn một ô viền mảnh cạnh logo.
+ */
+const LOCALE_OPTIONS = [
+  { code: "vi" as const, label: "VI", full: "Tiếng Việt" },
+  { code: "en" as const, label: "EN", full: "English" },
+];
+
+export function LanguageSwitch({
+  variant = "header",
+  className = "",
+}: {
+  variant?: "header" | "panel";
+  className?: string;
+}) {
+  const { locale, toggleLocale, t } = useLocale();
+  const panel = variant === "panel";
+
+  return (
+    <div
+      role="group"
+      aria-label={t("languageLabel")}
+      className={`inline-flex items-center gap-1.5 border border-brass-500/45 bg-ink-900/70 p-1 shadow-[0_0_0_1px_rgba(201,164,76,0.08)] backdrop-blur-sm ${className}`}
+    >
+      <IconGlobe className="ml-1.5 h-3.5 w-3.5 shrink-0 text-brass-400" />
+      {LOCALE_OPTIONS.map((option) => {
+        const active = locale === option.code;
+        return (
+          <button
+            key={option.code}
+            type="button"
+            // Đang ở ngôn ngữ nào thì bấm lại chính nó không làm gì, tránh nháy
+            // lại toàn bộ cây khi người dùng bấm nhầm ô đang chọn.
+            onClick={() => {
+              if (!active) toggleLocale();
+            }}
+            aria-pressed={active}
+            aria-label={active ? option.full : `${t("languageLabel")} — ${option.full}`}
+            title={option.full}
+            className={`label relative px-2.5 py-1.5 text-[10px] transition-colors duration-300 ${
+              active ? "text-ink-950" : "text-fog-300 hover:text-brass-300"
+            } ${panel ? "px-3 py-2 text-[11px]" : ""}`}
+          >
+            {active && (
+              <motion.span
+                layoutId={panel ? "locale-pill-panel" : "locale-pill"}
+                className="absolute inset-0 -z-10 bg-brass-500"
+                transition={{ type: "spring", stiffness: 420, damping: 34 }}
+              />
+            )}
+            {panel ? `${option.label} · ${option.full}` : option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ---------- header + progress bar ---------- */
-export function Header() {
+export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
   const [open, setOpen] = useState(false);
-  const { isEnglish, toggleLocale, t } = useLocale();
+  const { isEnglish, t } = useLocale();
+  const { user } = useAuth();
   const [hovered, setHovered] = useState<string | null>(null);
   const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, SCROLL);
@@ -234,7 +303,7 @@ export function Header() {
             <span className="font-display block text-[18px] leading-tight font-bold text-snow">
               LHPT
             </span>
-            <span className="label block text-[9px] text-fog-500">Law Firm · {t("scope")}</span>
+            <span className="label block text-[9px] whitespace-nowrap text-fog-500">Law Firm · {t("scope")}</span>
           </span>
         </a>
         <nav
@@ -246,7 +315,7 @@ export function Header() {
               key={l.href}
               href={l.href}
               onPointerEnter={() => setHovered(l.href)}
-              className="relative px-3 py-2 text-[13.5px] font-medium text-fog-300 transition-colors duration-300 hover:text-snow"
+              className="relative px-3 py-2 text-[13.5px] font-medium whitespace-nowrap text-fog-300 transition-colors duration-300 hover:text-snow"
             >
               {/*
                 layoutId cho phép khối nền trượt liền mạch giữa các mục thay vì
@@ -263,20 +332,24 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={toggleLocale}
-            aria-label={t("languageLabel")}
-            title={t("languageLabel")}
-            className="label hidden border border-snow/20 px-2.5 py-2 text-[9px] text-fog-300 transition-colors hover:border-brass-500 hover:text-brass-300 sm:inline-flex"
-          >
-            {isEnglish ? "VI" : "EN"}
-          </button>
+        <div className="flex items-center gap-2.5">
+          <LanguageSwitch />
+          {onOpenAccount && (
+            <button
+              type="button"
+              onClick={onOpenAccount}
+              aria-label={user ? t("portal") : t("account")}
+              title={user ? t("portal") : t("account")}
+              className="hidden items-center gap-2 border border-snow/20 px-3 py-2 text-[12.5px] font-medium whitespace-nowrap text-fog-300 transition-colors hover:border-brass-500 hover:text-brass-300 sm:inline-flex"
+            >
+              <IconUser className="h-4 w-4" />
+              <span className="hidden lg:inline">{user ? t("portal") : t("signIn")}</span>
+            </button>
+          )}
           <Magnetic className="hidden sm:inline-flex">
             <a
               href="#lien-he"
-              className="sheen group inline-flex items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400"
+              className="sheen group inline-flex items-center gap-2 whitespace-nowrap bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400"
             >
               {t("book")}
               <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -322,20 +395,29 @@ export function Header() {
                   {t("nav")[i]}
                 </motion.a>
               ))}
-              <motion.button
-                variants={fadeUpSmall}
-                type="button"
-                onClick={toggleLocale}
-                className="label mt-3 w-fit border border-snow/20 px-3 py-2 text-[9px] text-fog-300"
-                aria-label={t("languageLabel")}
-              >
-                {isEnglish ? "VI · Tiếng Việt" : "EN · English"}
-              </motion.button>
+              <motion.div variants={fadeUpSmall} className="mt-4">
+                <p className="label mb-2 text-[9px] text-fog-500">{t("languageLabel")}</p>
+                <LanguageSwitch variant="panel" className="w-fit" />
+              </motion.div>
+              {onOpenAccount && (
+                <motion.button
+                  variants={fadeUpSmall}
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    onOpenAccount();
+                  }}
+                  className="mt-4 inline-flex w-fit items-center gap-2 border border-snow/20 px-4 py-2.5 text-[13px] font-semibold text-fog-200"
+                >
+                  <IconUser className="h-4 w-4" />
+                  {user ? t("portal") : t("signIn")}
+                </motion.button>
+              )}
               <motion.a
                 variants={fadeUpSmall}
                 href="#lien-he"
                 onClick={() => setOpen(false)}
-                className="mt-4 inline-flex w-fit items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950"
+                className="mt-3 inline-flex w-fit items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950"
               >
                 {t("book")}
                 <IconArrowUpRight className="h-4 w-4" />
@@ -349,7 +431,7 @@ export function Header() {
 }
 
 /* ---------- CTA cố định trên mobile ---------- */
-export function MobileActionBar() {
+export function MobileActionBar({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
   const { t } = useLocale();
   return (
     <div className="fixed inset-x-4 bottom-4 z-[55] flex items-center gap-2 border border-snow/15 bg-ink-950/90 p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:hidden">
@@ -360,10 +442,26 @@ export function MobileActionBar() {
       >
         <IconPhone className="h-4 w-4" />
       </a>
-      <div className="min-w-0 flex-1 px-2">
+      {onOpenAccount && (
+        <button
+          type="button"
+          onClick={onOpenAccount}
+          aria-label={t("account")}
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-snow/20 text-fog-300 transition-colors active:bg-snow/10"
+        >
+          <IconUser className="h-4 w-4" />
+        </button>
+      )}
+      {/*
+        Dòng trấn an bị ẩn dưới 420px. Thêm nút tài khoản vào thanh này làm bốn
+        phần tử chen nhau trên màn hình 390px, và khi đó chữ bị bẻ thành ba dòng
+        khiến cả thanh cao gấp đôi. Máy hẹp thì ưu tiên ba nút bấm được.
+      */}
+      <div className="hidden min-w-0 flex-1 px-2 min-[420px]:block">
         <p className="label truncate text-[8px] text-fog-500">{t("consultation")}</p>
         <p className="truncate text-[12px] font-semibold text-snow">{t("mobileResponse")}</p>
       </div>
+      <div className="flex-1 min-[420px]:hidden" />
       <a
         href="#lien-he"
         className="sheen inline-flex shrink-0 items-center gap-1.5 bg-brass-500 px-3.5 py-3 text-[12px] font-semibold text-ink-950 active:scale-[0.98]"
@@ -424,7 +522,15 @@ export function ScrollTop() {
 }
 
 /* ---------- modal đọc bài ---------- */
-export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose: () => void }) {
+export function ArticleModal({
+  item,
+  onClose,
+  onRequireAccount,
+}: {
+  item: DocItem | null;
+  onClose: () => void;
+  onRequireAccount?: () => void;
+}) {
   const { locale, t } = useLocale();
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const readProgressRaw = useMotionValue(0);
@@ -584,6 +690,19 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
                   </a>
                 </Magnetic>
               </motion.div>
+
+              {/*
+                Khối thảo luận nằm ngoài `variants={fadeUpSmall}` có chủ đích:
+                nó tự nạp dữ liệu và tự dựng lại khi bình luận mới về, không nên
+                chạy chung nhịp stagger với thân bài.
+              */}
+              {onRequireAccount && (
+                <Comments
+                  articleId={item.id}
+                  articleKind={item.kind}
+                  onRequireAccount={onRequireAccount}
+                />
+              )}
             </motion.div>
           </motion.div>
         </motion.div>

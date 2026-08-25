@@ -112,6 +112,87 @@ const DICTIONARY = {
     privacyFooter: "Chính sách bảo mật",
     cookieFooter: "Quyền riêng tư & cookie",
     conflictFooter: "Xung đột lợi ích",
+
+    /* ---- tài khoản & cổng khách hàng ---- */
+    account: "Tài khoản",
+    signIn: "Đăng nhập",
+    signUp: "Tạo tài khoản",
+    signOut: "Đăng xuất",
+    portal: "Cổng khách hàng",
+    email: "Email",
+    password: "Mật khẩu",
+    fullName: "Họ và tên",
+    company: "Doanh nghiệp",
+    phone: "Số điện thoại",
+    forgotPassword: "Quên mật khẩu?",
+    sendResetLink: "Gửi liên kết đặt lại",
+    resetSent: "Đã gửi liên kết đặt lại mật khẩu tới email của bạn.",
+    haveAccount: "Đã có tài khoản?",
+    noAccount: "Chưa có tài khoản?",
+    confirmEmailSent: "Đã gửi email xác thực. Mở hộp thư để kích hoạt tài khoản.",
+    confirmEmailNeeded: "Cần xác thực email trước khi thực hiện thao tác này.",
+    signUpIntro: "Tạo tài khoản để đặt lịch, theo dõi hồ sơ và trạng thái gói dịch vụ.",
+    signInIntro: "Đăng nhập để xem hồ sơ, lịch hẹn và gói dịch vụ của bạn.",
+    passwordHint: "Tối thiểu 8 ký tự.",
+    consentNote: "Khi tạo tài khoản, bạn đồng ý để LHPT xử lý dữ liệu cá nhân theo Chính sách bảo mật.",
+
+    myCases: "Hồ sơ của tôi",
+    myPlan: "Gói dịch vụ",
+    myAppointments: "Lịch hẹn",
+    myProfile: "Thông tin",
+    caseNumber: "Mã hồ sơ",
+    caseStatus: "Trạng thái",
+    caseProgress: "Tiến độ",
+    caseLead: "Luật sư phụ trách",
+    caseTimeline: "Diễn tiến hồ sơ",
+    nextAction: "Việc tiếp theo",
+    filterByNumber: "Lọc theo mã hồ sơ, tiêu đề…",
+    allStatuses: "Mọi trạng thái",
+    allAreas: "Mọi lĩnh vực",
+    noCases: "Chưa có hồ sơ nào. Hồ sơ được mở sau khi LHPT tiếp nhận yêu cầu của bạn.",
+    noPlan: "Chưa có gói dịch vụ nào đang hiệu lực.",
+    noAppointments: "Chưa có lịch hẹn nào.",
+    contractNumber: "Số hợp đồng",
+    planPeriod: "Thời hạn",
+    hoursLeft: "Giờ tư vấn còn lại",
+    daysLeft: "Số ngày còn lại",
+    discountApplied: "Ưu đãi đã áp dụng",
+    saveProfile: "Lưu thông tin",
+    profileSaved: "Đã lưu thông tin.",
+
+    bookTitle: "Đặt lịch tư vấn",
+    bookSubject: "Nội dung buổi làm việc",
+    bookWhen: "Thời gian mong muốn",
+    bookMode: "Hình thức",
+    modeOffice: "Tại văn phòng",
+    modeOnline: "Trực tuyến",
+    modePhone: "Qua điện thoại",
+    bookLawyer: "Luật sư mong muốn",
+    anyLawyer: "Do LHPT phân công",
+    bookDuration: "Thời lượng",
+    bookSubmit: "Gửi yêu cầu đặt lịch",
+    bookDone: "Đã gửi yêu cầu. LHPT xác nhận khung giờ trong 24 giờ làm việc.",
+    bookSignInFirst: "Đăng nhập để đặt lịch và theo dõi trạng thái buổi hẹn.",
+    cancelAppointment: "Huỷ lịch",
+    minutes: "phút",
+
+    comments: "Thảo luận",
+    commentPlaceholder: "Đặt câu hỏi hoặc góp ý về bài viết này…",
+    commentSubmit: "Gửi bình luận",
+    commentSignInFirst: "Đăng nhập để tham gia thảo luận.",
+    commentPending: "Bình luận đã gửi và đang chờ kiểm duyệt.",
+    commentEmpty: "Chưa có bình luận nào. Hãy là người đầu tiên.",
+    commentReply: "Trả lời",
+    commentReport: "Báo cáo",
+    commentReported: "Đã ghi nhận báo cáo.",
+    commentDelete: "Xoá",
+    commentEdited: "đã chỉnh sửa",
+    commentRules: "Bình luận là trao đổi tham khảo, không phải ý kiến pháp lý cho vụ việc cụ thể. Vui lòng không đăng thông tin cá nhân hoặc nội dung quảng cáo.",
+    yourPending: "Đang chờ duyệt",
+
+    backendOffline: "Tính năng tài khoản đang tạm ngưng. Liên hệ LHPT qua hotline hoặc email.",
+    close2: "Đóng",
+    loading: "Đang tải…",
   },
   en: {
     language: "Tiếng Việt",
@@ -215,6 +296,87 @@ const DICTIONARY = {
     privacyFooter: "Privacy policy",
     cookieFooter: "Privacy & cookies",
     conflictFooter: "Conflicts of interest",
+
+    /* ---- account & client portal ---- */
+    account: "Account",
+    signIn: "Sign in",
+    signUp: "Create account",
+    signOut: "Sign out",
+    portal: "Client portal",
+    email: "Email",
+    password: "Password",
+    fullName: "Full name",
+    company: "Company",
+    phone: "Phone number",
+    forgotPassword: "Forgot password?",
+    sendResetLink: "Send reset link",
+    resetSent: "A password reset link has been sent to your email.",
+    haveAccount: "Already have an account?",
+    noAccount: "No account yet?",
+    confirmEmailSent: "Confirmation email sent. Open your inbox to activate the account.",
+    confirmEmailNeeded: "Please confirm your email before performing this action.",
+    signUpIntro: "Create an account to book consultations and track your matters and plan status.",
+    signInIntro: "Sign in to view your matters, appointments and service plan.",
+    passwordHint: "At least 8 characters.",
+    consentNote: "By creating an account you agree that LHPT may process your personal data under the Privacy Policy.",
+
+    myCases: "My matters",
+    myPlan: "Service plan",
+    myAppointments: "Appointments",
+    myProfile: "Details",
+    caseNumber: "Matter number",
+    caseStatus: "Status",
+    caseProgress: "Progress",
+    caseLead: "Responsible counsel",
+    caseTimeline: "Matter timeline",
+    nextAction: "Next action",
+    filterByNumber: "Filter by matter number, title…",
+    allStatuses: "All statuses",
+    allAreas: "All practice areas",
+    noCases: "No matters yet. A matter is opened once LHPT has taken up your enquiry.",
+    noPlan: "No service plan currently in force.",
+    noAppointments: "No appointments yet.",
+    contractNumber: "Contract number",
+    planPeriod: "Term",
+    hoursLeft: "Advisory hours remaining",
+    daysLeft: "Days remaining",
+    discountApplied: "Discount applied",
+    saveProfile: "Save details",
+    profileSaved: "Details saved.",
+
+    bookTitle: "Book a consultation",
+    bookSubject: "Purpose of the meeting",
+    bookWhen: "Preferred time",
+    bookMode: "Format",
+    modeOffice: "At our office",
+    modeOnline: "Online",
+    modePhone: "By phone",
+    bookLawyer: "Preferred counsel",
+    anyLawyer: "Assigned by LHPT",
+    bookDuration: "Duration",
+    bookSubmit: "Send booking request",
+    bookDone: "Request sent. LHPT will confirm the slot within 24 business hours.",
+    bookSignInFirst: "Sign in to book a consultation and track its status.",
+    cancelAppointment: "Cancel",
+    minutes: "min",
+
+    comments: "Discussion",
+    commentPlaceholder: "Ask a question or comment on this article…",
+    commentSubmit: "Post comment",
+    commentSignInFirst: "Sign in to join the discussion.",
+    commentPending: "Comment submitted and awaiting moderation.",
+    commentEmpty: "No comments yet. Be the first.",
+    commentReply: "Reply",
+    commentReport: "Report",
+    commentReported: "Report recorded.",
+    commentDelete: "Delete",
+    commentEdited: "edited",
+    commentRules: "Comments are general discussion, not legal advice on a specific matter. Please do not post personal data or promotional content.",
+    yourPending: "Awaiting moderation",
+
+    backendOffline: "Account features are temporarily unavailable. Please contact LHPT by hotline or email.",
+    close2: "Close",
+    loading: "Loading…",
   },
 } as const;
 
@@ -465,4 +627,83 @@ export function formatReadingTime(minutes: number, locale: Locale) {
 
 export function interpolate(value: string, vars: Record<string, string>) {
   return Object.entries(vars).reduce((result, [key, replacement]) => result.replace(`{${key}}`, replacement), value);
+}
+
+/* ================= NHÃN TRẠNG THÁI CỦA BACKEND ================= */
+/*
+ * Giá trị enum trong cơ sở dữ liệu là mã tiếng Anh không dấu để truy vấn và
+ * lọc cho gọn. Nhãn hiển thị nằm ở đây, kèm tông màu để mọi nơi trong cổng
+ * khách hàng dùng chung một quy ước: xanh ngọc là đang chạy tốt, đồng là đang
+ * chờ, xám là đã khép lại.
+ */
+export type StatusTone = "jade" | "brass" | "muted";
+
+type StatusLabel = { vi: string; en: string; tone: StatusTone };
+
+const CASE_STATUS_LABELS: Record<string, StatusLabel> = {
+  new: { vi: "Mới tiếp nhận", en: "New", tone: "brass" },
+  intake: { vi: "Đang đánh giá sơ bộ", en: "Under initial review", tone: "brass" },
+  quoted: { vi: "Đã báo phí", en: "Fee quoted", tone: "brass" },
+  active: { vi: "Đang xử lý", en: "In progress", tone: "jade" },
+  awaiting_client: { vi: "Chờ khách bổ sung", en: "Awaiting client", tone: "brass" },
+  in_litigation: { vi: "Đang tố tụng", en: "In litigation", tone: "jade" },
+  on_hold: { vi: "Tạm dừng", en: "On hold", tone: "muted" },
+  closed: { vi: "Đã đóng", en: "Closed", tone: "muted" },
+  cancelled: { vi: "Đã huỷ", en: "Cancelled", tone: "muted" },
+};
+
+const APPOINTMENT_STATUS_LABELS: Record<string, StatusLabel> = {
+  requested: { vi: "Chờ xác nhận", en: "Awaiting confirmation", tone: "brass" },
+  confirmed: { vi: "Đã xác nhận", en: "Confirmed", tone: "jade" },
+  rescheduled: { vi: "Đã dời lịch", en: "Rescheduled", tone: "brass" },
+  completed: { vi: "Đã diễn ra", en: "Completed", tone: "muted" },
+  cancelled: { vi: "Đã huỷ", en: "Cancelled", tone: "muted" },
+  no_show: { vi: "Không tới", en: "No show", tone: "muted" },
+};
+
+const SUBSCRIPTION_STATUS_LABELS: Record<string, StatusLabel> = {
+  pending: { vi: "Chờ kích hoạt", en: "Pending activation", tone: "brass" },
+  active: { vi: "Đang hiệu lực", en: "Active", tone: "jade" },
+  expiring: { vi: "Sắp hết hạn", en: "Expiring soon", tone: "brass" },
+  expired: { vi: "Đã hết hạn", en: "Expired", tone: "muted" },
+  cancelled: { vi: "Đã chấm dứt", en: "Terminated", tone: "muted" },
+};
+
+const FALLBACK_STATUS: StatusLabel = { vi: "Không xác định", en: "Unknown", tone: "muted" };
+
+function pick(map: Record<string, StatusLabel>, value: string | null | undefined, locale: Locale) {
+  const entry = (value && map[value]) || FALLBACK_STATUS;
+  return { label: entry[locale], tone: entry.tone };
+}
+
+export const caseStatusLabel = (value: string | null | undefined, locale: Locale) =>
+  pick(CASE_STATUS_LABELS, value, locale);
+export const appointmentStatusLabel = (value: string | null | undefined, locale: Locale) =>
+  pick(APPOINTMENT_STATUS_LABELS, value, locale);
+export const subscriptionStatusLabel = (value: string | null | undefined, locale: Locale) =>
+  pick(SUBSCRIPTION_STATUS_LABELS, value, locale);
+
+export const CASE_STATUS_KEYS = Object.keys(CASE_STATUS_LABELS);
+
+/** Ngày giờ theo múi giờ Việt Nam, không phụ thuộc máy người xem. */
+export function formatDateTime(iso: string | null | undefined, locale: Locale) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString(locale === "en" ? "en-GB" : "vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Ho_Chi_Minh",
+  });
+}
+
+export function formatDate(iso: string | null | undefined, locale: Locale) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString(locale === "en" ? "en-GB" : "vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    timeZone: "Asia/Ho_Chi_Minh",
+  });
 }

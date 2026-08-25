@@ -15,6 +15,13 @@ export default defineConfig({
         manualChunks: {
           react: ["react", "react-dom"],
           motion: ["framer-motion"],
+          /*
+           * Supabase chỉ được nạp động (xem sb() trong src/lib/supabase.ts) nên
+           * nó vẫn là chunk tải theo yêu cầu; khai báo ở đây chỉ để đặt tên cho
+           * file, giúp nhìn ra ngay trong bảng phân tích gói khi nào tầng
+           * backend bị kéo vào đường tải đầu.
+           */
+          supabase: ["@supabase/supabase-js"],
         },
       },
     },

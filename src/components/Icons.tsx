@@ -212,3 +212,27 @@ export const IconFacebook = ({ className }: P) => (
     <path d="M13.5 20v-7h2.4l.4-2.8h-2.8V8.4c0-.8.3-1.4 1.5-1.4h1.6V4.5c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2H8.3V13h2.4v7" />
   </svg>
 );
+
+export const IconGlobe = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeLinecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="8.4" />
+    <path d="M3.6 12h16.8" />
+    {/* Hai cung kinh tuyến gợi hình cầu; đủ để đọc ra "ngôn ngữ" ở cỡ 16px. */}
+    <path d="M12 3.6c2.3 2.4 3.5 5.3 3.5 8.4s-1.2 6-3.5 8.4c-2.3-2.4-3.5-5.3-3.5-8.4S9.7 6 12 3.6Z" />
+  </svg>
+);
+
+export const IconUser = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeLinecap="round" aria-hidden="true">
+    <circle cx="12" cy="8.4" r="3.6" />
+    <path d="M4.8 20a7.2 7.2 0 0 1 14.4 0" />
+  </svg>
+);
+
+export const IconCalendar = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <rect x="3.6" y="5.4" width="16.8" height="15" />
+    <path d="M3.6 10h16.8" />
+    <path d="M8.4 3.6v3.6M15.6 3.6v3.6" />
+  </svg>
+);
