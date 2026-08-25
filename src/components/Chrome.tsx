@@ -13,7 +13,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { FIRM, NAV_LINKS, type DocItem } from "../data";
 import { EASE_LUXE, SCROLL, SOFT, VIEWPORT, fadeUp, fadeUpSmall, stagger } from "../motion";
 import { useSpotlight } from "../hooks";
-import { IconArrowUpRight, IconClose, IconMenu, LogoMark } from "./Icons";
+import { IconArrowUpRight, IconClose, IconMenu, IconPhone, LogoMark } from "./Icons";
 import { GoldRule, Magnetic, Reveal } from "./Motion";
 
 export { Reveal, RevealGroup, RevealItem } from "./Motion";
@@ -296,6 +296,32 @@ export function Header() {
   );
 }
 
+/* ---------- CTA cố định trên mobile ---------- */
+export function MobileActionBar() {
+  return (
+    <div className="fixed inset-x-4 bottom-4 z-[55] flex items-center gap-2 border border-snow/15 bg-ink-950/90 p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:hidden">
+      <a
+        href={FIRM.hotlineHref}
+        aria-label={`Gọi ${FIRM.hotline}`}
+        className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-jade-500/40 text-jade-300 transition-colors active:bg-jade-500/15"
+      >
+        <IconPhone className="h-4 w-4" />
+      </a>
+      <div className="min-w-0 flex-1 px-2">
+        <p className="label truncate text-[8px] text-fog-500">Tư vấn pháp lý</p>
+        <p className="truncate text-[12px] font-semibold text-snow">Phản hồi trong 24 giờ</p>
+      </div>
+      <a
+        href="#lien-he"
+        className="sheen inline-flex shrink-0 items-center gap-1.5 bg-brass-500 px-3.5 py-3 text-[12px] font-semibold text-ink-950 active:scale-[0.98]"
+      >
+        Đặt lịch
+        <IconArrowUpRight className="h-3.5 w-3.5" />
+      </a>
+    </div>
+  );
+}
+
 /* ---------- nút về đầu trang kèm vòng tiến trình ---------- */
 export function ScrollTop() {
   const { scrollY, scrollYProgress } = useScroll();
@@ -346,8 +372,20 @@ export function ScrollTop() {
 /* ---------- modal đọc bài ---------- */
 export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose: () => void }) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const { scrollYProgress } = useScroll({ container: scrollRef });
-  const readProgress = useSpring(scrollYProgress, SCROLL);
+  const readProgressRaw = useMotionValue(0);
+  const readProgress = useSpring(readProgressRaw, SCROLL);
+
+  useEffect(() => {
+    const panel = scrollRef.current;
+    if (!item || !panel) return;
+    const updateProgress = () => {
+      const max = panel.scrollHeight - panel.clientHeight;
+      readProgressRaw.set(max > 0 ? panel.scrollTop / max : 0);
+    };
+    updateProgress();
+    panel.addEventListener("scroll", updateProgress, { passive: true });
+    return () => panel.removeEventListener("scroll", updateProgress);
+  }, [item, readProgressRaw]);
 
   useEffect(() => {
     if (!item) return;

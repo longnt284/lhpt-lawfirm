@@ -1,8 +1,8 @@
 import { MotionConfig } from "framer-motion";
 import { useState } from "react";
-import { Ambient, ArticleModal, Footer, Header, ScrollTop } from "./components/Chrome";
+import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } from "./components/Chrome";
 import { Curtain } from "./components/Curtain";
-import { Hero, Pricing, Services, StatsBand } from "./components/Home1";
+import { Approach, Hero, Pricing, Services, StatsBand } from "./components/Home1";
 import { Articles, Contact, Documents, News, Policies, Team } from "./components/Home2";
 import type { DocItem } from "./data";
 
@@ -24,6 +24,7 @@ export default function App() {
           <Hero />
           <StatsBand />
           <Services />
+          <Approach />
           <Pricing />
           <News onOpen={setDoc} />
           <Articles onOpen={setDoc} />
@@ -33,6 +34,7 @@ export default function App() {
           <Contact />
         </main>
         <Footer />
+        <MobileActionBar />
         <ScrollTop />
         <ArticleModal item={doc} onClose={() => setDoc(null)} />
       </div>

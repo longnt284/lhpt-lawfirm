@@ -1,5 +1,4 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
 import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../data";
 import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
 import {
@@ -45,11 +44,7 @@ const SERVICE_ICONS = {
 /* ================= HERO ================= */
 export function Hero() {
   const reduced = useReducedMotion();
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
+  const { scrollYProgress } = useScroll();
   /* Chữ và bảng số liệu trôi lệch tốc độ khi cuộn, tạo lớp gần — lớp xa. */
   const textY = useTransform(scrollYProgress, [0, 1], [0, -70]);
   const cardY = useTransform(scrollYProgress, [0, 1], [0, -140]);
@@ -62,7 +57,6 @@ export function Hero() {
 
   return (
     <section
-      ref={sectionRef}
       id="top"
       className="relative z-10 pt-[128px] pb-0 lg:pt-[150px]"
     >
@@ -469,6 +463,84 @@ export function Services() {
                 </motion.article>
               );
             })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================= PHƯƠNG PHÁP LÀM VIỆC ================= */
+const APPROACH = [
+  {
+    num: "01",
+    title: "Nhìn từ công trình",
+    body: "Chúng tôi bắt đầu từ cách doanh nghiệp đang vận hành, không bắt đầu bằng một mẫu tư vấn có sẵn.",
+    icon: IconCrane,
+  },
+  {
+    num: "02",
+    title: "Chốt bằng hồ sơ",
+    body: "Mọi khuyến nghị đều quy về căn cứ, mốc thời gian và một người chịu trách nhiệm rõ ràng.",
+    icon: IconScale,
+  },
+  {
+    num: "03",
+    title: "Đi cùng đến cùng",
+    body: "Từ giấy phép, hợp đồng đến tranh chấp, đội ngũ giữ nguyên một chuẩn mực xuyên suốt hồ sơ.",
+    icon: IconShield,
+  },
+];
+
+export function Approach() {
+  return (
+    <section className="relative z-10 overflow-hidden border-y border-snow/10 bg-ink-900/55 py-24">
+      <div className="pointer-events-none absolute -top-28 right-[-8rem] h-[26rem] w-[26rem] rounded-full bg-brass-500/10 blur-[110px]" />
+      <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="grid gap-14 lg:grid-cols-12 lg:items-end lg:gap-10">
+          <div className="lg:col-span-5">
+            <SectionHead
+              kicker="Cách chúng tôi làm việc"
+              title={
+                <>
+                  Rõ từ đầu.
+                  <br />
+                  <span className="gilded italic">Chắc đến cuối.</span>
+                </>
+              }
+              sub="Một quy trình tốt không làm hồ sơ trở nên nặng nề hơn. Nó khiến quyết định lớn trở nên dễ nhìn thấy và dễ hành động."
+            />
+            <div className="mt-9 flex items-center gap-4 border-l-2 border-brass-500 pl-5">
+              <span className="font-display text-[2.8rem] leading-none font-bold text-brass-300">01</span>
+              <p className="max-w-xs text-[13px] leading-[1.7] text-fog-400">
+                đầu mối tiếp nhận, một người phụ trách, một lộ trình có thể kiểm tra.
+              </p>
+            </div>
+          </div>
+          <div className="lg:col-span-7">
+            <div className="grid border border-snow/10 sm:grid-cols-3">
+              {APPROACH.map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <motion.article
+                    key={item.num}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={VIEWPORT}
+                    transition={{ duration: 0.65, ease: EASE_LUXE, delay: idx * 0.08 }}
+                    className="group relative border-b border-snow/10 bg-ink-850/75 p-6 transition-colors duration-500 last:border-b-0 hover:bg-ink-800/80 sm:border-r sm:border-b-0 sm:last:border-r-0"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <Icon className="h-6 w-6 text-brass-400 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
+                      <span className="code text-[11px] text-fog-500">{item.num}</span>
+                    </div>
+                    <h3 className="font-display mt-12 text-[1.15rem] font-semibold text-snow">{item.title}</h3>
+                    <p className="mt-3 text-[13px] leading-[1.7] text-fog-400">{item.body}</p>
+                    <span className="absolute right-6 bottom-5 left-6 h-px origin-left scale-x-0 bg-gradient-to-r from-brass-500 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
+                  </motion.article>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
