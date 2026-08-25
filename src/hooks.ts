@@ -110,21 +110,18 @@ export function useScrambleCycle(words: string[], interval = 3200) {
   return text;
 }
 
-export function useScrollProgress() {
-  const [progress, setProgress] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
+/**
+ * Hoãn giá trị lại một nhịp ngắn. Ô tìm kiếm bài viết và văn bản lọc trên toàn
+ * bộ kho nội dung rồi chạy layout animation cho từng thẻ; nếu lọc ngay theo mỗi
+ * phím gõ thì việc đó lặp lại 5-6 lần mỗi giây và ô nhập bị khựng.
+ */
+export function useDebounced<T>(value: T, delay = 180): T {
+  const [debounced, setDebounced] = useState(value);
   useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement;
-      const max = h.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? window.scrollY / max : 0);
-      setScrolled(window.scrollY > 24);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return { progress, scrolled };
+    const id = window.setTimeout(() => setDebounced(value), delay);
+    return () => window.clearTimeout(id);
+  }, [value, delay]);
+  return debounced;
 }
 
 /**

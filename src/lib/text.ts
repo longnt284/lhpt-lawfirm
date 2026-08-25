@@ -18,7 +18,11 @@ export function countSyllables(parts: string[]): number {
   }, 0);
 }
 
-export function readingTime(parts: string[]): string {
-  const minutes = Math.max(1, Math.round(countSyllables(parts) / SYLLABLES_PER_MINUTE));
-  return `${minutes} phút`;
+/**
+ * Trả về số phút, không kèm đơn vị. Đơn vị do lớp hiển thị ghép theo ngôn ngữ
+ * đang chọn (xem formatReadingTime trong src/i18n.tsx) — nếu nhúng sẵn "phút" ở
+ * đây thì bản tiếng Anh sẽ hiện "Read 5 phút".
+ */
+export function readingMinutes(parts: string[]): number {
+  return Math.max(1, Math.round(countSyllables(parts) / SYLLABLES_PER_MINUTE));
 }

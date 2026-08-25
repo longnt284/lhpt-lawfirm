@@ -5,7 +5,7 @@
  * src/content/legalDocs.ts. Thời gian đọc suy ra từ độ dài `content`.
  */
 
-import { readingTime } from "../lib/text";
+import { readingMinutes } from "../lib/text";
 import type { DocItem, DocSeed } from "./types";
 
 export const CAT_CONSTRUCTION = "Xây dựng · BĐS";
@@ -1712,5 +1712,5 @@ export const ARTICLES: DocItem[] = SEEDS.map((seed, i) => ({
   ...seed,
   id: `a${i + 1}`,
   kind: "article" as const,
-  read: readingTime(seed.content),
+  readMinutes: readingMinutes(seed.content),
 }));

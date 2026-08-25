@@ -14,7 +14,7 @@ import {
   type DocItem,
   type PolicyItem,
 } from "../data";
-import { useSpotlight } from "../hooks";
+import { useDebounced, useSpotlight } from "../hooks";
 import {
   interpolate,
   localizeCategory,
@@ -25,6 +25,7 @@ import {
   localizeService,
   localizeStatus,
   localizeType,
+  formatReadingTime,
   useLocale,
 } from "../i18n";
 import { EASE_LUXE, SOFT, VIEWPORT, cardIn, fadeUpSmall, stagger } from "../motion";
@@ -116,7 +117,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
               </p>
               <div className="relative mt-auto flex flex-wrap items-center justify-between gap-3 pt-8">
                 <span className="label text-[10px] text-fog-500">
-                  {featured.date} · {t("read")} {featured.read}
+                  {featured.date} · {t("read")} {formatReadingTime(featured.readMinutes, locale)}
                 </span>
                 <span className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-brass-400 transition-all duration-300 group-hover:gap-3.5 group-hover:text-brass-300">
                   {isEnglish ? "Read news" : "Đọc tin"}
@@ -143,7 +144,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
               >
                 <div>
                   <p className="label text-[9.5px] text-brass-700">
-                    {n.date} · {localizeCategory(n.category, locale)} · {n.read}
+                    {n.date} · {localizeCategory(n.category, locale)} · {formatReadingTime(n.readMinutes, locale)}
                   </p>
                   <h4 className="mt-2 text-[14.5px] leading-[1.55] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
                     {n.title}
@@ -163,30 +164,48 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
 const PAGE_SIZE = 12;
 
 export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
-  const { locale, isEnglish, t } = useLocale();
+  const { locale, contentVersion, isEnglish, t } = useLocale();
   const [cat, setCat] = useState<string>("Tất cả");
   const [q, setQ] = useState("");
+  const query = useDebounced(q);
   const [shown, setShown] = useState(PAGE_SIZE);
   const onMove = useSpotlight<HTMLButtonElement>();
 
+  /*
+   * Dịch cả kho một lần cho mỗi ngôn ngữ, kèm sẵn chuỗi để dò tìm. Bản trước gọi
+   * localizeDoc hai lượt cho từng bài (một lần trong filter, một lần trong map)
+   * ngay trên mỗi phím gõ — tức 200 lần dựng lại object cho mỗi ký tự.
+   */
+  const corpus = useMemo(
+    () =>
+      ARTICLES.map((article) => {
+        const localized = localizeDoc(article, locale);
+        return {
+          article,
+          localized,
+          haystack:
+            `${article.title} ${article.excerpt} ${article.basis.join(" ")} ${localized.title} ${localized.excerpt}`.toLowerCase(),
+        };
+      }),
+    // contentVersion: bản dịch tiếng Anh tới sau, phải tính lại kho khi nó về.
+    [locale, contentVersion]
+  );
+
   const list = useMemo(() => {
-    const needle = q.trim().toLowerCase();
-    return ARTICLES.filter((a) => {
-      const localized = localizeDoc(a, locale);
-      return (
-        (cat === "Tất cả" || a.category === cat) &&
-        (needle === "" ||
-          `${a.title} ${a.excerpt} ${a.basis.join(" ")} ${localized.title} ${localized.excerpt}`
-            .toLowerCase()
-            .includes(needle))
-      );
-    }).map((a) => localizeDoc(a, locale));
-  }, [cat, q, locale]);
+    const needle = query.trim().toLowerCase();
+    return corpus
+      .filter(
+        (entry) =>
+          (cat === "Tất cả" || entry.article.category === cat) &&
+          (needle === "" || entry.haystack.includes(needle))
+      )
+      .map((entry) => entry.localized);
+  }, [corpus, cat, query]);
 
   // Đổi bộ lọc thì quay lại trang đầu, tránh trạng thái "đã mở rộng" dính lại.
   useEffect(() => {
     setShown(PAGE_SIZE);
-  }, [cat, q, locale]);
+  }, [cat, query, locale]);
 
   const visible = list.slice(0, shown);
 
@@ -262,7 +281,7 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
             </p>
           </motion.div>
         ) : (
-          <motion.div layout className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {visible.map((a, i) => (
                 <motion.button
@@ -279,7 +298,9 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                 >
                   <div className="flex items-center justify-between gap-3">
                     <span className="label text-[9px] text-brass-700">{a.category}</span>
-                    <span className="text-[10.5px] text-ink-900/45">{a.read}</span>
+                    <span className="text-[10.5px] text-ink-900/45">
+                      {formatReadingTime(a.readMinutes, locale)}
+                    </span>
                   </div>
                   <h3 className="font-display mt-4 text-[15.5px] leading-[1.4] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
                     {a.title}
@@ -296,7 +317,7 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                 </motion.button>
               ))}
             </AnimatePresence>
-          </motion.div>
+          </div>
         )}
 
         {shown < list.length && (
@@ -342,30 +363,49 @@ const STATUS_DOT: Record<string, string> = {
 };
 
 export function Documents() {
-  const { locale, isEnglish, t } = useLocale();
+  const { locale, contentVersion, isEnglish, t } = useLocale();
   const [q, setQ] = useState("");
+  const query = useDebounced(q);
   const [field, setField] = useState("Tất cả");
   const [openId, setOpenId] = useState<string | null>(null);
   const [shown, setShown] = useState(DOC_PAGE_SIZE);
 
+  const corpus = useMemo(
+    () =>
+      LEGAL_DOCS.map((doc) => {
+        const localized = localizeLegalDoc(doc, locale);
+        return {
+          doc,
+          localized,
+          haystack:
+            `${doc.code} ${doc.name} ${localized.name} ${doc.summary} ${localized.summary}`.toLowerCase(),
+        };
+      }),
+    // contentVersion: xem chú thích ở Articles.
+    [locale, contentVersion]
+  );
+
   const list = useMemo(() => {
-    const needle = q.trim().toLowerCase();
-    return LEGAL_DOCS.filter((d) => {
-      const localized = localizeLegalDoc(d, locale);
-      return (
-        (field === "Tất cả" || d.field === field) &&
-        `${d.code} ${d.name} ${localized.name} ${d.summary} ${localized.summary}`.toLowerCase().includes(needle)
-      );
-    }).map((d) => localizeLegalDoc(d, locale));
-  }, [q, field, locale]);
+    const needle = query.trim().toLowerCase();
+    return corpus
+      .filter(
+        (entry) =>
+          (field === "Tất cả" || entry.doc.field === field) &&
+          (needle === "" || entry.haystack.includes(needle))
+      )
+      .map((entry) => entry.localized);
+  }, [corpus, field, query]);
 
   useEffect(() => {
     setShown(DOC_PAGE_SIZE);
     setOpenId(null);
-  }, [q, field, locale]);
+  }, [query, field, locale]);
 
   const visible = list.slice(0, shown);
-  const expiredCount = LEGAL_DOCS.filter((d) => d.status === "Hết hiệu lực").length;
+  const expiredCount = useMemo(
+    () => LEGAL_DOCS.filter((d) => d.status === "Hết hiệu lực").length,
+    []
+  );
 
   return (
     <section id="van-ban" className="relative z-10 scroll-mt-24 py-24">
@@ -435,7 +475,7 @@ export function Documents() {
         </Reveal>
 
         <Reveal delay={180}>
-          <motion.div layout className="mt-8 border border-snow/10 bg-ink-900/60">
+          <div className="mt-8 border border-snow/10 bg-ink-900/60">
             <div className="label hidden grid-cols-12 gap-3 border-b border-snow/10 px-6 py-3.5 text-[9.5px] text-fog-500 md:grid">
               <span className="col-span-2">{isEnglish ? "Number" : "Số hiệu"}</span>
               <span className="col-span-4">{isEnglish ? "Instrument" : "Văn bản"}</span>
@@ -559,7 +599,7 @@ export function Documents() {
                 );
               })}
             </AnimatePresence>
-          </motion.div>
+          </div>
         </Reveal>
 
         {shown < list.length && (
