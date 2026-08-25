@@ -11,9 +11,20 @@ import {
 } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { FIRM, NAV_LINKS, type DocItem } from "../data";
+import { localizeDoc, useLocale } from "../i18n";
 import { EASE_LUXE, SCROLL, SOFT, VIEWPORT, fadeUp, fadeUpSmall, stagger } from "../motion";
 import { useSpotlight } from "../hooks";
-import { IconArrowUpRight, IconClose, IconMenu, IconPhone, LogoMark } from "./Icons";
+import {
+  IconArrowUpRight,
+  IconClose,
+  IconDiscord,
+  IconFacebook,
+  IconInstagram,
+  IconLinkedin,
+  IconMenu,
+  IconPhone,
+  LogoMark,
+} from "./Icons";
 import { GoldRule, Magnetic, Reveal } from "./Motion";
 
 export { Reveal, RevealGroup, RevealItem } from "./Motion";
@@ -35,17 +46,30 @@ export function Ambient() {
   const cursorX = useSpring(useMotionValue(-500), { stiffness: 90, damping: 24 });
   const cursorY = useSpring(useMotionValue(-500), { stiffness: 90, damping: 24 });
   const cursorGlow = useMotionTemplate`radial-gradient(26rem circle at ${cursorX}px ${cursorY}px, rgba(201,164,76,0.075), transparent 68%)`;
+  const pointerFrame = useRef<number | null>(null);
+  const latestPointer = useRef({ x: -500, y: -500 });
 
   useEffect(() => {
     if (reduced) return;
     const onMove = (e: PointerEvent) => {
-      mx.set((e.clientX / window.innerWidth - 0.5) * 40);
-      my.set((e.clientY / window.innerHeight - 0.5) * 30);
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      if (e.pointerType === "touch") return;
+      latestPointer.current = { x: e.clientX, y: e.clientY };
+      if (pointerFrame.current !== null) return;
+      pointerFrame.current = window.requestAnimationFrame(() => {
+        pointerFrame.current = null;
+        const { x, y } = latestPointer.current;
+        mx.set((x / window.innerWidth - 0.5) * 40);
+        my.set((y / window.innerHeight - 0.5) * 30);
+        cursorX.set(x);
+        cursorY.set(y);
+      });
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (pointerFrame.current !== null) window.cancelAnimationFrame(pointerFrame.current);
+      pointerFrame.current = null;
+    };
   }, [reduced, mx, my, cursorX, cursorY]);
 
   return (
@@ -149,6 +173,7 @@ export function SectionHead({
 /* ---------- header + progress bar ---------- */
 export function Header() {
   const [open, setOpen] = useState(false);
+  const { isEnglish, toggleLocale, t } = useLocale();
   const [hovered, setHovered] = useState<string | null>(null);
   const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, SCROLL);
@@ -188,7 +213,7 @@ export function Header() {
         transition={{ duration: 0.5, ease: EASE_LUXE }}
         className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8"
       >
-        <a href="#top" className="group flex items-center gap-3">
+            <a href="#top" className="group flex items-center gap-3" aria-label="LHPT Law Firm">
           <motion.span
             whileHover={{ rotate: -6, scale: 1.06 }}
             transition={{ type: "spring", ...SOFT }}
@@ -200,14 +225,14 @@ export function Header() {
             <span className="font-display block text-[18px] leading-tight font-bold text-snow">
               LHPT
             </span>
-            <span className="label block text-[9px] text-fog-500">Law Firm · TP.HCM</span>
+            <span className="label block text-[9px] text-fog-500">Law Firm · {t("scope")}</span>
           </span>
         </a>
         <nav
           className="hidden items-center gap-1 lg:flex"
           onPointerLeave={() => setHovered(null)}
         >
-          {NAV_LINKS.map((l) => (
+          {NAV_LINKS.map((l, i) => (
             <a
               key={l.href}
               href={l.href}
@@ -225,24 +250,33 @@ export function Header() {
                   transition={{ type: "spring", stiffness: 380, damping: 34 }}
                 />
               )}
-              {l.label}
+              {t("nav")[i]}
             </a>
           ))}
         </nav>
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleLocale}
+            aria-label={t("languageLabel")}
+            title={t("languageLabel")}
+            className="label hidden border border-snow/20 px-2.5 py-2 text-[9px] text-fog-300 transition-colors hover:border-brass-500 hover:text-brass-300 sm:inline-flex"
+          >
+            {isEnglish ? "VI" : "EN"}
+          </button>
           <Magnetic className="hidden sm:inline-flex">
             <a
               href="#lien-he"
               className="sheen group inline-flex items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400"
             >
-              Đặt lịch tư vấn
+              {t("book")}
               <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </Magnetic>
           <button
             onClick={() => setOpen((v) => !v)}
             className="text-snow lg:hidden"
-            aria-label={open ? "Đóng menu" : "Mở menu"}
+            aria-label={open ? (isEnglish ? "Close menu" : "Đóng menu") : isEnglish ? "Open menu" : "Mở menu"}
             aria-expanded={open}
           >
             {open ? <IconClose className="h-6 w-6" /> : <IconMenu className="h-6 w-6" />}
@@ -276,16 +310,25 @@ export function Header() {
                   <span className="label text-[10px] text-brass-500/70">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  {l.label}
+                  {t("nav")[i]}
                 </motion.a>
               ))}
+              <motion.button
+                variants={fadeUpSmall}
+                type="button"
+                onClick={toggleLocale}
+                className="label mt-3 w-fit border border-snow/20 px-3 py-2 text-[9px] text-fog-300"
+                aria-label={t("languageLabel")}
+              >
+                {isEnglish ? "VI · Tiếng Việt" : "EN · English"}
+              </motion.button>
               <motion.a
                 variants={fadeUpSmall}
                 href="#lien-he"
                 onClick={() => setOpen(false)}
                 className="mt-4 inline-flex w-fit items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950"
               >
-                Đặt lịch tư vấn
+                {t("book")}
                 <IconArrowUpRight className="h-4 w-4" />
               </motion.a>
             </motion.nav>
@@ -298,24 +341,25 @@ export function Header() {
 
 /* ---------- CTA cố định trên mobile ---------- */
 export function MobileActionBar() {
+  const { t } = useLocale();
   return (
     <div className="fixed inset-x-4 bottom-4 z-[55] flex items-center gap-2 border border-snow/15 bg-ink-950/90 p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl sm:hidden">
       <a
         href={FIRM.hotlineHref}
-        aria-label={`Gọi ${FIRM.hotline}`}
+        aria-label={`${t("hotline")}: ${FIRM.hotline}`}
         className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-jade-500/40 text-jade-300 transition-colors active:bg-jade-500/15"
       >
         <IconPhone className="h-4 w-4" />
       </a>
       <div className="min-w-0 flex-1 px-2">
-        <p className="label truncate text-[8px] text-fog-500">Tư vấn pháp lý</p>
-        <p className="truncate text-[12px] font-semibold text-snow">Phản hồi trong 24 giờ</p>
+        <p className="label truncate text-[8px] text-fog-500">{t("consultation")}</p>
+        <p className="truncate text-[12px] font-semibold text-snow">{t("mobileResponse")}</p>
       </div>
       <a
         href="#lien-he"
         className="sheen inline-flex shrink-0 items-center gap-1.5 bg-brass-500 px-3.5 py-3 text-[12px] font-semibold text-ink-950 active:scale-[0.98]"
       >
-        Đặt lịch
+        {t("book")}
         <IconArrowUpRight className="h-3.5 w-3.5" />
       </a>
     </div>
@@ -324,6 +368,7 @@ export function MobileActionBar() {
 
 /* ---------- nút về đầu trang kèm vòng tiến trình ---------- */
 export function ScrollTop() {
+  const { t } = useLocale();
   const { scrollY, scrollYProgress } = useScroll();
   const [show, setShow] = useState(false);
   const ring = useSpring(scrollYProgress, SCROLL);
@@ -341,7 +386,7 @@ export function ScrollTop() {
           transition={{ duration: 0.4, ease: EASE_LUXE }}
           whileHover={{ y: -3 }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          aria-label="Về đầu trang"
+          aria-label={t("backTop")}
           className="group fixed right-5 bottom-5 z-[60] hidden h-12 w-12 items-center justify-center border border-snow/15 bg-ink-900/85 backdrop-blur-md sm:flex"
         >
           <svg viewBox="0 0 44 44" className="absolute inset-0 h-full w-full -rotate-90">
@@ -371,6 +416,7 @@ export function ScrollTop() {
 
 /* ---------- modal đọc bài ---------- */
 export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose: () => void }) {
+  const { t } = useLocale();
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const readProgressRaw = useMotionValue(0);
   const readProgress = useSpring(readProgressRaw, SCROLL);
@@ -436,13 +482,13 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
             <button
               onClick={onClose}
               className="absolute top-4 right-4 z-30 border border-ink-900/15 bg-mist-50 p-2 text-ink-900 transition-colors hover:border-brass-500 hover:text-brass-600"
-              aria-label="Đóng"
+              aria-label={t("close")}
             >
               <IconClose className="h-4 w-4" />
             </button>
             <div className="border-b border-ink-900/10 bg-mist-100 px-7 py-4 sm:px-10">
               <div className="label text-[10px] text-ink-900/55">
-                {item.kind === "news" ? "Tin pháp lý" : "Bài viết chuyên sâu"} ·{" "}
+                {item.kind === "news" ? t("news") : t("deepArticle")} ·{" "}
                 <span className="text-brass-700">{item.category}</span>
               </div>
             </div>
@@ -459,7 +505,7 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
                 {item.title}
               </motion.h3>
               <motion.p variants={fadeUpSmall} className="label mt-4 text-[10.5px] text-ink-900/50">
-                {item.date} · Đọc {item.read}
+                {item.date} · {t("read")} {item.read}
                 {item.author ? ` · ${item.author}` : ""}
               </motion.p>
               <motion.p
@@ -482,7 +528,7 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
 
               {item.basis.length > 0 && (
                 <motion.div variants={fadeUpSmall} className="mt-9 border-t border-ink-900/10 pt-6">
-                  <p className="label text-[10px] text-ink-900/50">Cơ sở pháp lý</p>
+                  <p className="label text-[10px] text-ink-900/50">{t("legalBasis")}</p>
                   <ul className="mt-3 space-y-1.5">
                     {item.basis.map((b) => (
                       <li
@@ -501,8 +547,8 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
                 variants={fadeUpSmall}
                 className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-ink-900/10 pt-6"
               >
-                <p className="label max-w-xs text-[9.5px] text-ink-900/45">
-                  Thông tin tham khảo, không thay thế ý kiến pháp lý
+                  <p className="label max-w-xs text-[9.5px] text-ink-900/45">
+                  {t("legalInfo")}
                 </p>
                 <Magnetic>
                   <a
@@ -510,7 +556,7 @@ export function ArticleModal({ item, onClose }: { item: DocItem | null; onClose:
                     onClick={onClose}
                     className="sheen group inline-flex items-center gap-2 bg-ink-900 px-4 py-2.5 text-[13px] font-semibold text-snow transition-colors hover:bg-brass-600"
                   >
-                    Hỏi luật sư
+                    {t("askLawyer")}
                     <IconArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </a>
                 </Magnetic>
@@ -573,8 +619,25 @@ function FooterColumn({
   );
 }
 
+const SOCIAL_CHANNELS = [
+  { label: "Discord", icon: IconDiscord },
+  { label: "Instagram", icon: IconInstagram },
+  { label: "LinkedIn", icon: IconLinkedin },
+  { label: "Facebook", icon: IconFacebook },
+];
+
 export function Footer() {
+  const { isEnglish, t } = useLocale();
   const onMove = useSpotlight<HTMLDivElement>();
+  const footerServices = isEnglish
+    ? ["Construction · Real Estate", "Litigation · Disputes", "Solar · Energy", "Corporate · Compliance", "Data Protection"]
+    : FOOTER_SERVICES;
+  const footerSystem: [string, string][] = isEnglish
+    ? [["Legal insights", "#bai-viet"], ["Featured news", "#tin-tuc"], ["Legal library", "#van-ban"], ["Our lawyers", "#doi-ngu"], ["Fee schedule", "#bang-phi"]]
+    : FOOTER_SYSTEM;
+  const footerPolicy = isEnglish
+    ? ["Service policy", "Privacy policy", "Privacy & cookies", "Conflicts of interest"]
+    : FOOTER_POLICY;
   return (
     <footer className="relative z-10 border-t border-snow/10 bg-ink-950">
       <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
@@ -587,12 +650,13 @@ export function Footer() {
                   <span className="font-display block text-xl leading-tight font-bold text-snow">
                     LHPT
                   </span>
-                  <span className="label block text-[9px] text-fog-500">Law Firm · TP.HCM</span>
+                  <span className="label block text-[9px] text-fog-500">Law Firm · {t("scope")}</span>
                 </span>
               </a>
               <p className="mt-5 max-w-sm text-[14.5px] leading-[1.75] text-fog-400">
-                Hãng luật chuyên sâu về xây dựng và bất động sản, tố tụng, điện mặt trời, doanh
-                nghiệp, tuân thủ và bảo vệ dữ liệu cá nhân. Pháp lý vững, nền móng bền.
+                {isEnglish
+                  ? "A specialist firm in construction and real estate, disputes, solar energy, corporate, compliance and personal data protection. Sound legal ground, durable foundations."
+                  : "Hãng luật chuyên sâu về xây dựng và bất động sản, tố tụng, điện mặt trời, doanh nghiệp, tuân thủ và bảo vệ dữ liệu cá nhân. Pháp lý vững, nền móng bền."}
               </p>
             </Reveal>
             <Reveal delay={120}>
@@ -602,7 +666,7 @@ export function Footer() {
                 transition={{ type: "spring", ...SOFT }}
                 className="spotlight mt-6 max-w-sm border border-snow/10 p-5"
               >
-                <p className="label text-[9.5px] text-brass-400">Liên hệ</p>
+                  <p className="label text-[9.5px] text-brass-400">{isEnglish ? "Contact" : "Liên hệ"}</p>
                 <a
                   href={FIRM.hotlineHref}
                   className="mt-3 block text-[15px] font-semibold text-snow transition-colors hover:text-brass-300"
@@ -615,37 +679,59 @@ export function Footer() {
                 >
                   {FIRM.email}
                 </a>
-                <p className="mt-3 text-[13px] leading-[1.7] text-fog-400">{FIRM.office}</p>
-                <p className="mt-1 text-[13px] text-fog-500">{FIRM.hours}</p>
+                <p className="mt-3 text-[13px] leading-[1.7] text-fog-400">{isEnglish ? "Nguyen Thi Minh Khai, District 1, Ho Chi Minh City" : FIRM.office}</p>
+                <p className="mt-1 text-[13px] text-fog-500">{isEnglish ? "Mon–Fri · 08:00–18:00" : FIRM.hours}</p>
               </motion.div>
+            </Reveal>
+            <Reveal delay={180}>
+              <div className="mt-7">
+                <p className="label text-[9.5px] text-brass-400">{isEnglish ? "Connect with LHPT" : "Kết nối với LHPT"}</p>
+                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-2">
+                  {SOCIAL_CHANNELS.map(({ label, icon: SocialIcon }) => (
+                    <button
+                      key={label}
+                      type="button"
+                      disabled
+                      aria-label={`${label} · ${t("socialComingSoon")}`}
+                      title={`${label} · ${t("socialComingSoon")}`}
+                      className="group flex items-center gap-2 border border-snow/10 px-3 py-2.5 text-left opacity-75 transition-colors hover:border-brass-500/50 disabled:cursor-not-allowed"
+                    >
+                      <SocialIcon className="h-4 w-4 shrink-0 text-fog-300 transition-colors group-hover:text-brass-300" />
+                      <span className="min-w-0">
+                        <span className="block text-[11px] font-medium text-fog-300">{label}</span>
+                        <span className="label block text-[8px] text-fog-500">{t("socialComingSoon")}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </Reveal>
           </div>
           <div className="lg:col-span-2">
             <FooterColumn
-              title="Dịch vụ"
+              title={t("serviceFooter")}
               delay={60}
-              items={FOOTER_SERVICES.map((t) => [t, "#dich-vu"] as [string, string])}
+              items={footerServices.map((item) => [item, "#dich-vu"] as [string, string])}
             />
           </div>
           <div className="lg:col-span-2">
-            <FooterColumn title="Hệ thống" delay={120} items={FOOTER_SYSTEM} />
+            <FooterColumn title={t("system")} delay={120} items={footerSystem} />
           </div>
           <div className="lg:col-span-3">
             <FooterColumn
-              title="Pháp lý & quyền riêng tư"
+              title={t("legalPrivacy")}
               delay={180}
-              items={FOOTER_POLICY.map((t) => [t, "#chinh-sach"] as [string, string])}
+              items={footerPolicy.map((item) => [item, "#chinh-sach"] as [string, string])}
             />
           </div>
         </div>
         <Reveal delay={100}>
           <div className="mt-12 flex flex-col gap-3 border-t border-snow/10 pt-6 md:flex-row md:items-center md:justify-between">
             <p className="label text-[10px] text-fog-500">
-              © 2026 LHPT Law Firm · Mọi quyền được bảo lưu
+              © 2026 LHPT Law Firm · {t("rights")}
             </p>
             <p className="max-w-xl text-[11.5px] leading-[1.7] text-fog-500">
-              Nội dung trên website là thông tin pháp lý tham khảo, không cấu thành ý kiến pháp lý
-              cho bất kỳ vụ việc cụ thể nào.
+              {t("footerDisclaimer")}
             </p>
           </div>
         </Reveal>

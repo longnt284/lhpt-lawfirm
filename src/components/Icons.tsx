@@ -181,3 +181,34 @@ export const IconMenu = ({ className }: P) => (
     <path d="M4 17h10" />
   </svg>
 );
+
+export const IconDiscord = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M7.1 7.7A14.2 14.2 0 0 1 12 6.8c1.7 0 3.3.3 4.9.9l1.7 8.1c-1.8 1.3-3.9 2.1-6.1 2.3l-.9-1.4" />
+    <path d="M7.1 7.7 5.4 16c1.5 1.1 3 1.7 4.6 2.1" />
+    <path d="M8.3 15.4c2.3 1 5.1 1 7.4 0" />
+    <circle cx="9.2" cy="12.1" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="14.8" cy="12.1" r=".8" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const IconInstagram = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <rect x="4" y="4" width="16" height="16" rx="4" />
+    <circle cx="12" cy="12" r="3.5" />
+    <circle cx="17.2" cy="6.9" r=".9" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const IconLinkedin = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <rect x="4" y="4" width="16" height="16" rx="1.5" />
+    <path d="M8 10v6M8 7.7v.1M11.5 16v-3.3a2.1 2.1 0 0 1 4.2 0V16M11.5 10v6" />
+  </svg>
+);
+
+export const IconFacebook = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
+    <path d="M13.5 20v-7h2.4l.4-2.8h-2.8V8.4c0-.8.3-1.4 1.5-1.4h1.6V4.5c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2H8.3V13h2.4v7" />
+  </svg>
+);

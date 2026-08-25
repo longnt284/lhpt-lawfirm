@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../data";
 import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
+import { APPROACH_EN, localizeCategory, localizePlan, localizeService, useLocale } from "../i18n";
 import {
   EASE_LUXE,
   SOFT,
@@ -33,6 +34,23 @@ const WORDS = [
   "BẢO MẬT DỮ LIỆU",
 ];
 
+const WORDS_EN = ["CONSTRUCTION", "REAL ESTATE", "LITIGATION", "SOLAR ENERGY", "CORPORATE", "DATA PROTECTION"];
+const TICKER_EN = [
+  "LAW ON PERSONAL DATA PROTECTION 2025 · EFFECTIVE 01.01.2026",
+  "LAW ON CORPORATE INCOME TAX 2025 · EFFECTIVE 01.10.2025",
+  "LAW ON VALUE-ADDED TAX 2024 · EFFECTIVE 01.07.2025",
+  "ELECTRICITY LAW 2024 · EFFECTIVE 01.02.2025",
+  "LAND LAW 2024 · EFFECTIVE 01.08.2024",
+  "LAW ON REAL ESTATE BUSINESS 2023 · EFFECTIVE 01.08.2024",
+  "HOUSING LAW 2023 · EFFECTIVE 01.08.2024",
+  "LAW ON BIDDING 2023 · EFFECTIVE 01.01.2024",
+  "DECREE 175/2024 · CONSTRUCTION ACTIVITY MANAGEMENT",
+  "DECREE 80/2024 · DIRECT POWER PURCHASE (DPPA)",
+  "DECREE 58/2025 · GUIDANCE ON THE ELECTRICITY LAW",
+  "LAW AMENDING THE LAW ON ENTERPRISES 2025 · NO. 76/2025/QH15",
+];
+
+
 const SERVICE_ICONS = {
   crane: IconCrane,
   scale: IconScale,
@@ -43,6 +61,7 @@ const SERVICE_ICONS = {
 
 /* ================= HERO ================= */
 export function Hero() {
+  const { isEnglish, t } = useLocale();
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll();
   /* Chữ và bảng số liệu trôi lệch tốc độ khi cuộn, tạo lớp gần — lớp xa. */
@@ -50,7 +69,8 @@ export function Hero() {
   const cardY = useTransform(scrollYProgress, [0, 1], [0, -140]);
   const heroFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
 
-  const word = useScrambleCycle(WORDS);
+  const word = useScrambleCycle(isEnglish ? WORDS_EN : WORDS);
+  const ticker = isEnglish ? TICKER_EN : TICKER;
   const { ref, inView } = useInView<HTMLDivElement>(0.3);
   const count = useCountUp(600, inView, 1800);
   const onMove = useSpotlight<HTMLDivElement>();
@@ -75,7 +95,7 @@ export function Hero() {
               className="label flex items-center gap-3 text-[11px] text-fog-400"
             >
               <span className="animate-pulse-dot inline-block h-2 w-2 shrink-0 rounded-full bg-jade-500" />
-              Hãng luật doanh nghiệp · {FIRM.scope}
+              {t("legalFirm")} · {t("scope")}
             </motion.p>
             {/*
               Tiêu đề serif chữ thường, leading 1.14. Không bọc trong khung
@@ -84,20 +104,23 @@ export function Hero() {
             */}
             <h1 className="font-display mt-6 text-[clamp(2.35rem,5.6vw,4.2rem)] leading-[1.14] font-semibold tracking-[-0.012em] text-snow">
               <motion.span variants={heroLine} className="block">
-                Nền pháp lý vững,
+                {isEnglish ? "Sound legal ground," : "Nền pháp lý vững,"}
               </motion.span>
               <motion.span variants={heroLine} className="block">
-                cho mọi <span className="gilded italic">công trình.</span>
+                {isEnglish ? (
+                  <>for every <span className="gilded italic">undertaking.</span></>
+                ) : (
+                  <>cho mọi <span className="gilded italic">công trình.</span></>
+                )}
               </motion.span>
             </h1>
             <motion.p variants={fadeUpSmall} className="label mt-7 text-[12px] text-fog-300">
-              <span className="text-fog-500">Trọng tâm</span>{" "}
+              <span className="text-fog-500">{t("focus")}</span>{" "}
               <span className="text-jade-400">[ {word} ]</span>
               <span className="animate-caret ml-1 inline-block h-3.5 w-2 translate-y-0.5 bg-brass-400" />
             </motion.p>
             <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-fog-400">
-              LHPT đồng hành cùng doanh nghiệp từ giấy phép đầu tiên đến phiên tòa cuối cùng:
-              xây dựng, bất động sản, điện mặt trời, doanh nghiệp, tuân thủ và bảo vệ dữ liệu cá nhân.
+              {t("heroBody")}
             </p>
             <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-4">
               <Magnetic strength={8}>
@@ -105,7 +128,7 @@ export function Hero() {
                   href="#lien-he"
                   className="sheen group inline-flex items-center gap-2.5 bg-brass-500 px-6 py-3.5 text-[14px] font-semibold text-ink-950 transition-all duration-300 hover:bg-brass-400 hover:shadow-[0_14px_44px_-10px_rgba(201,164,76,0.6)]"
                 >
-                  Đặt lịch tư vấn
+                  {t("book")}
                   <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </Magnetic>
@@ -114,13 +137,13 @@ export function Hero() {
                   href="#dich-vu"
                   className="group inline-flex items-center gap-2.5 border border-snow/20 px-6 py-3.5 text-[14px] font-medium text-snow transition-all duration-300 hover:border-jade-500 hover:text-jade-300"
                 >
-                  Khám phá dịch vụ
+                  {t("explore")}
                   <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </a>
               </Magnetic>
             </motion.div>
             <motion.p variants={fadeUpSmall} className="label mt-8 text-[10px] text-fog-500">
-              Phản hồi trong {FIRM.responseTime} · Bảo mật tuyệt đối hồ sơ
+              {t("response")} · {t("confidential")}
             </motion.p>
           </motion.div>
 
@@ -143,7 +166,7 @@ export function Hero() {
                 className="spotlight animate-floaty relative border border-snow/15 bg-ink-850/90 shadow-[0_40px_100px_-35px_rgba(0,0,0,0.85)] backdrop-blur-sm"
               >
                 <div className="flex items-center justify-between border-b border-snow/10 px-6 py-4">
-                  <span className="label text-[10px] text-fog-400">Hồ sơ năng lực</span>
+                  <span className="label text-[10px] text-fog-400">{t("live")}</span>
                   <span className="label flex items-center gap-2 text-[10px] text-jade-400">
                     <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-jade-500" />
                     Live · 2026
@@ -156,7 +179,7 @@ export function Hero() {
                       <span className="text-brass-400">+</span>
                     </p>
                     <p className="mt-2.5 text-[13px] leading-[1.5] text-fog-400">
-                      Vụ việc &amp; dự án đã xử lý
+                      {t("matters")}
                     </p>
                   </div>
                   <div className="relative h-[104px] w-[104px] shrink-0">
@@ -201,7 +224,7 @@ export function Hero() {
                   ).map(([label, w, color]) => (
                     <motion.div key={label} variants={fadeUpSmall}>
                       <div className="label mb-1.5 flex justify-between text-[9.5px] text-fog-400">
-                        <span>{label}</span>
+                        <span>{localizeCategory(label, isEnglish ? "en" : "vi")}</span>
                         <span>{w}%</span>
                       </div>
                       <div className="h-1.5 w-full bg-ink-700">
@@ -218,7 +241,7 @@ export function Hero() {
                   ))}
                 </motion.div>
                 <div className="mt-6 flex items-center justify-between border-t border-snow/10 px-6 py-3.5">
-                  <span className="label text-[9px] text-fog-500">Số liệu nội bộ · 2026</span>
+                  <span className="label text-[9px] text-fog-500">{t("internal")} · 2026</span>
                   <span className="label text-[9px] text-brass-500">LHPT-CAP-26</span>
                 </div>
               </div>
@@ -237,13 +260,13 @@ export function Hero() {
         <div className="marquee-track">
           {[0, 1].map((dup) => (
             <div key={dup} className="flex shrink-0 items-center" aria-hidden={dup === 1}>
-              {TICKER.map((t) => (
+              {ticker.map((item) => (
                 <span
-                  key={`${dup}-${t}`}
+                  key={`${dup}-${item}`}
                   className="flex items-center gap-3 pr-3 text-[11px] font-medium tracking-[0.12em] whitespace-nowrap text-fog-300"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-jade-500" />
-                  {t}
+                  {item}
                   <span className="pl-3 text-brass-500">◆</span>
                 </span>
               ))}
@@ -263,11 +286,18 @@ export function Hero() {
 const STATS = [
   { v: 15, suffix: "+", label: "Năm hành nghề", decimals: 0 },
   { v: 600, suffix: "+", label: "Vụ việc & dự án đã xử lý", decimals: 0 },
-  { v: 24, suffix: " giờ", label: "Cam kết phản hồi hồ sơ", decimals: 0 },
+  { v: 24, suffix: "h", label: "Cam kết phản hồi hồ sơ", decimals: 0 },
   { v: 98, suffix: "%", label: "Khách hàng quay lại", decimals: 0 },
 ];
 
 export function StatsBand() {
+  const { t } = useLocale();
+  const stats = [
+    { ...STATS[0], label: t("practiceYears") },
+    { ...STATS[1], label: t("handled") },
+    { ...STATS[2], label: t("responseMetric") },
+    { ...STATS[3], label: t("returning") },
+  ];
   return (
     <section className="relative z-10 mx-auto max-w-7xl px-5 py-16 lg:px-8">
       <motion.div
@@ -277,7 +307,7 @@ export function StatsBand() {
         viewport={VIEWPORT}
         className="grid grid-cols-2 border-snow/10 lg:grid-cols-4"
       >
-        {STATS.map((s) => (
+        {stats.map((s) => (
           <StatCell key={s.label} {...s} />
         ))}
       </motion.div>
@@ -319,7 +349,9 @@ function StatCell({
 
 /* ================= DỊCH VỤ ================= */
 export function Services() {
+  const { locale, isEnglish, t } = useLocale();
   const onMove = useSpotlight<HTMLElement>();
+  const services = SERVICES.map((service) => localizeService(service, locale));
   return (
     <section id="dich-vu" className="relative z-10 scroll-mt-24 py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -327,15 +359,17 @@ export function Services() {
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-28">
               <SectionHead
-                kicker="Dịch vụ pháp lý"
+                  kicker={t("servicesKicker")}
                 title={
                   <>
-                    Năm trụ cột.
-                    <br />
-                    <span className="gilded italic">Một chuẩn mực.</span>
+                    {isEnglish ? (
+                      <>Five pillars.<br /><span className="gilded italic">One standard.</span></>
+                    ) : (
+                      <>Năm trụ cột.<br /><span className="gilded italic">Một chuẩn mực.</span></>
+                    )}
                   </>
                 }
-                sub="Mỗi mảng do luật sư thành viên phụ trách trực tiếp, chịu trách nhiệm đến cùng trên một hồ sơ."
+                sub={t("servicesSub")}
               />
               <motion.ul
                 variants={stagger(0.07, 0.2)}
@@ -344,7 +378,7 @@ export function Services() {
                 viewport={VIEWPORT}
                 className="mt-10 space-y-1"
               >
-                {SERVICES.map((s) => (
+                {services.map((s) => (
                   <motion.li key={s.num} variants={fadeUpSmall}>
                     <a
                       href={`#dv-${s.num}`}
@@ -361,7 +395,7 @@ export function Services() {
             </div>
           </div>
           <div className="space-y-6 lg:col-span-8">
-            {SERVICES.map((s, idx) => {
+            {services.map((s, idx) => {
               const Icon = SERVICE_ICONS[s.icon];
               const isNew = s.num === "05";
               return (
@@ -423,7 +457,7 @@ export function Services() {
                       {isNew && (
                         <span className="label hidden shrink-0 items-center gap-2 border border-jade-500/60 px-2.5 py-1 text-[9px] text-jade-300 sm:inline-flex">
                           <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-jade-500" />
-                          Mới · 2026
+                          {isEnglish ? "New · 2026" : "Mới · 2026"}
                         </span>
                       )}
                     </div>
@@ -452,7 +486,7 @@ export function Services() {
                         </span>
                       ))}
                       <span className="ml-auto text-[11.5px] text-fog-500">
-                        Phụ trách: {s.leads.join(" · ")}
+                        {t("serviceLeads")}: {s.leads.join(" · ")}
                       </span>
                     </div>
                   </motion.div>
@@ -489,6 +523,7 @@ const APPROACH = [
 ];
 
 export function Approach() {
+  const { isEnglish, t } = useLocale();
   return (
     <section className="relative z-10 overflow-hidden border-y border-snow/10 bg-ink-900/55 py-24">
       <div className="pointer-events-none absolute -top-28 right-[-8rem] h-[26rem] w-[26rem] rounded-full bg-brass-500/10 blur-[110px]" />
@@ -496,20 +531,22 @@ export function Approach() {
         <div className="grid gap-14 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-5">
             <SectionHead
-              kicker="Cách chúng tôi làm việc"
+              kicker={t("approachKicker")}
               title={
                 <>
-                  Rõ từ đầu.
-                  <br />
-                  <span className="gilded italic">Chắc đến cuối.</span>
+                  {isEnglish ? (
+                    <>Clear from day one.<br /><span className="gilded italic">Certain through the finish.</span></>
+                  ) : (
+                    <>Rõ từ đầu.<br /><span className="gilded italic">Chắc đến cuối.</span></>
+                  )}
                 </>
               }
-              sub="Một quy trình tốt không làm hồ sơ trở nên nặng nề hơn. Nó khiến quyết định lớn trở nên dễ nhìn thấy và dễ hành động."
+              sub={t("approachSub")}
             />
             <div className="mt-9 flex items-center gap-4 border-l-2 border-brass-500 pl-5">
               <span className="font-display text-[2.8rem] leading-none font-bold text-brass-300">01</span>
               <p className="max-w-xs text-[13px] leading-[1.7] text-fog-400">
-                đầu mối tiếp nhận, một người phụ trách, một lộ trình có thể kiểm tra.
+                {t("approachNote")}
               </p>
             </div>
           </div>
@@ -517,6 +554,7 @@ export function Approach() {
             <div className="grid border border-snow/10 sm:grid-cols-3">
               {APPROACH.map((item, idx) => {
                 const Icon = item.icon;
+                const copy = isEnglish ? { ...item, ...APPROACH_EN[item.num as keyof typeof APPROACH_EN] } : item;
                 return (
                   <motion.article
                     key={item.num}
@@ -530,8 +568,8 @@ export function Approach() {
                       <Icon className="h-6 w-6 text-brass-400 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
                       <span className="code text-[11px] text-fog-500">{item.num}</span>
                     </div>
-                    <h3 className="font-display mt-12 text-[1.15rem] font-semibold text-snow">{item.title}</h3>
-                    <p className="mt-3 text-[13px] leading-[1.7] text-fog-400">{item.body}</p>
+                    <h3 className="font-display mt-12 text-[1.15rem] font-semibold text-snow">{copy.title}</h3>
+                    <p className="mt-3 text-[13px] leading-[1.7] text-fog-400">{copy.body}</p>
                     <span className="absolute right-6 bottom-5 left-6 h-px origin-left scale-x-0 bg-gradient-to-r from-brass-500 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
                   </motion.article>
                 );
@@ -546,22 +584,26 @@ export function Approach() {
 
 /* ================= BẢNG PHÍ ================= */
 export function Pricing() {
+  const { locale, isEnglish, t } = useLocale();
   const onMove = useSpotlight<HTMLElement>();
+  const plans = PLANS.map((plan) => localizePlan(plan, locale));
   return (
     <section id="bang-phi" className="relative z-10 scroll-mt-24 py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-[30rem] max-w-4xl rounded-full bg-brass-500/6 blur-[120px]" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
           align="center"
-          kicker="Pháp chế thuê ngoài"
+          kicker={t("pricingKicker")}
           title={
             <>
-              Một phòng pháp chế,
-              <br />
-              <span className="text-jade-400 italic">không cần phòng nhân sự.</span>
+              {isEnglish ? (
+                <>One legal function,<br /><span className="text-jade-400 italic">without a full legal department.</span></>
+              ) : (
+                <>Một phòng pháp chế,<br /><span className="text-jade-400 italic">không cần phòng nhân sự.</span></>
+              )}
             </>
           }
-          sub="Ba gói theo năm, chi phí cố định và phạm vi rõ ràng, không phát sinh ngoài báo giá đã xác nhận."
+          sub={t("pricingSub")}
         />
 
         {/* ưu đãi lần đầu */}
@@ -577,10 +619,8 @@ export function Pricing() {
               −{FIRST_TIME_DISCOUNT.percent}%
             </motion.span>
             <div className="sm:pl-5">
-              <p className="text-[14.5px] font-semibold text-snow">{FIRST_TIME_DISCOUNT.label}</p>
-              <p className="mt-1 text-[13px] leading-[1.65] text-fog-400">
-                {FIRST_TIME_DISCOUNT.detail}
-              </p>
+              <p className="text-[14.5px] font-semibold text-snow">{t("firstTime")}</p>
+              <p className="mt-1 text-[13px] leading-[1.65] text-fog-400">{t("firstTimeDetail")}</p>
             </div>
           </div>
         </Reveal>
@@ -592,7 +632,7 @@ export function Pricing() {
           viewport={VIEWPORT}
           className="mt-12 grid items-stretch gap-6 lg:grid-cols-3"
         >
-          {PLANS.map((p) => (
+          {plans.map((p) => (
             <motion.article
               key={p.id}
               variants={cardIn}
@@ -657,7 +697,7 @@ export function Pricing() {
                     : "border border-snow/20 text-snow hover:border-jade-500 hover:text-jade-300"
                 }`}
               >
-                Nhận đề xuất gói
+                {t("choosePlan")}
                 <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </motion.article>
@@ -667,8 +707,7 @@ export function Pricing() {
           <div className="mx-auto mt-8 max-w-2xl text-center">
             <Kicker rule={false}>
               <span className="mx-auto text-[9.5px] leading-[1.8] text-fog-500">
-                Chưa gồm thuế giá trị gia tăng, án phí, phí trọng tài &amp; chi phí nhà nước ·
-                Thanh toán theo quý
+                {isEnglish ? "Excludes VAT, court fees, arbitration fees and state charges · Paid quarterly" : "Chưa gồm thuế giá trị gia tăng, án phí, phí trọng tài & chi phí nhà nước · Thanh toán theo quý"}
               </span>
             </Kicker>
           </div>

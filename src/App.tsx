@@ -3,6 +3,7 @@ import { lazy, Suspense, useState } from "react";
 import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } from "./components/Chrome";
 import { Approach, Hero, Pricing, Services, StatsBand } from "./components/Home1";
 import type { DocItem } from "./data";
+import { LocaleProvider } from "./i18n";
 
 const SecondaryContent = lazy(() =>
   import("./components/Home2").then(({ SecondaryContent: Content }) => ({ default: Content }))
@@ -30,8 +31,9 @@ export default function App() {
      * động", Motion tự bỏ mọi transform và chỉ giữ lại đổi màu/độ mờ. Nhờ vậy
      * từng component không phải tự kiểm tra lại.
      */
-    <MotionConfig reducedMotion="user">
-      <div className="noise relative min-h-screen">
+    <LocaleProvider>
+      <MotionConfig reducedMotion="user">
+        <div className="noise relative min-h-screen">
         <Ambient />
         <Header />
         <main className="relative" aria-label="Nội dung LHPT Law Firm">
@@ -48,7 +50,8 @@ export default function App() {
         <MobileActionBar />
         <ScrollTop />
         <ArticleModal item={doc} onClose={() => setDoc(null)} />
-      </div>
-    </MotionConfig>
+        </div>
+      </MotionConfig>
+    </LocaleProvider>
   );
 }

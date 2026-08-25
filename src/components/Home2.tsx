@@ -15,6 +15,18 @@ import {
   type PolicyItem,
 } from "../data";
 import { useSpotlight } from "../hooks";
+import {
+  interpolate,
+  localizeCategory,
+  localizeDoc,
+  localizeLegalDoc,
+  localizeLawyer,
+  localizePolicy,
+  localizeService,
+  localizeStatus,
+  localizeType,
+  useLocale,
+} from "../i18n";
 import { EASE_LUXE, SOFT, VIEWPORT, cardIn, fadeUpSmall, stagger } from "../motion";
 import { Kicker, Reveal, SectionHead } from "./Chrome";
 import { GoldRule, Magnetic } from "./Motion";
@@ -42,7 +54,10 @@ const collapse = {
 
 /* ================= TIN TỨC PHÁP LÝ ================= */
 export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
-  const [featured, ...rest] = NEWS;
+  const { locale, isEnglish, t } = useLocale();
+  const [featuredRaw, ...restRaw] = NEWS;
+  const featured = featuredRaw ? localizeDoc(featuredRaw, locale) : null;
+  const rest = restRaw.map((item) => localizeDoc(item, locale));
   const onMove = useSpotlight<HTMLButtonElement>();
   if (!featured) return null;
   return (
@@ -52,17 +67,19 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead
             tone="light"
-            kicker="Tin pháp lý nổi bật"
+            kicker={t("newsKicker")}
             title={
               <>
-                Chuyển động chính sách,
-                <br />
-                <span className="gilded-ink italic">cập nhật trước khi bạn hỏi.</span>
+                {isEnglish ? (
+                  <>Policy moves,<br /><span className="gilded-ink italic">before you have to ask.</span></>
+                ) : (
+                  <>Chuyển động chính sách,<br /><span className="gilded-ink italic">cập nhật trước khi bạn hỏi.</span></>
+                )}
               </>
             }
           />
           <Reveal delay={150}>
-            <p className="label text-[10px] text-ink-900/50">{NEWS.length} tin đã đăng</p>
+            <p className="label text-[10px] text-ink-900/50">{NEWS.length} {isEnglish ? "published updates" : "tin đã đăng"}</p>
           </Reveal>
         </div>
 
@@ -89,7 +106,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
                 §
               </motion.div>
               <span className="label relative w-fit border border-jade-500/50 px-2.5 py-1 text-[9.5px] text-jade-300">
-                Nổi bật · {featured.category}
+                {t("featured")} · {localizeCategory(featured.category, locale)}
               </span>
               <h3 className="font-display relative mt-6 max-w-lg text-[1.4rem] leading-[1.3] font-semibold sm:text-[1.65rem]">
                 {featured.title}
@@ -99,10 +116,10 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
               </p>
               <div className="relative mt-auto flex flex-wrap items-center justify-between gap-3 pt-8">
                 <span className="label text-[10px] text-fog-500">
-                  {featured.date} · Đọc {featured.read}
+                  {featured.date} · {t("read")} {featured.read}
                 </span>
                 <span className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-brass-400 transition-all duration-300 group-hover:gap-3.5 group-hover:text-brass-300">
-                  Đọc tin
+                  {isEnglish ? "Read news" : "Đọc tin"}
                   <IconArrowRight className="h-4 w-4" />
                 </span>
               </div>
@@ -126,7 +143,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
               >
                 <div>
                   <p className="label text-[9.5px] text-brass-700">
-                    {n.date} · {n.category} · {n.read}
+                    {n.date} · {localizeCategory(n.category, locale)} · {n.read}
                   </p>
                   <h4 className="mt-2 text-[14.5px] leading-[1.55] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
                     {n.title}
@@ -146,6 +163,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
 const PAGE_SIZE = 12;
 
 export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
+  const { locale, isEnglish, t } = useLocale();
   const [cat, setCat] = useState<string>("Tất cả");
   const [q, setQ] = useState("");
   const [shown, setShown] = useState(PAGE_SIZE);
@@ -153,18 +171,22 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
 
   const list = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return ARTICLES.filter(
-      (a) =>
+    return ARTICLES.filter((a) => {
+      const localized = localizeDoc(a, locale);
+      return (
         (cat === "Tất cả" || a.category === cat) &&
         (needle === "" ||
-          `${a.title} ${a.excerpt} ${a.basis.join(" ")}`.toLowerCase().includes(needle))
-    );
-  }, [cat, q]);
+          `${a.title} ${a.excerpt} ${a.basis.join(" ")} ${localized.title} ${localized.excerpt}`
+            .toLowerCase()
+            .includes(needle))
+      );
+    }).map((a) => localizeDoc(a, locale));
+  }, [cat, q, locale]);
 
   // Đổi bộ lọc thì quay lại trang đầu, tránh trạng thái "đã mở rộng" dính lại.
   useEffect(() => {
     setShown(PAGE_SIZE);
-  }, [cat, q]);
+  }, [cat, q, locale]);
 
   const visible = list.slice(0, shown);
 
@@ -173,26 +195,28 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
           tone="light"
-          kicker="Bài viết chuyên sâu"
+          kicker={t("articlesKicker")}
           title={
             <>
-              Phân tích ngắn,
-              <br />
-              <span className="gilded-ink italic">quyết định nhanh.</span>
+              {isEnglish ? (
+                <>Short analysis,<br /><span className="gilded-ink italic">faster decisions.</span></>
+              ) : (
+                <>Phân tích ngắn,<br /><span className="gilded-ink italic">quyết định nhanh.</span></>
+              )}
             </>
           }
-          sub="Mỗi bài nêu cơ sở pháp lý và vấn đề cần xử lý, đọc trong vài phút trước khi ký."
+          sub={t("articlesSub")}
         />
 
         <Reveal delay={120}>
           <div className="mt-10 flex flex-col gap-4 lg:flex-row lg:items-center">
             <label className="relative lg:w-80">
-              <span className="sr-only">Tìm bài viết</span>
+              <span className="sr-only">{t("searchArticles")}</span>
               <IconSearch className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-ink-900/40" />
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Tìm theo tiêu đề hoặc số hiệu văn bản…"
+                placeholder={t("searchArticlesPlaceholder")}
                 className="w-full border border-ink-900/15 bg-paper py-3 pr-4 pl-11 text-[13.5px] text-ink-900 placeholder-ink-900/40 transition-colors outline-none focus:border-brass-500"
               />
             </label>
@@ -216,12 +240,12 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                       transition={{ type: "spring", stiffness: 400, damping: 36 }}
                     />
                   )}
-                  {c}
+                  {localizeCategory(c, locale)}
                 </button>
               ))}
             </div>
             <span className="label text-[10px] text-ink-900/45 lg:ml-auto">
-              {visible.length}/{list.length} bài viết
+              {visible.length}/{list.length} {isEnglish ? "articles" : "bài viết"}
             </span>
           </div>
         </Reveal>
@@ -234,7 +258,7 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
           >
             <IconDoc className="h-8 w-8 text-ink-900/30" />
             <p className="text-[14px] text-ink-900/60">
-              Không có bài viết phù hợp. Thử từ khóa khác hoặc chọn lĩnh vực khác.
+              {t("noResults")}
             </p>
           </motion.div>
         ) : (
@@ -283,7 +307,7 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                   onClick={() => setShown((n) => n + PAGE_SIZE)}
                   className="sheen group inline-flex items-center gap-2.5 border border-ink-900/20 px-7 py-3.5 text-[13.5px] font-semibold text-ink-900 transition-all duration-300 hover:border-brass-600 hover:text-brass-700"
                 >
-                  Xem thêm {Math.min(PAGE_SIZE, list.length - shown)} bài
+                  {t("loadMoreArticles").replace("{n}", String(Math.min(PAGE_SIZE, list.length - shown)))}
                   <IconChevron className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
                 </button>
               </Magnetic>
@@ -318,6 +342,7 @@ const STATUS_DOT: Record<string, string> = {
 };
 
 export function Documents() {
+  const { locale, isEnglish, t } = useLocale();
   const [q, setQ] = useState("");
   const [field, setField] = useState("Tất cả");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -325,17 +350,19 @@ export function Documents() {
 
   const list = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return LEGAL_DOCS.filter(
-      (d) =>
+    return LEGAL_DOCS.filter((d) => {
+      const localized = localizeLegalDoc(d, locale);
+      return (
         (field === "Tất cả" || d.field === field) &&
-        `${d.code} ${d.name}`.toLowerCase().includes(needle)
-    );
-  }, [q, field]);
+        `${d.code} ${d.name} ${localized.name} ${d.summary} ${localized.summary}`.toLowerCase().includes(needle)
+      );
+    }).map((d) => localizeLegalDoc(d, locale));
+  }, [q, field, locale]);
 
   useEffect(() => {
     setShown(DOC_PAGE_SIZE);
     setOpenId(null);
-  }, [q, field]);
+  }, [q, field, locale]);
 
   const visible = list.slice(0, shown);
   const expiredCount = LEGAL_DOCS.filter((d) => d.status === "Hết hiệu lực").length;
@@ -345,23 +372,25 @@ export function Documents() {
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead
-            kicker="Hệ thống văn bản"
+            kicker={t("docsKicker")}
             title={
               <>
-                Pháp luật hiện hành,
-                <br />
-                <span className="text-jade-400 italic">tra cứu trong ba giây.</span>
+                {isEnglish ? (
+                  <>Current law,<br /><span className="text-jade-400 italic">within a three-second scan.</span></>
+                ) : (
+                  <>Pháp luật hiện hành,<br /><span className="text-jade-400 italic">tra cứu trong ba giây.</span></>
+                )}
               </>
             }
-            sub="Các văn bản trụ cột của những lĩnh vực hãng đang hành nghề, kèm hiệu lực, tóm tắt phạm vi và điểm mới đáng chú ý. Văn bản đã hết hiệu lực vẫn được giữ lại vì hồ sơ và tranh chấp cũ còn phải viện dẫn."
+            sub={t("docsSub")}
           />
           <Reveal delay={150}>
             <div className="text-right">
               <p className="label text-[10px] text-fog-500">
-                {String(list.length).padStart(2, "0")} / {LEGAL_DOCS.length} văn bản
+                {String(list.length).padStart(2, "0")} / {LEGAL_DOCS.length} {isEnglish ? "instruments" : "văn bản"}
               </p>
               <p className="label mt-1.5 text-[10px] text-fog-500">
-                Trong đó {expiredCount} đã hết hiệu lực
+                {isEnglish ? `${expiredCount} repealed or superseded` : `Trong đó ${expiredCount} đã hết hiệu lực`}
               </p>
             </div>
           </Reveal>
@@ -370,12 +399,12 @@ export function Documents() {
         <Reveal delay={120}>
           <div className="mt-10 flex flex-col gap-4 lg:flex-row lg:items-center">
             <label className="relative flex-1">
-              <span className="sr-only">Tìm văn bản</span>
+              <span className="sr-only">{t("searchDocs")}</span>
               <IconSearch className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-fog-500" />
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Tìm theo tên hoặc số hiệu, ví dụ 31/2024, DPPA, đất đai…"
+                placeholder={t("searchDocsPlaceholder")}
                 className="w-full border border-snow/12 bg-ink-850 py-3.5 pr-4 pl-11 text-[13.5px] text-snow placeholder-fog-500 transition-colors outline-none focus:border-jade-500"
               />
             </label>
@@ -398,7 +427,7 @@ export function Documents() {
                       transition={{ type: "spring", stiffness: 400, damping: 36 }}
                     />
                   )}
-                  {f}
+                  {localizeCategory(f, locale)}
                 </button>
               ))}
             </div>
@@ -408,18 +437,18 @@ export function Documents() {
         <Reveal delay={180}>
           <motion.div layout className="mt-8 border border-snow/10 bg-ink-900/60">
             <div className="label hidden grid-cols-12 gap-3 border-b border-snow/10 px-6 py-3.5 text-[9.5px] text-fog-500 md:grid">
-              <span className="col-span-2">Số hiệu</span>
-              <span className="col-span-4">Văn bản</span>
-              <span className="col-span-2">Lĩnh vực</span>
-              <span className="col-span-2">Hiệu lực</span>
-              <span className="col-span-2 text-right">Tình trạng</span>
+              <span className="col-span-2">{isEnglish ? "Number" : "Số hiệu"}</span>
+              <span className="col-span-4">{isEnglish ? "Instrument" : "Văn bản"}</span>
+              <span className="col-span-2">{isEnglish ? "Field" : "Lĩnh vực"}</span>
+              <span className="col-span-2">{isEnglish ? "Effective" : "Hiệu lực"}</span>
+              <span className="col-span-2 text-right">{isEnglish ? "Status" : "Tình trạng"}</span>
             </div>
 
             {list.length === 0 && (
               <div className="flex flex-col items-center gap-3 px-6 py-16 text-center">
                 <IconDoc className="h-8 w-8 text-fog-500" />
                 <p className="text-[14px] text-fog-400">
-                  Không tìm thấy văn bản phù hợp. Thử từ khóa hoặc lĩnh vực khác.
+                  {t("noResults")}
                 </p>
               </div>
             )}
@@ -462,7 +491,7 @@ export function Documents() {
                         {d.name}
                       </span>
                       <span className="text-[11.5px] text-fog-400 md:col-span-2">
-                        {d.type} · {d.field}
+                        {localizeType(d.type, locale)} · {localizeCategory(d.field, locale)}
                       </span>
                       <span className="code text-[11px] text-fog-400 md:col-span-2">
                         {d.effective}
@@ -477,7 +506,7 @@ export function Documents() {
                           <span
                             className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[d.status]}`}
                           />
-                          {STATUS_SHORT[d.status]}
+                          {localizeStatus(d.status, locale)}
                         </span>
                         <motion.span
                           animate={{ rotate: open ? 180 : 0 }}
@@ -501,7 +530,7 @@ export function Documents() {
                             {/* Điểm mới, điểm đáng chú ý của quy định */}
                             <div className="mt-5 border-l-2 border-brass-500/50 pl-4">
                               <p className="label text-[9.5px] text-brass-400">
-                                Điểm mới &amp; đáng chú ý
+                                {isEnglish ? "Key changes & highlights" : "Điểm mới & đáng chú ý"}
                               </p>
                               <ul className="mt-2.5 space-y-2">
                                 {d.highlights.map((h) => (
@@ -518,7 +547,7 @@ export function Documents() {
 
                             {d.replacedBy && (
                               <p className="mt-4 text-[12.5px] leading-[1.65] text-fog-400">
-                                <span className="text-fog-500">Được thay thế bởi: </span>
+                                <span className="text-fog-500">{isEnglish ? "Replaced by: " : "Được thay thế bởi: "}</span>
                                 <span className="text-jade-300">{d.replacedBy}</span>
                               </p>
                             )}
@@ -540,7 +569,7 @@ export function Documents() {
                 onClick={() => setShown((n) => n + DOC_PAGE_SIZE)}
                 className="label border border-snow/20 px-5 py-3 text-[9.5px] text-fog-300 transition-colors duration-300 hover:border-jade-500 hover:text-jade-300"
               >
-                Xem thêm {Math.min(DOC_PAGE_SIZE, list.length - shown)} văn bản
+                {t("loadMoreDocs").replace("{n}", String(Math.min(DOC_PAGE_SIZE, list.length - shown)))}
               </button>
             </div>
           </Reveal>
@@ -548,7 +577,7 @@ export function Documents() {
 
         <Reveal delay={220}>
           <p className="label mt-5 text-[9.5px] text-fog-500">
-            Tổng hợp phục vụ tham khảo · Đối chiếu công báo trước khi áp dụng
+            {t("docsFootnote")}
           </p>
         </Reveal>
       </div>
@@ -559,27 +588,31 @@ export function Documents() {
 /* ================= ĐỘI NGŨ ================= */
 /** Lấy chữ cái đầu của tên riêng để dựng ô chân dung tạm khi chưa có ảnh. */
 function initials(name: string): string {
-  const parts = name.replace(/^LS\.\s*/, "").trim().split(/\s+/);
+  const parts = name.replace(/^(LS\.|Lawyer)\s*/, "").trim().split(/\s+/);
   const first = parts[0]?.[0] ?? "";
   const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
   return (first + last).toUpperCase();
 }
 
 export function Team() {
+  const { locale, isEnglish, t } = useLocale();
   const onMove = useSpotlight<HTMLElement>();
+  const lawyers = LAWYERS.map((lawyer) => localizeLawyer(lawyer, locale));
   return (
     <section id="doi-ngu" className="relative z-10 scroll-mt-24 bg-ink-900/70 py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
-          kicker="Đội ngũ luật sư"
+          kicker={t("teamKicker")}
           title={
             <>
-              Người chịu trách nhiệm
-              <br />
-              <span className="gilded italic">trên từng hồ sơ.</span>
+              {isEnglish ? (
+                <>The counsel responsible<br /><span className="gilded italic">for every file.</span></>
+              ) : (
+                <>Người chịu trách nhiệm<br /><span className="gilded italic">trên từng hồ sơ.</span></>
+              )}
             </>
           }
-          sub="Một luật sư điều hành và ba luật sư thành viên. Hồ sơ của bạn luôn có một cái tên chịu trách nhiệm đến cùng."
+          sub={t("teamSub")}
         />
         <motion.div
           variants={stagger(0.09)}
@@ -588,7 +621,7 @@ export function Team() {
           viewport={VIEWPORT}
           className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
         >
-          {LAWYERS.map((l) => (
+          {lawyers.map((l) => (
             <motion.article
               key={l.id}
               variants={cardIn}
@@ -662,7 +695,7 @@ export function Team() {
           <div className="mt-10 flex justify-center">
             <Kicker rule={false}>
               <span className="text-[10px] text-fog-500">
-                Hành nghề trong phạm vi {FIRM.scope}
+                {isEnglish ? `Practising within ${t("scope")}` : `Hành nghề trong phạm vi ${t("scope")}`}
               </span>
             </Kicker>
           </div>
@@ -711,31 +744,36 @@ function Accordion({ items }: { items: PolicyItem[] }) {
 }
 
 export function Policies() {
+  const { locale, isEnglish, t } = useLocale();
+  const servicePolicies = POLICIES_SERVICE.map((item) => localizePolicy(item, locale));
+  const privacyPolicies = POLICIES_PRIVACY.map((item) => localizePolicy(item, locale));
   return (
     <section id="chinh-sach" className="relative z-10 scroll-mt-24 bg-mist-100 py-24 text-ink-900">
       <div className="bg-grid-light absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
           tone="light"
-          kicker="Cam kết & quyền riêng tư"
+          kicker={t("policiesKicker")}
           title={
             <>
-              Minh bạch như cách
-              <br />
-              <span className="gilded-ink italic">chúng tôi tính phí.</span>
+              {isEnglish ? (
+                <>Transparent in the way<br /><span className="gilded-ink italic">we structure our fees.</span></>
+              ) : (
+                <>Minh bạch như cách<br /><span className="gilded-ink italic">chúng tôi tính phí.</span></>
+              )}
             </>
           }
-          sub="Chính sách dịch vụ, bảo mật và quyền riêng tư, viết để khách hàng đọc chứ không phải để luật sư né trách nhiệm."
+          sub={isEnglish ? "Service, confidentiality and privacy policies written for clients to read — not for lawyers to hide behind." : "Chính sách dịch vụ, bảo mật và quyền riêng tư, viết để khách hàng đọc chứ không phải để luật sư né trách nhiệm."}
         />
         <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <div className="border-t-2 border-brass-500 pt-6">
               <div className="flex items-center gap-3">
                 <IconDoc className="h-5 w-5 shrink-0 text-brass-700" />
-                <h3 className="font-display text-[1.05rem] font-semibold">Chính sách dịch vụ</h3>
+                <h3 className="font-display text-[1.05rem] font-semibold">{t("servicePolicy")}</h3>
               </div>
               <div className="mt-5">
-                <Accordion items={POLICIES_SERVICE} />
+                <Accordion items={servicePolicies} />
               </div>
             </div>
           </Reveal>
@@ -744,11 +782,11 @@ export function Policies() {
               <div className="flex items-center gap-3">
                 <IconShield className="h-5 w-5 shrink-0 text-jade-600" />
                 <h3 className="font-display text-[1.05rem] font-semibold">
-                  Bảo mật &amp; riêng tư
+                  {t("privacyPolicy")}
                 </h3>
               </div>
               <div className="mt-5">
-                <Accordion items={POLICIES_PRIVACY} />
+                <Accordion items={privacyPolicies} />
               </div>
             </div>
           </Reveal>
@@ -761,9 +799,7 @@ export function Policies() {
           className="mt-12 flex flex-wrap items-center gap-3"
         >
           {[
-            "Bảo mật hồ sơ tuyệt đối",
-            "Không chia sẻ dữ liệu",
-            "Tuân thủ Luật Bảo vệ dữ liệu cá nhân 2025",
+            ...(isEnglish ? ["Strictly confidential files", "No data sharing", "Compliant with the Law on Personal Data Protection 2025"] : ["Bảo mật hồ sơ tuyệt đối", "Không chia sẻ dữ liệu", "Tuân thủ Luật Bảo vệ dữ liệu cá nhân 2025"]),
             `DPO: ${FIRM.dpoEmail}`,
           ].map((t) => (
             <motion.span
@@ -799,6 +835,7 @@ export function SecondaryContent({ onOpen }: { onOpen: (d: DocItem) => void }) {
 }
 
 export function Contact() {
+  const { locale, isEnglish, t } = useLocale();
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", area: AREAS[0], msg: "" });
   // Handler gắn cho cả <a> và <div>, nên khai báo ở mức HTMLElement.
@@ -806,9 +843,11 @@ export function Contact() {
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`[LHPT] ${form.area} — ${form.name || "Khách hàng"}`);
+    const subject = encodeURIComponent(`[LHPT] ${form.area} — ${form.name || (isEnglish ? "Client" : "Khách hàng")}`);
     const body = encodeURIComponent(
-      `Liên hệ: ${form.name}\nSĐT/Email: ${form.phone}\nLĩnh vực: ${form.area}\n\nNội dung:\n${form.msg}`
+      isEnglish
+        ? `Contact: ${form.name}\nPhone/Email: ${form.phone}\nPractice area: ${form.area}\n\nMatter details:\n${form.msg}`
+        : `Liên hệ: ${form.name}\nSĐT/Email: ${form.phone}\nLĩnh vực: ${form.area}\n\nNội dung:\n${form.msg}`
     );
     window.location.href = `mailto:${FIRM.email}?subject=${subject}&body=${body}`;
     setSent(true);
@@ -817,11 +856,15 @@ export function Contact() {
   const inputCls =
     "w-full border border-snow/12 bg-ink-900 px-3.5 py-3 text-[14px] text-snow placeholder-fog-500 outline-none transition-colors focus:border-brass-500";
 
+  const areaOptions = [
+    ...SERVICES.map((service) => ({ value: service.title, label: localizeService(service, locale).title })),
+    { value: "Gói pháp chế thường niên", label: isEnglish ? "Annual legal support plan" : "Gói pháp chế thường niên" },
+  ];
   const cards = [
-    { icon: IconPhone, label: "Hotline", value: FIRM.hotline, href: FIRM.hotlineHref, jade: false },
+    { icon: IconPhone, label: t("hotline"), value: FIRM.hotline, href: FIRM.hotlineHref, jade: false },
     { icon: IconMail, label: "Email", value: FIRM.email, href: `mailto:${FIRM.email}`, jade: false },
-    { icon: IconPin, label: "Văn phòng", value: FIRM.officeShort, href: undefined, jade: true },
-    { icon: IconClock, label: "Giờ làm việc", value: FIRM.hours, href: undefined, jade: true },
+    { icon: IconPin, label: t("office"), value: isEnglish ? "Nguyen Thi Minh Khai, District 1" : FIRM.officeShort, href: undefined, jade: true },
+    { icon: IconClock, label: t("workHours"), value: isEnglish ? "Mon–Fri · 08:00–18:00" : FIRM.hours, href: undefined, jade: true },
   ];
 
   return (
@@ -831,15 +874,17 @@ export function Contact() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-6">
             <SectionHead
-              kicker="Liên hệ"
+              kicker={t("contactKicker")}
               title={
                 <>
-                  Cần một quyết định
-                  <br />
-                  pháp lý <span className="gilded italic">đúng lúc?</span>
+                  {isEnglish ? (
+                    <>Need the right legal decision<br /><span className="gilded italic">at the right time?</span></>
+                  ) : (
+                    <>Cần một quyết định<br />pháp lý <span className="gilded italic">đúng lúc?</span></>
+                  )}
                 </>
               }
-              sub={`Gửi yêu cầu, luật sư phụ trách mảng sẽ phản hồi trong ${FIRM.responseTime}.`}
+              sub={interpolate(t("contactSub"), { time: isEnglish ? "24 business hours" : FIRM.responseTime })}
             />
             <motion.div
               variants={stagger(0.08, 0.1)}
@@ -890,39 +935,39 @@ export function Contact() {
               onSubmit={submit}
               className="border border-snow/12 bg-ink-850 p-7 shadow-[0_40px_100px_-45px_rgba(0,0,0,0.9)] sm:p-9"
             >
-              <p className="label text-[10px] text-brass-400">Yêu cầu tư vấn</p>
+              <p className="label text-[10px] text-brass-400">{isEnglish ? "Consultation enquiry" : "Yêu cầu tư vấn"}</p>
               <GoldRule className="mt-3 w-14" />
               <div className="mt-7 grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className="label mb-2 block text-[9.5px] text-fog-400" htmlFor="ct-name">
-                    Họ tên *
+                    {t("name")}
                   </label>
                   <input
                     id="ct-name"
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Nguyễn Văn A"
+                    placeholder={t("namePlaceholder")}
                     className={inputCls}
                   />
                 </div>
                 <div>
                   <label className="label mb-2 block text-[9.5px] text-fog-400" htmlFor="ct-phone">
-                    SĐT / Email *
+                    {t("phoneEmail")}
                   </label>
                   <input
                     id="ct-phone"
                     required
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    placeholder="0901 234 567"
+                    placeholder={t("phonePlaceholder")}
                     className={inputCls}
                   />
                 </div>
               </div>
               <div className="mt-5">
                 <label className="label mb-2 block text-[9.5px] text-fog-400" htmlFor="ct-area">
-                  Lĩnh vực
+                  {isEnglish ? "Practice area" : "Lĩnh vực"}
                 </label>
                 <select
                   id="ct-area"
@@ -930,23 +975,23 @@ export function Contact() {
                   onChange={(e) => setForm({ ...form, area: e.target.value })}
                   className={`${inputCls} appearance-none`}
                 >
-                  {AREAS.map((o) => (
-                    <option key={o} value={o} className="bg-ink-900">
-                      {o}
+                  {areaOptions.map((o) => (
+                    <option key={o.value} value={o.value} className="bg-ink-900">
+                      {o.label}
                     </option>
                   ))}
                 </select>
               </div>
               <div className="mt-5">
                 <label className="label mb-2 block text-[9.5px] text-fog-400" htmlFor="ct-msg">
-                  Nội dung vụ việc
+                  {t("message")}
                 </label>
                 <textarea
                   id="ct-msg"
                   rows={4}
                   value={form.msg}
                   onChange={(e) => setForm({ ...form, msg: e.target.value })}
-                  placeholder="Mô tả ngắn vụ việc, chúng tôi giữ bảo mật tuyệt đối."
+                  placeholder={t("messagePlaceholder")}
                   className={`${inputCls} resize-none`}
                 />
               </div>
@@ -957,7 +1002,7 @@ export function Contact() {
                 transition={{ type: "spring", ...SOFT }}
                 className="sheen group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-brass-500 px-6 py-4 text-[14px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400 hover:shadow-[0_15px_45px_-12px_rgba(201,164,76,0.6)]"
               >
-                Gửi yêu cầu · phản hồi trong 24h
+                {t("sendRequest")}
                 <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </motion.button>
               <AnimatePresence>
@@ -970,7 +1015,7 @@ export function Contact() {
                     className="label mt-4 flex items-center gap-2 overflow-hidden text-[10px] text-jade-300"
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-jade-500" />
-                    Đã mở trình soạn email · chúng tôi phản hồi trong 24 giờ
+                    {isEnglish ? "Email composer opened · we will respond within 24 hours" : "Đã mở trình soạn email · chúng tôi phản hồi trong 24 giờ"}
                   </motion.p>
                 )}
               </AnimatePresence>

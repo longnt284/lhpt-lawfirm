@@ -133,13 +133,28 @@ export function useScrollProgress() {
  */
 export function useSpotlight<T extends HTMLElement>() {
   const reduced = usePrefersReducedMotion();
+  const frame = useRef<number | null>(null);
+  const latest = useRef<{ el: T; x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (frame.current !== null) cancelAnimationFrame(frame.current);
+    };
+  }, []);
+
   return useCallback(
     (e: PointerEvent<T>) => {
       if (reduced) return;
-      const el = e.currentTarget;
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      el.style.setProperty("--my", `${e.clientY - r.top}px`);
+      latest.current = { el: e.currentTarget, x: e.clientX, y: e.clientY };
+      if (frame.current !== null) return;
+      frame.current = requestAnimationFrame(() => {
+        frame.current = null;
+        const current = latest.current;
+        if (!current) return;
+        const r = current.el.getBoundingClientRect();
+        current.el.style.setProperty("--mx", `${current.x - r.left}px`);
+        current.el.style.setProperty("--my", `${current.y - r.top}px`);
+      });
     },
     [reduced]
   );
