@@ -48,22 +48,21 @@ export const stagger = (staggerChildren = 0.08, delayChildren = 0): Variants => 
 });
 
 /**
- * Hiện lên kèm mờ nhòe nhẹ. Không dùng overflow:hidden ở bất kỳ đâu vì khung
+ * Hiện lên bằng opacity và transform nhẹ. Không dùng overflow:hidden ở bất kỳ đâu vì khung
  * che sẽ cắt dấu tiếng Việt (Ế, Ộ, Ữ) ở đỉnh con chữ.
  */
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(8px)" },
+  hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { duration: 0.85, ease: EASE_LUXE },
   },
 };
 
 export const fadeUpSmall: Variants = {
-  hidden: { opacity: 0, y: 14, filter: "blur(5px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.65, ease: EASE_LUXE } },
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE_LUXE } },
 };
 
 export const fadeIn: Variants = {
@@ -73,8 +72,8 @@ export const fadeIn: Variants = {
 
 /** Dòng tiêu đề: trượt lên xa hơn một chút để nhấn nhịp mở màn. */
 export const heroLine: Variants = {
-  hidden: { opacity: 0, y: 34, filter: "blur(10px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1.05, ease: EASE_LUXE } },
+  hidden: { opacity: 0, y: 34 },
+  show: { opacity: 1, y: 0, transition: { duration: 1.05, ease: EASE_LUXE } },
 };
 
 /** Vạch kẻ mảnh kéo dài từ trái sang — dấu hiệu thị giác mở đầu mỗi khối. */
@@ -85,12 +84,11 @@ export const ruleDraw: Variants = {
 
 /** Thẻ trong lưới: kèm hạ nhẹ độ lớn để có chiều sâu khi xuất hiện. */
 export const cardIn: Variants = {
-  hidden: { opacity: 0, y: 28, scale: 0.985, filter: "blur(7px)" },
+  hidden: { opacity: 0, y: 28, scale: 0.985 },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: { duration: 0.8, ease: EASE_LUXE },
   },
 };

@@ -95,14 +95,10 @@ export function Hero() {
               <span className="text-jade-400">[ {word} ]</span>
               <span className="animate-caret ml-1 inline-block h-3.5 w-2 translate-y-0.5 bg-brass-400" />
             </motion.p>
-            <motion.p
-              variants={fadeUp}
-              className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-fog-400"
-            >
+            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-fog-400">
               LHPT đồng hành cùng doanh nghiệp từ giấy phép đầu tiên đến phiên tòa cuối cùng:
-              xây dựng, bất động sản, điện mặt trời, doanh nghiệp, tuân thủ và bảo vệ dữ liệu
-              cá nhân.
-            </motion.p>
+              xây dựng, bất động sản, điện mặt trời, doanh nghiệp, tuân thủ và bảo vệ dữ liệu cá nhân.
+            </p>
             <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-4">
               <Magnetic strength={8}>
                 <a

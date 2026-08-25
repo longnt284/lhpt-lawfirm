@@ -296,6 +296,8 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
 }
 
 /* ================= VĂN BẢN PHÁP LUẬT ================= */
+const DOC_PAGE_SIZE = 12;
+
 const STATUS_STYLE: Record<string, string> = {
   "Còn hiệu lực": "border-jade-500/40 text-jade-300",
   "Hết hiệu lực một phần": "border-brass-500/50 text-brass-300",
@@ -319,6 +321,7 @@ export function Documents() {
   const [q, setQ] = useState("");
   const [field, setField] = useState("Tất cả");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [shown, setShown] = useState(DOC_PAGE_SIZE);
 
   const list = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -329,6 +332,12 @@ export function Documents() {
     );
   }, [q, field]);
 
+  useEffect(() => {
+    setShown(DOC_PAGE_SIZE);
+    setOpenId(null);
+  }, [q, field]);
+
+  const visible = list.slice(0, shown);
   const expiredCount = LEGAL_DOCS.filter((d) => d.status === "Hết hiệu lực").length;
 
   return (
@@ -416,7 +425,7 @@ export function Documents() {
             )}
 
             <AnimatePresence initial={false} mode="popLayout">
-              {list.map((d) => {
+              {visible.map((d) => {
                 const open = openId === d.id;
                 const expired = d.status === "Hết hiệu lực";
                 return (
@@ -523,6 +532,20 @@ export function Documents() {
             </AnimatePresence>
           </motion.div>
         </Reveal>
+
+        {shown < list.length && (
+          <Reveal delay={120}>
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => setShown((n) => n + DOC_PAGE_SIZE)}
+                className="label border border-snow/20 px-5 py-3 text-[9.5px] text-fog-300 transition-colors duration-300 hover:border-jade-500 hover:text-jade-300"
+              >
+                Xem thêm {Math.min(DOC_PAGE_SIZE, list.length - shown)} văn bản
+              </button>
+            </div>
+          </Reveal>
+        )}
+
         <Reveal delay={220}>
           <p className="label mt-5 text-[9.5px] text-fog-500">
             Tổng hợp phục vụ tham khảo · Đối chiếu công báo trước khi áp dụng
@@ -761,6 +784,19 @@ export function Policies() {
 
 /* ================= LIÊN HỆ ================= */
 const AREAS = [...SERVICES.map((s) => s.title), "Gói pháp chế thường niên"];
+
+export function SecondaryContent({ onOpen }: { onOpen: (d: DocItem) => void }) {
+  return (
+    <>
+      <News onOpen={onOpen} />
+      <Articles onOpen={onOpen} />
+      <Documents />
+      <Team />
+      <Policies />
+      <Contact />
+    </>
+  );
+}
 
 export function Contact() {
   const [sent, setSent] = useState(false);

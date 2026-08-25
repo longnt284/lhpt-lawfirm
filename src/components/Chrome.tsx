@@ -188,7 +188,7 @@ export function Header() {
         transition={{ duration: 0.5, ease: EASE_LUXE }}
         className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8"
       >
-        <a href="#top" className="group flex items-center gap-3" aria-label="LHPT Law Firm">
+        <a href="#top" className="group flex items-center gap-3">
           <motion.span
             whileHover={{ rotate: -6, scale: 1.06 }}
             transition={{ type: "spring", ...SOFT }}

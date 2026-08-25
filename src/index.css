@@ -379,6 +379,13 @@ p {
   width: 100%;
 }
 
+/* ---------- trì hoãn layout dưới fold ---------- */
+/* Browser vẫn giữ chỗ bằng intrinsic size nhưng không layout/paint toàn bộ trang ngay lần đầu. */
+main > section:nth-of-type(n + 4) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 /* ---------- misc ---------- */
 .text-outline {
   -webkit-text-stroke: 1px rgba(148, 178, 208, 0.16);
