@@ -38,7 +38,6 @@ const DICTIONARY = {
     pricingKicker: "Pháp chế thuê ngoài",
     pricingTitle: "Một khoản phí rõ ràng.",
     pricingSub: "Chọn mức độ đồng hành phù hợp với quy mô, nhịp vận hành và khẩu vị rủi ro của doanh nghiệp.",
-    perYear: "/ year",
     firstTime: "Ưu đãi lần đầu sử dụng dịch vụ",
     firstTimeDetail: "Doanh nghiệp ký hợp đồng dịch vụ pháp lý với LHPT lần đầu được giảm 50% phí của kỳ hợp đồng đầu tiên.",
     mostComplete: "Đầy đủ nhất",
@@ -142,7 +141,6 @@ const DICTIONARY = {
     pricingKicker: "Outsourced legal function",
     pricingTitle: "One clear fee.",
     pricingSub: "Choose the level of support that fits your scale, operating rhythm, and risk appetite.",
-    perYear: "/ year",
     firstTime: "First-engagement offer",
     firstTimeDetail: "Businesses signing their first legal services agreement with LHPT receive 50% off the first contract term.",
     mostComplete: "Most comprehensive",
@@ -317,6 +315,10 @@ const LEGAL_NAME_EN: Record<string, string> = {
   d30: "Law on Commercial Arbitration 2010",
   d31: "Civil Procedure Code 2015",
   d32: "Civil Code 2015",
+  d33: "Decree on the Direct Power Purchase Mechanism (2024 version)",
+  d34: "Decree on Electricity Operation Licences",
+  d35: "Decree amending Decree No. 57/2025/NĐ-CP and Decree No. 58/2025/NĐ-CP",
+  d36: "Decree detailing the Law on Personal Data Protection",
 };
 
 const CATEGORY_MAP: Record<string, [string, string]> = {

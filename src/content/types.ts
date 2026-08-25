@@ -17,5 +17,11 @@ export type DocItem = {
   featured?: boolean;
 };
 
-/** Dữ liệu thô của một bài viết; `readMinutes` được tính khi dựng. */
-export type DocSeed = Omit<DocItem, "id" | "kind" | "readMinutes">;
+/**
+ * Dữ liệu thô của một bài viết; `readMinutes` được tính khi dựng.
+ *
+ * `id` khai báo tường minh chứ không suy ra từ vị trí trong mảng: bản dịch tiếng
+ * Anh trong src/content/english.ts tra theo id, nên nếu id trôi theo thứ tự sắp
+ * xếp thì mỗi lần chèn hoặc đổi chỗ một tin là toàn bộ bản dịch lệch sang bài khác.
+ */
+export type DocSeed = Omit<DocItem, "kind" | "readMinutes">;

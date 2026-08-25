@@ -31,6 +31,7 @@ const PHU = "LS. Phú Hoàng";
 const SEEDS: DocSeed[] = [
   /* ============ XÂY DỰNG · BẤT ĐỘNG SẢN ============ */
   {
+    id: "a1",
     category: CAT_CONSTRUCTION,
     title: "Điều chỉnh giá hợp đồng xây dựng khi giá vật liệu biến động",
     excerpt:
@@ -47,6 +48,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a2",
     category: CAT_CONSTRUCTION,
     title: "Nghiệm thu công việc xây dựng và điều kiện phát sinh quyền thanh toán",
     excerpt:
@@ -61,6 +63,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a3",
     category: CAT_CONSTRUCTION,
     title: "Chậm tiến độ thi công: mức phạt vi phạm bị giới hạn tới đâu",
     excerpt:
@@ -79,6 +82,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a4",
     category: CAT_CONSTRUCTION,
     title: "Bảo lãnh tạm ứng và cơ chế thu hồi tiền tạm ứng",
     excerpt:
@@ -93,6 +97,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a5",
     category: CAT_CONSTRUCTION,
     title: "Khối lượng phát sinh ngoài hợp đồng: làm rồi mới bàn tiền là muộn",
     excerpt:
@@ -114,6 +119,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a6",
     category: CAT_CONSTRUCTION,
     title: "Hợp đồng thầu phụ back-to-back: khi điều khoản không khớp nhau",
     excerpt:
@@ -128,6 +134,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a7",
     category: CAT_CONSTRUCTION,
     title: "Quyết toán hợp đồng bị treo: gỡ từ hồ sơ hay từ tố tụng",
     excerpt:
@@ -148,6 +155,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a8",
     category: CAT_CONSTRUCTION,
     title: "Bảo hành công trình: thời hạn, tiền giữ lại và trách nhiệm sau bàn giao",
     excerpt:
@@ -162,6 +170,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a9",
     category: CAT_CONSTRUCTION,
     title: "Giấy phép xây dựng: những trường hợp được miễn và bẫy thường gặp",
     excerpt:
@@ -181,6 +190,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a10",
     category: CAT_CONSTRUCTION,
     title: "Chuyển nhượng một phần dự án bất động sản: điều kiện và thời điểm",
     excerpt:
@@ -199,6 +209,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a11",
     category: CAT_CONSTRUCTION,
     title: "Nhà ở hình thành trong tương lai: tiến độ thanh toán bị siết như thế nào",
     excerpt:
@@ -219,6 +230,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a12",
     category: CAT_CONSTRUCTION,
     title: "Bảo lãnh ngân hàng cho nhà ở hình thành trong tương lai",
     excerpt:
@@ -236,6 +248,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a13",
     category: CAT_CONSTRUCTION,
     title: "Phân lô bán nền sau Luật Kinh doanh bất động sản 2023",
     excerpt:
@@ -254,6 +267,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a14",
     category: CAT_CONSTRUCTION,
     title: "Hợp đồng đặt cọc bất động sản và nguy cơ bị tuyên vô hiệu",
     excerpt:
@@ -271,6 +285,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a15",
     category: CAT_CONSTRUCTION,
     title: "Thu hồi đất và phương án bồi thường: đâu là điểm khiếu nại có cơ sở",
     excerpt:
@@ -291,6 +306,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a16",
     category: CAT_CONSTRUCTION,
     title: "Tiền sử dụng đất khi chuyển mục đích sử dụng: chốt thời điểm là chốt chi phí",
     excerpt:
@@ -309,6 +325,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a17",
     category: CAT_CONSTRUCTION,
     title: "Kiến nghị kết quả lựa chọn nhà thầu: cửa hẹp và thời hạn ngắn",
     excerpt:
@@ -326,6 +343,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a18",
     category: CAT_CONSTRUCTION,
     title: "Tính hợp lệ của hồ sơ dự thầu: loại vì hình thức nhiều hơn vì năng lực",
     excerpt:
@@ -340,6 +358,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a19",
     category: CAT_CONSTRUCTION,
     title: "Sự cố công trình xây dựng: ai chịu trách nhiệm và chịu tới đâu",
     excerpt:
@@ -358,6 +377,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a20",
     category: CAT_CONSTRUCTION,
     title: "Điều kiện năng lực và chứng chỉ hành nghề: rủi ro nằm ở hợp đồng đã ký",
     excerpt:
@@ -377,6 +397,7 @@ const SEEDS: DocSeed[] = [
 
   /* ============ TỐ TỤNG · GIẢI QUYẾT TRANH CHẤP ============ */
   {
+    id: "a21",
     category: CAT_LITIGATION,
     title: "Thời hiệu khởi kiện tranh chấp hợp đồng: đếm từ ngày nào",
     excerpt:
@@ -396,6 +417,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a22",
     category: CAT_LITIGATION,
     title: "Phạt vi phạm và bồi thường thiệt hại: chọn sai luật là mất quyền",
     excerpt:
@@ -414,6 +436,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a23",
     category: CAT_LITIGATION,
     title: "Thỏa thuận trọng tài không xác định được: hậu quả và cách vá",
     excerpt:
@@ -428,6 +451,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a24",
     category: CAT_LITIGATION,
     title: "Yêu cầu hủy phán quyết trọng tài: phạm vi hẹp hơn nhiều so với kỳ vọng",
     excerpt:
@@ -442,6 +466,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a25",
     category: CAT_LITIGATION,
     title: "Biện pháp khẩn cấp tạm thời: công cụ quyết định trong tranh chấp có tài sản",
     excerpt:
@@ -459,6 +484,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a26",
     category: CAT_LITIGATION,
     title: "Nghĩa vụ chứng minh thuộc về đương sự: hệ quả với cách lưu hồ sơ",
     excerpt:
@@ -473,6 +499,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a27",
     category: CAT_LITIGATION,
     title: "Chứng cứ điện tử trong tranh chấp thương mại: email và tin nhắn dùng được tới đâu",
     excerpt:
@@ -487,6 +514,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a28",
     category: CAT_LITIGATION,
     title: "Yêu cầu hủy nghị quyết đại hội đồng cổ đông: thời hạn rất ngắn",
     excerpt:
@@ -504,6 +532,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a29",
     category: CAT_LITIGATION,
     title: "Thi hành án dân sự: bản án có hiệu lực không đồng nghĩa với thu được tiền",
     excerpt:
@@ -521,6 +550,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a30",
     category: CAT_LITIGATION,
     title: "Lãi chậm trả trong tranh chấp hợp đồng: tính theo cơ sở nào",
     excerpt:
@@ -538,6 +568,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a31",
     category: CAT_LITIGATION,
     title: "Đơn phương chấm dứt và hủy bỏ hợp đồng: hai chế định, hai hệ quả",
     excerpt:
@@ -557,6 +588,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a32",
     category: CAT_LITIGATION,
     title: "Bất khả kháng và hoàn cảnh thay đổi cơ bản: hai lối thoát khác nhau",
     excerpt:
@@ -571,6 +603,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a33",
     category: CAT_LITIGATION,
     title: "Thẩm quyền của Tòa án theo lãnh thổ: nơi nộp đơn không phải lúc nào cũng tự chọn",
     excerpt:
@@ -585,6 +618,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a34",
     category: CAT_LITIGATION,
     title: "Án phí và chi phí tố tụng: cấu phần thường bị bỏ quên khi tính toán khởi kiện",
     excerpt:
@@ -599,6 +633,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a35",
     category: CAT_LITIGATION,
     title: "Hòa giải trong tố tụng dân sự: bắt buộc về thủ tục, tự nguyện về nội dung",
     excerpt:
@@ -613,6 +648,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a36",
     category: CAT_LITIGATION,
     title: "Công nhận và cho thi hành phán quyết trọng tài nước ngoài tại Việt Nam",
     excerpt:
@@ -631,6 +667,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a37",
     category: CAT_LITIGATION,
     title: "Khiếu nại hành chính và khởi kiện vụ án hành chính về đất đai",
     excerpt:
@@ -648,6 +685,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a38",
     category: CAT_LITIGATION,
     title: "Kháng cáo phúc thẩm: giới hạn của việc bổ sung chứng cứ mới",
     excerpt:
@@ -662,6 +700,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a39",
     category: CAT_LITIGATION,
     title: "Giám đốc thẩm và tái thẩm: không phải cấp xét xử thứ ba",
     excerpt:
@@ -676,6 +715,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a40",
     category: CAT_LITIGATION,
     title: "Ủy quyền tham gia tố tụng: phạm vi ủy quyền quyết định điều gì làm được",
     excerpt:
@@ -695,12 +735,13 @@ const SEEDS: DocSeed[] = [
 
   /* ============ ĐIỆN MẶT TRỜI · NĂNG LƯỢNG ============ */
   {
+    id: "a41",
     category: CAT_ENERGY,
     title: "DPPA qua lưới quốc gia và qua đường dây riêng: hai cấu trúc rủi ro khác nhau",
     excerpt:
       "Cùng gọi là mua bán điện trực tiếp, nhưng ai chịu rủi ro sản lượng và rủi ro giá lại hoàn toàn khác nhau giữa hai hình thức.",
     content: [
-      "Nghị định số 80/2024/NĐ-CP quy định cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo và khách hàng sử dụng điện lớn theo hai hình thức: qua đường dây kết nối riêng và qua lưới điện quốc gia.",
+      "Nghị định số 57/2025/NĐ-CP ngày 03/3/2025 quy định cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo và khách hàng sử dụng điện lớn theo hai hình thức: qua đường dây kết nối riêng và qua lưới điện quốc gia. Nghị định này bãi bỏ Nghị định số 80/2024/NĐ-CP và đã được sửa đổi, bổ sung bởi Nghị định số 243/2026/NĐ-CP ngày 26/6/2026.",
       "Với đường dây kết nối riêng, quan hệ gần với một hợp đồng mua bán điện song phương thuần túy, rủi ro tập trung vào khả năng vận hành của nhà máy và nhu cầu thực tế của khách hàng. Với hình thức qua lưới quốc gia, cấu trúc phức tạp hơn vì có hợp đồng kỳ hạn và cơ chế thanh toán chênh lệch so với giá thị trường điện.",
       "Điểm cần chốt sớm khi đàm phán là ai gánh phần chênh lệch khi sản lượng thực tế lệch khỏi sản lượng cam kết, và ngưỡng lệch nào thì kích hoạt điều chỉnh. Phần lớn tranh chấp DPPA về sau bắt nguồn từ chỗ này chứ không phải từ mức giá.",
       "Ngoài rủi ro sản lượng, cần chốt trước cơ chế xử lý khi một trong hai bên không còn đáp ứng điều kiện tham gia. Khách hàng sử dụng điện lớn thu hẹp sản xuất và tụt xuống dưới ngưỡng, hoặc đơn vị phát điện thay đổi cơ cấu sở hữu, đều là những tình huống có thật và cần có lối ra trong hợp đồng.",
@@ -708,30 +749,36 @@ const SEEDS: DocSeed[] = [
       "Về đàm phán, nên xây bảng phân bổ rủi ro trước khi bàn tới giá. Bảng này liệt kê từng sự kiện có thể xảy ra trong vòng đời hợp đồng, từ giảm phát theo yêu cầu điều độ tới thay đổi chính sách và tới việc một bên chấm dứt sớm, kèm bên chịu hậu quả tương ứng. Khi bảng phân bổ đã rõ, việc chốt giá trở nên đơn giản hơn nhiều.",
     ],
     basis: [
-      "Nghị định số 80/2024/NĐ-CP",
+      "Nghị định số 57/2025/NĐ-CP",
+      "Nghị định số 243/2026/NĐ-CP",
       "Luật Điện lực số 61/2024/QH15",
+      "Nghị định số 80/2024/NĐ-CP (đã hết hiệu lực)",
     ],
     date: "08/2026",
     author: TRUNG,
   },
   {
+    id: "a42",
     category: CAT_ENERGY,
     title: "Điện mặt trời mái nhà tự sản tự tiêu: ranh giới của mô hình",
     excerpt:
       "Tự sản tự tiêu được khuyến khích, nhưng khi lượng điện dư đưa lên lưới vượt ngưỡng, bản chất pháp lý của dự án thay đổi.",
     content: [
       "Luật Điện lực số 61/2024/QH15 và Nghị định số 58/2025/NĐ-CP quy định về phát triển điện mặt trời mái nhà tự sản tự tiêu, gồm điều kiện đầu tư, đấu nối và xử lý sản lượng dư phát lên lưới.",
-      "Ranh giới quan trọng nằm ở mục đích sử dụng. Hệ thống lắp để phục vụ nhu cầu tại chỗ có thủ tục nhẹ hơn nhiều so với dự án nguồn điện. Khi tỷ trọng điện bán ra vượt quá mức phục vụ nội bộ, dự án có nguy cơ bị xem xét lại về tính chất và về nghĩa vụ giấy phép.",
+      "Ranh giới quan trọng nằm ở mục đích sử dụng. Hệ thống lắp để phục vụ nhu cầu tại chỗ có thủ tục nhẹ hơn nhiều so với dự án nguồn điện. Khi tỷ trọng điện bán ra vượt quá mức phục vụ nội bộ, dự án có nguy cơ bị xem xét lại về tính chất và về nghĩa vụ giấy phép theo Nghị định số 61/2025/NĐ-CP.",
+      "Trần sản lượng dư được bán lên lưới đã thay đổi một lần: Nghị định số 243/2026/NĐ-CP ngày 26/6/2026 nâng mức trần từ 20% lên tối đa 50% sản lượng tại đầu ra inverter. Phương án đầu tư lập theo trần cũ cần được tính lại trước khi chốt.",
       "Với doanh nghiệp sản xuất, việc cần làm trước khi đầu tư là tính toán phụ tải thực tế theo giờ chứ không theo tổng sản lượng năm. Nhà máy nghỉ cuối tuần trong khi hệ thống vẫn phát là tình huống dễ đẩy tỷ lệ điện dư lên cao ngoài dự kiến.",
     ],
     basis: [
       "Luật Điện lực số 61/2024/QH15",
       "Nghị định số 58/2025/NĐ-CP",
+      "Nghị định số 243/2026/NĐ-CP",
     ],
     date: "08/2026",
     author: LONG,
   },
   {
+    id: "a43",
     category: CAT_ENERGY,
     title: "Hợp đồng thuê mái nhà lắp điện mặt trời: rủi ro dài hạn của bên cho thuê",
     excerpt:
@@ -749,6 +796,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a44",
     category: CAT_ENERGY,
     title: "Mô hình ESCO trong điện mặt trời: bản chất pháp lý không phải là mua bán điện",
     excerpt:
@@ -767,23 +815,25 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a45",
     category: CAT_ENERGY,
     title: "Giấy phép hoạt động điện lực: khi nào bắt buộc, khi nào được miễn",
     excerpt:
       "Không phải mọi hoạt động phát điện đều cần giấy phép, nhưng xác định sai nhóm là rủi ro pháp lý kéo dài cả vòng đời dự án.",
     content: [
-      "Luật Điện lực số 61/2024/QH15 và Nghị định số 58/2025/NĐ-CP quy định các lĩnh vực hoạt động điện lực phải có giấy phép, cùng các trường hợp được miễn trừ theo quy mô hoặc theo tính chất hoạt động.",
+      "Luật Điện lực số 61/2024/QH15 và Nghị định số 61/2025/NĐ-CP ngày 04/3/2025 quy định các lĩnh vực hoạt động điện lực phải có giấy phép, hồ sơ và trình tự cấp phép, cùng các trường hợp được miễn trừ theo mức công suất hoặc theo tính chất hoạt động. Đây là văn bản riêng về giấy phép, không nằm trong Nghị định số 58/2025/NĐ-CP về phát triển điện năng lượng tái tạo.",
       "Vấn đề thường gặp là dự án khởi động theo diện được miễn, sau đó mở rộng công suất hoặc chuyển sang bán điện cho bên thứ ba mà không rà lại nghĩa vụ giấy phép. Tại thời điểm đó, hoạt động đã vượt phạm vi miễn trừ.",
       "Với dự án dự kiến mở rộng theo giai đoạn, nên xác định ngay từ đầu ngưỡng công suất và mô hình bán điện nào sẽ kích hoạt nghĩa vụ xin giấy phép, và đưa mốc đó vào kế hoạch triển khai thay vì xử lý khi đã vận hành.",
     ],
     basis: [
       "Luật Điện lực số 61/2024/QH15",
-      "Nghị định số 58/2025/NĐ-CP",
+      "Nghị định số 61/2025/NĐ-CP",
     ],
     date: "07/2026",
     author: TRUNG,
   },
   {
+    id: "a46",
     category: CAT_ENERGY,
     title: "Ngày vận hành thương mại và tranh chấp giá FIT: hồ sơ quyết định tất cả",
     excerpt:
@@ -804,6 +854,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a47",
     category: CAT_ENERGY,
     title: "Hợp đồng EPC điện mặt trời: nghiệm thu hiệu suất là mắt xích yếu nhất",
     excerpt:
@@ -825,6 +876,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a48",
     category: CAT_ENERGY,
     title: "Suy giảm hiệu suất tấm pin và bảo hành thiết bị: hai loại cam kết dễ nhầm",
     excerpt:
@@ -842,6 +894,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a49",
     category: CAT_ENERGY,
     title: "Hợp đồng O&M và cam kết sản lượng: đo bằng gì và trừ những gì",
     excerpt:
@@ -859,6 +912,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a50",
     category: CAT_ENERGY,
     title: "Thỏa thuận đấu nối: điểm nghẽn thường xuất hiện muộn nhất trong tiến độ dự án",
     excerpt:
@@ -876,6 +930,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a51",
     category: CAT_ENERGY,
     title: "Phòng cháy chữa cháy cho hệ thống điện mặt trời mái nhà",
     excerpt:
@@ -894,23 +949,27 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a52",
     category: CAT_ENERGY,
     title: "Bán điện dư lên lưới: quyền, giới hạn và thủ tục",
     excerpt:
       "Sản lượng dư của hệ thống tự sản tự tiêu không mặc nhiên được mua với giá do chủ đầu tư mong muốn.",
     content: [
-      "Nghị định số 58/2025/NĐ-CP hướng dẫn Luật Điện lực số 61/2024/QH15 quy định về xử lý sản lượng dư của hệ thống điện mặt trời mái nhà tự sản tự tiêu phát lên lưới điện quốc gia.",
-      "Với chủ đầu tư, hai vấn đề cần làm rõ trước khi lập phương án tài chính là tỷ lệ sản lượng dư được ghi nhận và cơ sở xác định giá. Mô hình tài chính giả định bán được toàn bộ sản lượng dư theo giá bán lẻ thường không phản ánh đúng khung pháp lý.",
+      "Nghị định số 58/2025/NĐ-CP hướng dẫn Luật Điện lực số 61/2024/QH15 quy định về xử lý sản lượng dư của hệ thống điện mặt trời mái nhà tự sản tự tiêu phát lên lưới điện quốc gia. Từ ngày 26/6/2026, Nghị định số 243/2026/NĐ-CP nâng trần sản lượng dư được bán từ 20% lên tối đa 50% sản lượng tại đầu ra inverter.",
+      "Với chủ đầu tư, hai vấn đề cần làm rõ trước khi lập phương án tài chính là tỷ lệ sản lượng dư được ghi nhận và cơ sở xác định giá. Mô hình tài chính giả định bán được toàn bộ sản lượng dư theo giá bán lẻ vẫn không phản ánh đúng khung pháp lý, kể cả sau khi trần được nâng lên 50%.",
+      "Hai ngoại lệ đáng lưu ý. Đến hết ngày 31/12/2030, bên mua và bên bán được thỏa thuận tỷ lệ cao hơn 50% nếu lưới điện tại khu vực đấu nối còn khả năng tiếp nhận và đáp ứng các điều kiện kèm theo. Với hệ thống tại khu vực miền núi, biên giới, hải đảo chưa được cấp điện từ lưới quốc gia, sản lượng dư được bán không bị giới hạn tỷ lệ.",
       "Về thủ tục, cần thống nhất trước với đơn vị điện lực về phương thức đo đếm hai chiều và cách ghi nhận sản lượng, vì đây là dữ liệu gốc cho mọi tranh luận thanh toán về sau.",
     ],
     basis: [
       "Nghị định số 58/2025/NĐ-CP",
+      "Nghị định số 243/2026/NĐ-CP",
       "Luật Điện lực số 61/2024/QH15",
     ],
     date: "04/2026",
     author: LONG,
   },
   {
+    id: "a53",
     category: CAT_ENERGY,
     title: "Chuyển nhượng dự án điện mặt trời: thẩm định pháp lý nên bắt đầu từ đâu",
     excerpt:
@@ -931,6 +990,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a54",
     category: CAT_ENERGY,
     title: "Hợp đồng mua bán điện 20 năm: quản trị rủi ro của một cam kết rất dài",
     excerpt:
@@ -949,23 +1009,26 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a55",
     category: CAT_ENERGY,
     title: "Chứng nhận nguồn gốc điện tái tạo cho chuỗi cung ứng xuất khẩu",
     excerpt:
       "Đối tác nhập khẩu yêu cầu chứng minh nguồn gốc điện. Lắp điện mặt trời mái nhà chưa chắc đủ để đáp ứng yêu cầu đó.",
     content: [
       "Doanh nghiệp xuất khẩu ngày càng chịu yêu cầu chứng minh tỷ lệ điện tái tạo trong quá trình sản xuất, xuất phát từ cam kết của khách hàng nước ngoài và từ các cơ chế điều chỉnh liên quan tới phát thải.",
-      "Về pháp lý trong nước, cơ chế mua bán điện trực tiếp theo Nghị định số 80/2024/NĐ-CP là công cụ chính để gắn sản lượng điện tái tạo với một khách hàng cụ thể. Hệ thống điện mặt trời mái nhà tự sản tự tiêu đóng góp một phần, nhưng thường không đủ tỷ trọng cho nhà máy có phụ tải lớn.",
+      "Về pháp lý trong nước, cơ chế mua bán điện trực tiếp theo Nghị định số 57/2025/NĐ-CP, được sửa đổi bởi Nghị định số 243/2026/NĐ-CP, là công cụ chính để gắn sản lượng điện tái tạo với một khách hàng cụ thể. Hệ thống điện mặt trời mái nhà tự sản tự tiêu đóng góp một phần, nhưng thường không đủ tỷ trọng cho nhà máy có phụ tải lớn.",
       "Khi làm việc với đối tác, điều cần thống nhất sớm là chuẩn chứng minh nào được chấp nhận và ai là bên phát hành. Đầu tư hạ tầng trước rồi mới phát hiện chuẩn chứng minh không phù hợp là tình huống đắt đỏ.",
     ],
     basis: [
-      "Nghị định số 80/2024/NĐ-CP",
+      "Nghị định số 57/2025/NĐ-CP",
+      "Nghị định số 243/2026/NĐ-CP",
       "Luật Điện lực số 61/2024/QH15",
     ],
     date: "03/2026",
     author: TRUNG,
   },
   {
+    id: "a56",
     category: CAT_ENERGY,
     title: "Quy hoạch phát triển điện lực và chấp thuận chủ trương đầu tư",
     excerpt:
@@ -983,6 +1046,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a57",
     category: CAT_ENERGY,
     title: "Bảo hiểm dự án năng lượng: khoảng trống giữa các đơn bảo hiểm",
     excerpt:
@@ -1000,6 +1064,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a58",
     category: CAT_ENERGY,
     title: "Tranh chấp sản lượng với đơn vị mua điện: dữ liệu đo đếm là chứng cứ gốc",
     excerpt:
@@ -1017,6 +1082,7 @@ const SEEDS: DocSeed[] = [
     author: LONG,
   },
   {
+    id: "a59",
     category: CAT_ENERGY,
     title: "Thay đổi cổ đông trong doanh nghiệp dự án điện: điều khoản ràng buộc dễ bị bỏ qua",
     excerpt:
@@ -1035,6 +1101,7 @@ const SEEDS: DocSeed[] = [
     author: TRUNG,
   },
   {
+    id: "a60",
     category: CAT_ENERGY,
     title: "Đất cho dự án năng lượng tái tạo: hình thức sử dụng đất quyết định quyền thế chấp",
     excerpt:
@@ -1054,6 +1121,7 @@ const SEEDS: DocSeed[] = [
 
   /* ============ DOANH NGHIỆP · TUÂN THỦ ============ */
   {
+    id: "a61",
     category: CAT_CORPORATE,
     title: "Điều lệ công ty sau sửa đổi Luật Doanh nghiệp 2025: rà lại những gì",
     excerpt:
@@ -1071,6 +1139,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a62",
     category: CAT_CORPORATE,
     title: "Ba bậc thuế suất thu nhập doanh nghiệp: doanh nghiệp giáp ngưỡng cần chốt gì",
     excerpt:
@@ -1091,6 +1160,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a63",
     category: CAT_CORPORATE,
     title: "Ngưỡng doanh thu không chịu thuế giá trị gia tăng của hộ kinh doanh tăng lên 200 triệu",
     excerpt:
@@ -1108,6 +1178,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a64",
     category: CAT_CORPORATE,
     title: "Điều kiện khấu trừ thuế giá trị gia tăng đầu vào đã siết lại",
     excerpt:
@@ -1125,6 +1196,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a65",
     category: CAT_CORPORATE,
     title: "Người đại diện theo pháp luật: nhiều người đại diện và bài toán phân quyền",
     excerpt:
@@ -1142,6 +1214,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a66",
     category: CAT_CORPORATE,
     title: "Chuyển nhượng phần vốn góp trong công ty trách nhiệm hữu hạn",
     excerpt:
@@ -1156,6 +1229,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a67",
     category: CAT_CORPORATE,
     title: "Tăng và giảm vốn điều lệ: thủ tục dễ, hệ quả không dễ",
     excerpt:
@@ -1170,6 +1244,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a68",
     category: CAT_CORPORATE,
     title: "Phát hành trái phiếu doanh nghiệp riêng lẻ sau sửa đổi 2025",
     excerpt:
@@ -1187,6 +1262,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a69",
     category: CAT_CORPORATE,
     title: "Nghị quyết hội đồng quản trị và đại hội đồng cổ đông: hiệu lực bắt đầu từ trình tự",
     excerpt:
@@ -1201,6 +1277,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a70",
     category: CAT_CORPORATE,
     title: "Giao dịch với người có liên quan: nghĩa vụ công khai và phê duyệt",
     excerpt:
@@ -1215,6 +1292,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a71",
     category: CAT_CORPORATE,
     title: "Chia, tách, hợp nhất, sáp nhập: chuyển giao nghĩa vụ đi kèm chuyển giao tài sản",
     excerpt:
@@ -1232,6 +1310,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a72",
     category: CAT_CORPORATE,
     title: "Giải thể doanh nghiệp: điều kiện thanh toán hết nợ là cửa ải thật sự",
     excerpt:
@@ -1249,6 +1328,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a73",
     category: CAT_CORPORATE,
     title: "Nội quy lao động: hiệu lực gắn với việc đăng ký, không gắn với việc ban hành",
     excerpt:
@@ -1265,6 +1345,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a74",
     category: CAT_CORPORATE,
     title: "Thử việc và giao kết hợp đồng lao động: những giới hạn dễ vi phạm",
     excerpt:
@@ -1279,6 +1360,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a75",
     category: CAT_CORPORATE,
     title: "Sa thải người lao động: trình tự chặt hơn nhiều so với căn cứ",
     excerpt:
@@ -1295,6 +1377,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a76",
     category: CAT_CORPORATE,
     title: "Bảo hiểm xã hội bắt buộc: rủi ro từ cách cấu trúc thu nhập",
     excerpt:
@@ -1309,6 +1392,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a77",
     category: CAT_CORPORATE,
     title: "Thời hiệu truy thu thuế và ấn định thuế: doanh nghiệp cần lưu hồ sơ bao lâu",
     excerpt:
@@ -1323,6 +1407,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a78",
     category: CAT_CORPORATE,
     title: "Ngành nghề đầu tư kinh doanh có điều kiện: đăng ký được không đồng nghĩa hoạt động được",
     excerpt:
@@ -1337,6 +1422,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a79",
     category: CAT_CORPORATE,
     title: "Thẩm định pháp lý trước giao dịch M&A: thứ tự công việc quyết định chi phí",
     excerpt:
@@ -1358,6 +1444,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a80",
     category: CAT_CORPORATE,
     title: "Bảo lãnh và thế chấp trong nhóm công ty: khi công ty con bảo lãnh cho công ty mẹ",
     excerpt:
@@ -1377,12 +1464,13 @@ const SEEDS: DocSeed[] = [
 
   /* ============ BẢO MẬT DỮ LIỆU · CÔNG NGHỆ ============ */
   {
+    id: "a81",
     category: CAT_DATA,
     title: "Căn cứ pháp lý cho việc xử lý dữ liệu cá nhân: đồng ý không phải căn cứ duy nhất",
     excerpt:
       "Doanh nghiệp dựa toàn bộ vào một bản đồng ý ký một lần đang đứng trên nền yếu nhất trong các phương án.",
     content: [
-      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15, có hiệu lực từ ngày 01/01/2026, xác lập quyền của chủ thể dữ liệu và nghĩa vụ của bên kiểm soát, bên xử lý dữ liệu cá nhân.",
+      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15, có hiệu lực từ ngày 01/01/2026, xác lập quyền của chủ thể dữ liệu và nghĩa vụ của bên kiểm soát, bên xử lý dữ liệu cá nhân. Nghị định số 356/2025/NĐ-CP quy định chi tiết và biện pháp thi hành, có hiệu lực cùng ngày và thay thế Nghị định số 13/2023/NĐ-CP.",
       "Điểm cần hiểu đúng là mỗi hoạt động xử lý phải có căn cứ riêng, gắn với mục đích cụ thể. Một bản đồng ý chung chung ký khi đăng ký tài khoản không tự động bao phủ mọi mục đích phát sinh sau đó, đặc biệt là các mục đích tiếp thị hoặc phân tích hành vi.",
       "Việc cần làm trước tiên không phải viết lại chính sách quyền riêng tư, mà lập bản đồ luồng dữ liệu: thu thập gì, từ ai, cho mục đích nào, lưu ở đâu, chia sẻ cho bên nào. Không có bản đồ này, mọi tài liệu tuân thủ đều là suy đoán.",
       "Bản đồ luồng dữ liệu nên lập theo quy trình nghiệp vụ chứ không theo phòng ban. Một khách hàng đi qua nhiều bộ phận từ lúc để lại thông tin liên hệ tới lúc kết thúc hợp đồng, và dữ liệu của họ được sao chép sang nhiều hệ thống trên đường đi. Lập theo phòng ban sẽ bỏ sót chính các điểm chuyển giao này.",
@@ -1391,12 +1479,13 @@ const SEEDS: DocSeed[] = [
     ],
     basis: [
       "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Nghị định số 13/2023/NĐ-CP",
+      "Nghị định số 356/2025/NĐ-CP",
     ],
     date: "08/2026",
     author: HUY,
   },
   {
+    id: "a82",
     category: CAT_DATA,
     title: "Sự đồng ý của chủ thể dữ liệu: điều kiện để một bản đồng ý có giá trị",
     excerpt:
@@ -1411,40 +1500,45 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a83",
     category: CAT_DATA,
     title: "Dữ liệu cá nhân nhạy cảm: nhóm dữ liệu đòi hỏi mức bảo vệ cao hơn",
     excerpt:
       "Phân loại sai một trường dữ liệu kéo theo sai toàn bộ quy trình xử lý áp dụng cho trường đó.",
     content: [
-      "Nghị định số 13/2023/NĐ-CP đưa ra cách phân loại dữ liệu cá nhân thành dữ liệu cơ bản và dữ liệu nhạy cảm, cách tiếp cận được Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 kế thừa và nâng lên cấp luật.",
+      "Cách phân loại dữ liệu cá nhân thành dữ liệu cơ bản và dữ liệu nhạy cảm được Nghị định số 13/2023/NĐ-CP đặt nền, sau đó Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 kế thừa và nâng lên cấp luật. Danh mục chi tiết hiện nằm tại Nghị định số 356/2025/NĐ-CP, văn bản đã thay thế Nghị định số 13/2023/NĐ-CP từ ngày 01/01/2026.",
       "Sự phân biệt này không mang tính học thuật. Dữ liệu nhạy cảm đòi hỏi yêu cầu chặt hơn về căn cứ xử lý, về thông báo cho chủ thể dữ liệu và về biện pháp bảo vệ kỹ thuật.",
       "Trong doanh nghiệp, các trường dữ liệu hay bị phân loại sai gồm thông tin sức khỏe trong hồ sơ nhân sự, dữ liệu sinh trắc học từ hệ thống chấm công, và thông tin về tình trạng tài chính của khách hàng. Rà soát nên bắt đầu từ chính các hệ thống nội bộ này.",
     ],
     basis: [
       "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Nghị định số 13/2023/NĐ-CP",
+      "Nghị định số 356/2025/NĐ-CP",
+      "Nghị định số 13/2023/NĐ-CP (đã hết hiệu lực)",
     ],
     date: "07/2026",
     author: HUY,
   },
   {
+    id: "a84",
     category: CAT_DATA,
     title: "Hồ sơ đánh giá tác động xử lý dữ liệu cá nhân: tài liệu sống, không phải thủ tục một lần",
     excerpt:
       "Hồ sơ lập xong rồi cất tủ mất giá trị ngay khi doanh nghiệp thêm một tính năng mới có thu thập dữ liệu.",
     content: [
-      "Nghị định số 13/2023/NĐ-CP đặt ra yêu cầu lập hồ sơ đánh giá tác động xử lý dữ liệu cá nhân, và Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 tiếp tục duy trì cơ chế đánh giá tác động ở cấp luật.",
-      "Doanh nghiệp đã lập hồ sơ theo nghị định cần rà lại theo chuẩn của luật mới, thay vì giả định hồ sơ cũ vẫn còn phù hợp. Đồng thời, hồ sơ phải được cập nhật khi có thay đổi đáng kể về mục đích xử lý, loại dữ liệu hoặc bên nhận dữ liệu.",
+      "Yêu cầu lập hồ sơ đánh giá tác động xử lý dữ liệu cá nhân xuất hiện lần đầu tại Nghị định số 13/2023/NĐ-CP; Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 duy trì cơ chế này ở cấp luật, còn biểu mẫu hồ sơ hiện hành nằm trong phụ lục của Nghị định số 356/2025/NĐ-CP.",
+      "Doanh nghiệp đã lập hồ sơ theo Nghị định số 13/2023/NĐ-CP cần lập lại theo biểu mẫu mới chứ không chỉ cập nhật nội dung, vì nghị định đó đã hết hiệu lực từ ngày 01/01/2026. Đồng thời, hồ sơ phải được cập nhật khi có thay đổi đáng kể về mục đích xử lý, loại dữ liệu hoặc bên nhận dữ liệu.",
       "Cách duy trì thực tế là gắn việc cập nhật hồ sơ vào quy trình phát triển sản phẩm: mọi tính năng mới có thu thập hoặc chia sẻ dữ liệu đều phải qua một bước rà soát trước khi phát hành, thay vì rà soát định kỳ mỗi năm một lần.",
     ],
     basis: [
       "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Nghị định số 13/2023/NĐ-CP",
+      "Nghị định số 356/2025/NĐ-CP",
+      "Nghị định số 13/2023/NĐ-CP (đã hết hiệu lực)",
     ],
     date: "07/2026",
     author: PHU,
   },
   {
+    id: "a85",
     category: CAT_DATA,
     title: "Hợp đồng với bên xử lý dữ liệu thuê ngoài: phân định trách nhiệm bằng văn bản",
     excerpt:
@@ -1465,6 +1559,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a86",
     category: CAT_DATA,
     title: "Chuyển dữ liệu cá nhân ra nước ngoài: nghĩa vụ đi cùng dữ liệu",
     excerpt:
@@ -1479,6 +1574,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a87",
     category: CAT_DATA,
     title: "Sự cố lộ dữ liệu cá nhân: quy trình phải chạy được trong ngày đầu tiên",
     excerpt:
@@ -1498,6 +1594,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a88",
     category: CAT_DATA,
     title: "Quyền truy cập và quyền yêu cầu xóa dữ liệu: hệ thống có đáp ứng được không",
     excerpt:
@@ -1512,6 +1609,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a89",
     category: CAT_DATA,
     title: "Cấm mua bán dữ liệu cá nhân: ranh giới với hoạt động chia sẻ dữ liệu hợp pháp",
     excerpt:
@@ -1526,6 +1624,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a90",
     category: CAT_DATA,
     title: "Dữ liệu nhân sự: nhóm dữ liệu bị bỏ quên nhiều nhất trong chương trình tuân thủ",
     excerpt:
@@ -1543,6 +1642,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a91",
     category: CAT_DATA,
     title: "Camera giám sát tại nơi làm việc: giữa an ninh và quyền riêng tư",
     excerpt:
@@ -1560,6 +1660,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a92",
     category: CAT_DATA,
     title: "Tiếp thị trực tiếp qua email và tin nhắn: cơ sở pháp lý và cơ chế từ chối",
     excerpt:
@@ -1574,6 +1675,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a93",
     category: CAT_DATA,
     title: "Cookie và công cụ theo dõi trên website: phần bị bỏ qua khi rà soát tuân thủ",
     excerpt:
@@ -1588,23 +1690,25 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a94",
     category: CAT_DATA,
     title: "Dữ liệu sinh trắc học trong hệ thống chấm công và kiểm soát ra vào",
     excerpt:
       "Vân tay và khuôn mặt không thay đổi được khi bị lộ. Đây là lý do nhóm dữ liệu này đòi hỏi mức bảo vệ cao hơn.",
     content: [
-      "Dữ liệu sinh trắc học thuộc nhóm dữ liệu cá nhân cần mức bảo vệ cao theo cách phân loại tại Nghị định số 13/2023/NĐ-CP và Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15.",
+      "Dữ liệu sinh trắc học thuộc nhóm dữ liệu cá nhân cần mức bảo vệ cao theo Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 và Nghị định số 356/2025/NĐ-CP.",
       "Đặc điểm khiến nhóm dữ liệu này rủi ro hơn là tính không thể thay thế. Mật khẩu bị lộ có thể đổi, còn vân tay hoặc dữ liệu khuôn mặt thì không. Do đó, việc lựa chọn giải pháp kỹ thuật, chẳng hạn lưu trữ đặc trưng đã mã hóa thay vì ảnh gốc, có ý nghĩa pháp lý chứ không chỉ là vấn đề kỹ thuật.",
       "Trước khi triển khai hệ thống chấm công sinh trắc học, doanh nghiệp nên cân nhắc phương án thay thế ít xâm phạm hơn và ghi nhận lý do lựa chọn. Khi có khiếu nại, khả năng chứng minh đã cân nhắc phương án khác là lập luận quan trọng.",
     ],
     basis: [
       "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Nghị định số 13/2023/NĐ-CP",
+      "Nghị định số 356/2025/NĐ-CP",
     ],
     date: "04/2026",
     author: PHU,
   },
   {
+    id: "a95",
     category: CAT_DATA,
     title: "Giới hạn mới về xác thực danh tính trên nền tảng số",
     excerpt:
@@ -1619,6 +1723,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a96",
     category: CAT_DATA,
     title: "Chấm điểm tín dụng và sử dụng thông tin tín dụng cá nhân",
     excerpt:
@@ -1636,6 +1741,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a97",
     category: CAT_DATA,
     title: "Bảo đảm an toàn hệ thống thông tin theo cấp độ: nghĩa vụ chạy song song",
     excerpt:
@@ -1653,6 +1759,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a98",
     category: CAT_DATA,
     title: "Điều khoản sử dụng dịch vụ của nền tảng số: soạn để dùng được, không phải để dài",
     excerpt:
@@ -1670,6 +1777,7 @@ const SEEDS: DocSeed[] = [
     author: PHU,
   },
   {
+    id: "a99",
     category: CAT_DATA,
     title: "Dữ liệu cá nhân trong giao dịch M&A: nghĩa vụ chuyển giao cùng doanh nghiệp",
     excerpt:
@@ -1687,6 +1795,7 @@ const SEEDS: DocSeed[] = [
     author: HUY,
   },
   {
+    id: "a100",
     category: CAT_DATA,
     title: "Xây dựng chương trình tuân thủ dữ liệu: thứ tự sáu bước cho năm đầu tiên",
     excerpt:
@@ -1700,7 +1809,7 @@ const SEEDS: DocSeed[] = [
     ],
     basis: [
       "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Nghị định số 13/2023/NĐ-CP",
+      "Nghị định số 356/2025/NĐ-CP",
       "Nghị định số 85/2016/NĐ-CP",
     ],
     date: "01/2026",
@@ -1708,9 +1817,8 @@ const SEEDS: DocSeed[] = [
   },
 ];
 
-export const ARTICLES: DocItem[] = SEEDS.map((seed, i) => ({
+export const ARTICLES: DocItem[] = SEEDS.map((seed) => ({
   ...seed,
-  id: `a${i + 1}`,
   kind: "article" as const,
   readMinutes: readingMinutes(seed.content),
 }));

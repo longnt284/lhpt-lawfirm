@@ -302,8 +302,11 @@ export const TICKER: string[] = [
   "LUẬT NHÀ Ở 2023 · HIỆU LỰC 01.08.2024",
   "LUẬT ĐẤU THẦU 2023 · HIỆU LỰC 01.01.2024",
   "NGHỊ ĐỊNH 175/2024 · QUẢN LÝ HOẠT ĐỘNG XÂY DỰNG",
-  "NGHỊ ĐỊNH 80/2024 · MUA BÁN ĐIỆN TRỰC TIẾP (DPPA)",
-  "NGHỊ ĐỊNH 58/2025 · HƯỚNG DẪN LUẬT ĐIỆN LỰC",
+  "NGHỊ ĐỊNH 57/2025 · MUA BÁN ĐIỆN TRỰC TIẾP (DPPA)",
+  "NGHỊ ĐỊNH 58/2025 · PHÁT TRIỂN ĐIỆN NĂNG LƯỢNG TÁI TẠO",
+  "NGHỊ ĐỊNH 61/2025 · GIẤY PHÉP HOẠT ĐỘNG ĐIỆN LỰC",
+  "NGHỊ ĐỊNH 243/2026 · ĐIỆN MẶT TRỜI MÁI NHÀ ĐƯỢC BÁN DƯ TỚI 50%",
+  "NGHỊ ĐỊNH 356/2025 · HƯỚNG DẪN LUẬT BẢO VỆ DỮ LIỆU CÁ NHÂN",
   "LUẬT DOANH NGHIỆP SỬA ĐỔI 2025 · SỐ 76/2025/QH15",
 ];
 
