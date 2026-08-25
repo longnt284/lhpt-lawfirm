@@ -3,6 +3,7 @@ import type { DocItem, DocSeed } from "./types";
 
 const SEEDS: DocSeed[] = [
   {
+    id: "n1",
     category: "Dữ liệu",
     title:
       "Luật Bảo vệ dữ liệu cá nhân có hiệu lực: doanh nghiệp bước vào năm tuân thủ đầu tiên",
@@ -10,15 +11,21 @@ const SEEDS: DocSeed[] = [
       "Từ 01/01/2026, Luật số 91/2025/QH15 áp dụng trực tiếp. Mọi doanh nghiệp xử lý dữ liệu khách hàng và nhân sự phải rà lại toàn bộ cơ sở pháp lý của việc xử lý.",
     content: [
       "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 được Quốc hội thông qua ngày 26/6/2025 và có hiệu lực thi hành từ ngày 01/01/2026. Đây là lần đầu tiên Việt Nam có một đạo luật riêng ở cấp luật về dữ liệu cá nhân, thay vì chỉ điều chỉnh bằng nghị định như giai đoạn trước.",
+      "Đi kèm với Luật là Nghị định số 356/2025/NĐ-CP ngày 31/12/2025, có hiệu lực cùng ngày 01/01/2026 và thay thế Nghị định số 13/2023/NĐ-CP. Nghị định gồm 5 chương, 42 điều và một phụ lục 10 biểu mẫu, trong đó có biểu mẫu hồ sơ đánh giá tác động xử lý dữ liệu cá nhân. Doanh nghiệp còn giữ hồ sơ lập theo Nghị định 13/2023 cần lập lại theo biểu mẫu mới chứ không chỉ cập nhật nội dung.",
       "Ba nhóm nghĩa vụ tạo áp lực lớn nhất trong năm đầu tiên. Thứ nhất, doanh nghiệp phải xác định rõ căn cứ pháp lý cho từng hoạt động xử lý, không còn dựa vào một bản đồng ý chung chung ký một lần. Thứ hai, chuỗi hợp đồng với bên xử lý dữ liệu thuê ngoài phải được viết lại để phân định trách nhiệm. Thứ ba, quy trình phát hiện và xử lý sự cố lộ dữ liệu phải chạy được trên thực tế, không chỉ tồn tại trên giấy.",
       "Luật cũng đặt ra giới hạn cứng với một số thực tiễn đang phổ biến. Hành vi mua bán dữ liệu cá nhân bị cấm tuyệt đối. Mạng xã hội không được yêu cầu người dùng cung cấp ảnh hoặc video giấy tờ tùy thân làm yếu tố xác thực. Tổ chức tín dụng không được dùng thông tin tín dụng cá nhân để chấm điểm hay đánh giá khả năng trả nợ nếu chưa có sự đồng ý của chủ thể dữ liệu.",
       "Nhóm rủi ro cao nhất là các nền tảng thương mại điện tử, công ty công nghệ tài chính và đơn vị vận hành tòa nhà có hệ thống nhận diện. Với những đơn vị này, việc rà soát nên bắt đầu từ bản đồ luồng dữ liệu chứ không phải từ bản chính sách quyền riêng tư đăng trên website.",
     ],
-    basis: ["Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15"],
+    basis: [
+      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
+      "Nghị định số 356/2025/NĐ-CP",
+      "Nghị định số 13/2023/NĐ-CP (đã hết hiệu lực)",
+    ],
     date: "05/01/2026",
     featured: true,
   },
   {
+    id: "n2",
     category: "Thuế",
     title:
       "Luật Thuế thu nhập doanh nghiệp mới: ba bậc thuế suất theo doanh thu đã đi vào áp dụng",
@@ -37,6 +44,7 @@ const SEEDS: DocSeed[] = [
     date: "12/12/2025",
   },
   {
+    id: "n3",
     category: "Xây dựng",
     title:
       "Nghị định 175/2024 thay thế Nghị định 15/2021: hồ sơ thủ tục xây dựng được chuẩn hóa lại",
@@ -56,6 +64,7 @@ const SEEDS: DocSeed[] = [
     date: "20/11/2025",
   },
   {
+    id: "n4",
     category: "Doanh nghiệp",
     title:
       "Luật Doanh nghiệp sửa đổi 2025: siết minh bạch chủ sở hữu hưởng lợi, bỏ bớt thủ tục hành chính",
@@ -74,26 +83,33 @@ const SEEDS: DocSeed[] = [
     date: "18/10/2025",
   },
   {
+    id: "n5",
     category: "Năng lượng",
     title:
-      "Một năm Luật Điện lực 2024: cơ chế mua bán điện trực tiếp bắt đầu có giao dịch thật",
+      "Cơ chế mua bán điện trực tiếp sau hai lần đổi khung: từ Nghị định 80/2024 tới Nghị định 243/2026",
     excerpt:
-      "Luật số 61/2024/QH15 hiệu lực từ 01/02/2025 tạo nền cho DPPA. Nghị định số 80/2024/NĐ-CP và Nghị định số 58/2025/NĐ-CP cụ thể hóa cách vận hành.",
+      "Luật số 61/2024/QH15 hiệu lực từ 01/02/2025 tạo nền cho DPPA. Nghị định số 57/2025/NĐ-CP thay thế Nghị định số 80/2024/NĐ-CP, và Nghị định số 243/2026/NĐ-CP tiếp tục nới cơ chế.",
     content: [
       "Luật Điện lực số 61/2024/QH15 có hiệu lực từ ngày 01/02/2025, thay thế Luật Điện lực số 28/2004/QH11 và các lần sửa đổi trước đó. Đây là lần thay đổi khung pháp lý ngành điện lớn nhất trong hai thập kỷ.",
-      "Cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo và khách hàng sử dụng điện lớn được quy định tại Nghị định số 80/2024/NĐ-CP, với hai hình thức: qua đường dây kết nối riêng và qua lưới điện quốc gia. Nghị định số 58/2025/NĐ-CP tiếp tục hướng dẫn thi hành Luật Điện lực, trong đó có nội dung về điện mặt trời mái nhà tự sản tự tiêu và giấy phép hoạt động điện lực.",
+      "Cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo và khách hàng sử dụng điện lớn hiện được quy định tại Nghị định số 57/2025/NĐ-CP ngày 03/3/2025, với hai hình thức: qua đường dây kết nối riêng và qua lưới điện quốc gia. Nghị định này bãi bỏ Nghị định số 80/2024/NĐ-CP, nhưng hợp đồng đã ký trước ngày 03/3/2025 và phù hợp quy định vẫn được thực hiện tiếp đến hết thời hạn hoặc đàm phán sửa đổi theo quy định mới.",
+      "Cùng ngày 03/3/2025, Nghị định số 58/2025/NĐ-CP quy định chi tiết Luật Điện lực về phát triển điện năng lượng tái tạo và điện năng lượng mới, trong đó có điện mặt trời mái nhà tự sản tự tiêu. Giấy phép hoạt động điện lực nằm ở một văn bản khác là Nghị định số 61/2025/NĐ-CP ngày 04/3/2025, đây là chỗ nhiều hồ sơ tra nhầm văn bản.",
+      "Đến ngày 26/6/2026, Nghị định số 243/2026/NĐ-CP sửa đổi, bổ sung cả hai nghị định trên. Thay đổi có tác động tài chính rõ nhất là nâng tỷ lệ sản lượng dư của điện mặt trời mái nhà tự sản tự tiêu được bán lên lưới từ 20% lên tối đa 50% sản lượng tại đầu ra inverter, kèm khả năng thỏa thuận tỷ lệ cao hơn tới hết ngày 31/12/2030 nếu lưới khu vực còn khả năng tiếp nhận.",
       "Với doanh nghiệp sản xuất trong khu công nghiệp, giá trị thực tế của DPPA nằm ở khả năng chứng minh nguồn gốc điện tái tạo cho chuỗi cung ứng xuất khẩu. Đây là yêu cầu ngày càng cứng từ phía đối tác châu Âu.",
       "Điểm cần lưu ý khi đàm phán là cấu trúc rủi ro sản lượng. Hợp đồng kỳ hạn và cơ chế thanh toán chênh lệch phân bổ rủi ro rất khác nhau giữa hai hình thức, và phần lớn tranh chấp về sau bắt nguồn từ chỗ này.",
     ],
     basis: [
       "Luật Điện lực số 61/2024/QH15",
       "Luật Điện lực số 28/2004/QH11 (đã hết hiệu lực)",
-      "Nghị định số 80/2024/NĐ-CP",
+      "Nghị định số 57/2025/NĐ-CP",
       "Nghị định số 58/2025/NĐ-CP",
+      "Nghị định số 61/2025/NĐ-CP",
+      "Nghị định số 243/2026/NĐ-CP",
+      "Nghị định số 80/2024/NĐ-CP (đã hết hiệu lực)",
     ],
-    date: "22/09/2025",
+    date: "10/07/2026",
   },
   {
+    id: "n6",
     category: "Bất động sản",
     title:
       "Bảng giá đất hằng năm: chi phí nghĩa vụ tài chính của dự án bước vào chu kỳ biến động",
@@ -113,6 +129,7 @@ const SEEDS: DocSeed[] = [
     date: "14/08/2025",
   },
   {
+    id: "n7",
     category: "Tố tụng",
     title:
       "Tranh chấp hợp đồng xây dựng: chọn sai diễn đàn vẫn là lỗi tốn kém nhất",
@@ -132,9 +149,22 @@ const SEEDS: DocSeed[] = [
   },
 ];
 
-export const NEWS: DocItem[] = SEEDS.map((seed, i) => ({
+/** "DD/MM/YYYY" -> số so sánh được, để sắp tin theo thời gian chứ không theo thứ tự gõ. */
+function dateKey(value: string): number {
+  const [day, month, year] = value.split("/").map(Number);
+  return year * 10000 + month * 100 + day;
+}
+
+/*
+ * Thứ tự hiển thị: tin nổi bật lên đầu (component News lấy phần tử đầu làm thẻ
+ * lớn), phần còn lại xếp theo ngày giảm dần. Nhờ vậy thêm hoặc sửa ngày một tin
+ * không cần đổi chỗ trong mảng nguồn.
+ */
+export const NEWS: DocItem[] = SEEDS.map((seed) => ({
   ...seed,
-  id: `n${i + 1}`,
   kind: "news" as const,
   readMinutes: readingMinutes(seed.content),
-}));
+})).sort((a, b) => {
+  if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
+  return dateKey(b.date) - dateKey(a.date);
+});

@@ -13,8 +13,8 @@ export const EN_ARTICLES = {
       "When a dispute has arisen, the most viable lines of argument are often not invocation of price volatility but demonstration that the scope of work has changed compared to the bidding documents, or that the employer delayed handover of the site so the execution extended into a different pricing cycle. Both approaches rely on contemporaneous site records rather than market price tables."
     ],
     "basis": [
-      "Luật Xây dựng số 50/2014/QH13 (Construction Law No. 50/2014/QH13)",
-      "Bộ luật Dân sự số 91/2015/QH13 (Civil Code No. 91/2015/QH13)"
+      "Law on Construction No. 50/2014/QH13",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Trung Pham"
   },
@@ -29,8 +29,8 @@ export const EN_ARTICLES = {
       "The most effective prevention is to stipulate in the contract a deadline for the employer to perform acceptance after receiving a notice, together with consequences if the employer fails to accept and does not state reasons for refusal in writing within that deadline."
     ],
     "basis": [
-      "Nghị định số 06/2021/NĐ‑CP (Decree No. 06/2021/NĐ‑CP)",
-      "Luật Xây dựng số 50/2014/QH13 (Construction Law No. 50/2014/QH13)"
+      "Decree No. 06/2021/NĐ-CP",
+      "Law on Construction No. 50/2014/QH13"
     ],
     "author": "Lawyer Long Nguyen"
   },
@@ -45,9 +45,9 @@ export const EN_ARTICLES = {
       "A frequently overlooked point is the relationship between contractual penalties and compensation for damages. These two remedies are treated differently under the Civil Code No. 91/2015/QH13 and the Commercial Law, so contract clauses should clearly express the parties’ intent rather than leaving it to inference."
     ],
     "basis": [
-      "Luật Xây dựng số 50/2014/QH13 (Construction Law No. 50/2014/QH13)",
-      "Luật Thương mại số 36/2005/QH11 (Commercial Law No. 36/2005/QH11)",
-      "Bộ luật Dân sự số 91/2015/QH13 (Civil Code No. 91/2015/QH13)"
+      "Law on Construction No. 50/2014/QH13",
+      "Commercial Law No. 36/2005/QH11",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Trung Pham"
   },
@@ -62,8 +62,8 @@ export const EN_ARTICLES = {
       "Two measures when drafting the contract: tie the contractor’s obligation to renew the guarantee to any extension of the contract period, and specify the percentage of advance to be recovered on each payment run instead of leaving that to be agreed later."
     ],
     "basis": [
-      "Luật Xây dựng số 50/2014/QH13 (Construction Law No. 50/2014/QH13)",
-      "Bộ luật Dân sự số 91/2015/QH13 (Civil Code No. 91/2015/QH13)"
+      "Law on Construction No. 50/2014/QH13",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Long Nguyen"
   },
@@ -81,9 +81,9 @@ export const EN_ARTICLES = {
       "Finally, separate two questions often conflated: whether the work falls within the original contract scope, and if it is outside, what unit rate applies. Resolving the first question by reference to design documents and the bidding bill of quantities frequently narrows disputes considerably, because many alleged extras in fact were within the priced scope."
     ],
     "basis": [
-      "Luật Xây dựng số 50/2014/QH13 (Construction Law No. 50/2014/QH13)",
-      "Nghị định số 06/2021/NĐ‑CP (Decree No. 06/2021/NĐ‑CP)",
-      "Bộ luật Dân sự số 91/2015/QH13 (Civil Code No. 91/2015/QH13)"
+      "Law on Construction No. 50/2014/QH13",
+      "Decree No. 06/2021/NĐ-CP",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Trung Pham"
   },
@@ -98,8 +98,8 @@ export const EN_ARTICLES = {
       "When reviewing contracts, the task is not to read each document in isolation but to place them side‑by‑side and reconcile every time‑line. Any divergence must be an intentional, managed deviation, not an accidental consequence of using two different templates."
     ],
     "basis": [
-      "Luật Xây dựng số 50/2014/QH13 (Construction Law No. 50/2014/QH13)",
-      "Bộ luật Dân sự số 91/2015/QH13 (Civil Code No. 91/2015/QH13)"
+      "Law on Construction No. 50/2014/QH13",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Long Nguyen"
   },
@@ -116,9 +116,9 @@ export const EN_ARTICLES = {
       "If the counterparty responds by admitting part and disputing the rest, that response becomes highly persuasive evidence. This is why issuing a statement of account early, while the commercial relationship still allows for a reply rather than silence, is important."
     ],
     "basis": [
-      "Nghị định số 06/2021/NĐ‑CP (Decree No. 06/2021/NĐ‑CP)",
-      "Luật Xây dựng số 50/2014/QH13 (Construction Law No. 50/2014/QH13)",
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13 (Civil Procedure Code No. 92/2015/QH13)"
+      "Decree No. 06/2021/NĐ-CP",
+      "Law on Construction No. 50/2014/QH13",
+      "Civil Procedure Code No. 92/2015/QH13"
     ],
     "author": "Lawyer Trung Pham"
   },
@@ -133,8 +133,8 @@ export const EN_ARTICLES = {
       "Before releasing retention money, the employer should conduct a site condition inspection with the contractor’s participation. Returning retention and then discovering defects is the most difficult situation to remedy."
     ],
     "basis": [
-      "Nghị định số 06/2021/NĐ‑CP (Decree No. 06/2021/NĐ‑CP)",
-      "Bộ luật Dân sự số 91/2015/QH13 (Civil Code No. 91/2015/QH13)"
+      "Decree No. 06/2021/NĐ-CP",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Long Nguyen"
   },
@@ -150,8 +150,8 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Law on Construction No. 50/2014/QH13",
-      "Law No. 62/2020/QH14",
-      "Decree No. 175/2024/NĐ-CP",
+      "Law No. 62/2020/QH14 amending the Law on Construction",
+      "Decree No. 175/2024/NĐ-CP dated 30 December 2024",
       "Decree No. 06/2021/NĐ-CP"
     ],
     "author": "Lawyer Trung Phạm"
@@ -167,7 +167,7 @@ export const EN_ARTICLES = {
       "A safer approach is to separate the transaction into a conditional memorandum of understanding with clear precedent conditions, accompanied by escrow mechanisms and a timeline for completing legal requirements with defined deadlines, rather than executing the transfer agreement immediately when conditions are not met."
     ],
     "basis": [
-      "Real Estate Business Law No. 29/2023/QH15",
+      "Law on Real Estate Business No. 29/2023/QH15",
       "Decree No. 96/2024/NĐ-CP",
       "Land Law No. 31/2024/QH15"
     ],
@@ -186,7 +186,7 @@ export const EN_ARTICLES = {
       "For developers, the risk is not limited to administrative sanctions. If the market worsens and the project is delayed, amounts collected in excess of permitted limits may enable buyers to seek contract rescission and recovery of sums paid with interest. Designing a payment schedule that complies with regulations from the outset is the primary measure to protect the developer."
     ],
     "basis": [
-      "Real Estate Business Law No. 29/2023/QH15",
+      "Law on Real Estate Business No. 29/2023/QH15",
       "Decree No. 96/2024/NĐ-CP",
       "Housing Law No. 27/2023/QH15"
     ],
@@ -203,7 +203,7 @@ export const EN_ARTICLES = {
       "Before making an initial payment, buyers should request a bank guarantee issued in their name and verify the guarantee’s validity period in relation to the scheduled handover date. A guarantee that expires before the handover date presents a significant risk."
     ],
     "basis": [
-      "Real Estate Business Law No. 29/2023/QH15",
+      "Law on Real Estate Business No. 29/2023/QH15",
       "Law on Credit Institutions No. 32/2024/QH15"
     ],
     "author": "Lawyer Long Nguyễn"
@@ -219,8 +219,8 @@ export const EN_ARTICLES = {
       "Individual investors should perform three key diligences before investing: the land parcel’s planning status, the project’s infrastructure acceptance status, and whether the developer has fulfilled its financial obligations relating to the land."
     ],
     "basis": [
-      "Real Estate Business Law No. 29/2023/QH15",
-      "Real Estate Business Law No. 66/2014/QH13 (no longer in force)",
+      "Law on Real Estate Business No. 29/2023/QH15",
+      "Law on Real Estate Business No. 66/2014/QH13 (no longer in force)",
       "Land Law No. 31/2024/QH15"
     ],
     "author": "Lawyer Trung Phạm"
@@ -237,7 +237,7 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Civil Code No. 91/2015/QH13",
-      "Real Estate Business Law No. 29/2023/QH15"
+      "Law on Real Estate Business No. 29/2023/QH15"
     ],
     "author": "Lawyer Long Nguyễn"
   },
@@ -273,7 +273,7 @@ export const EN_ARTICLES = {
     "basis": [
       "Land Law No. 31/2024/QH15",
       "Decree No. 102/2024/NĐ-CP",
-      "Law No. 43/2024/QH15"
+      "Law No. 43/2024/QH15 dated 29 June 2024"
     ],
     "author": "Lawyer Long Nguyễn"
   },
@@ -337,7 +337,7 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Law on Construction No. 50/2014/QH13",
-      "Decree No. 175/2024/NĐ-CP"
+      "Decree No. 175/2024/NĐ-CP dated 30 December 2024"
     ],
     "author": "Attorney-at-law Long Nguyen"
   },
@@ -466,7 +466,7 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Law on Enterprises No. 59/2020/QH14",
-      "Law No. 76/2025/QH15"
+      "Law No. 76/2025/QH15 amending the Law on Enterprises"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -546,7 +546,7 @@ export const EN_ARTICLES = {
       "For disputes involving real estate, special territorial jurisdiction rules apply and the parties may not agree otherwise. This point is often overlooked when dispute resolution clauses are copied from other contracts."
     ],
     "basis": [
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13"
+      "Civil Procedure Code No. 92/2015/QH13"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -561,7 +561,7 @@ export const EN_ARTICLES = {
       "Therefore, pre‑litigation calculations should include the probability of requiring expert appraisal. For mid‑value disputes where completion/acceptance records are incomplete, a controlled settlement negotiation often yields a better financial outcome."
     ],
     "basis": [
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13"
+      "Civil Procedure Code No. 92/2015/QH13"
     ],
     "author": "Attorney Long Nguyễn"
   },
@@ -576,7 +576,7 @@ export const EN_ARTICLES = {
       "Preparation for a conciliation hearing should include a ready settlement proposal with negotiation margins pre‑approved by management. Arriving at conciliation without decision‑making authority is a missed opportunity."
     ],
     "basis": [
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13"
+      "Civil Procedure Code No. 92/2015/QH13"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -591,9 +591,9 @@ export const EN_ARTICLES = {
       "For the award‑creditor, dossier preparation is decisive: the original or certified copy of the award and the arbitration agreement, together with a certified translation. Formal deficiencies are a common reason for the application to be returned."
     ],
     "basis": [
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13",
-      "Công ước New York năm 1958",
-      "Luật Trọng tài thương mại số 54/2010/QH12"
+      "Civil Procedure Code No. 92/2015/QH13",
+      "New York Convention 1958",
+      "Law on Commercial Arbitration No. 54/2010/QH12"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -608,8 +608,8 @@ export const EN_ARTICLES = {
       "In many cases, an initial administrative complaint is useful for fact‑finding: the agency's written response clarifies the legal basis for the decision and forms the basis for arguments if litigation becomes necessary. However, the time limits must be monitored closely to avoid forfeiting judicial remedies."
     ],
     "basis": [
-      "Luật Đất đai số 31/2024/QH15",
-      "Nghị định số 102/2024/NĐ-CP"
+      "Land Law No. 31/2024/QH15",
+      "Decree No. 102/2024/NĐ-CP"
     ],
     "author": "Attorney Trung Phạm"
   },
@@ -624,7 +624,7 @@ export const EN_ARTICLES = {
       "An effective appeal focuses on points where the first‑instance court misapplied the law or evaluated evidence contrary to the documents in the file, rather than restating the entire case."
     ],
     "basis": [
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13"
+      "Civil Procedure Code No. 92/2015/QH13"
     ],
     "author": "Attorney Long Nguyễn"
   },
@@ -639,7 +639,7 @@ export const EN_ARTICLES = {
       "Accordingly, petitions that are likely to be considered are those that identify specific procedural violations or misapplication of statutory provisions, with precise references to documents in the case file, not petitions that merely re‑narrate the facts."
     ],
     "basis": [
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13"
+      "Civil Procedure Code No. 92/2015/QH13"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -654,8 +654,8 @@ export const EN_ARTICLES = {
       "When drafting a power of attorney, specific important authorities should be listed rather than using general language. At the same time, verify the authority of the person signing the power of attorney under the company's charter to avoid challenges to its validity."
     ],
     "basis": [
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13",
-      "Luật Doanh nghiệp số 59/2020/QH14"
+      "Civil Procedure Code No. 92/2015/QH13",
+      "Law on Enterprises No. 59/2020/QH14"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -665,7 +665,7 @@ export const EN_ARTICLES = {
     "title": "DPPA via the national grid and via a dedicated connection line: two different risk structures",
     "excerpt": "Both are called direct power purchases, but allocation of volume risk and price risk differs entirely between the two models.",
     "content": [
-      "Decree No. 80/2024/NĐ-CP provides the mechanism for direct power purchase agreements between renewable power producers and large electricity consumers under two models: via a dedicated connection line and via the national grid.",
+      "Decree No. 57/2025/NĐ-CP dated 3 March 2025 provides the mechanism for direct power purchase between renewable energy generators and large electricity consumers under two models: via a dedicated connection line and via the national grid. It repealed Decree No. 80/2024/NĐ-CP and has itself been amended by Decree No. 243/2026/NĐ-CP dated 26 June 2026.",
       "With a dedicated connection line, the relationship resembles a straightforward bilateral power purchase agreement, with risk concentrated on plant operational performance and the customer's actual demand. The national grid model is more complex because it involves a forward contract and a market-price-difference settlement mechanism.",
       "A key point to resolve early in negotiations is who bears the difference when actual generation deviates from committed generation, and what deviation thresholds trigger adjustment. Most DPPA disputes later arise from this allocation rather than from the agreed price.",
       "Beyond generation risk, the contract should provide a mechanism for dealing with situations where one party no longer meets participation requirements. Real scenarios include a large consumer scaling down production and falling below eligibility thresholds, or a generator undergoing a change in ownership; the contract must provide an exit or adjustment mechanism.",
@@ -673,8 +673,10 @@ export const EN_ARTICLES = {
       "In negotiations, prepare a risk-allocation matrix before discussing price. The matrix should list each foreseeable event during the contract lifecycle—from dispatch reduction on system operator instruction to policy change and early termination—and identify the party bearing the consequences. Once the risk allocation is clear, agreeing the price becomes much easier."
     ],
     "basis": [
-      "Nghị định số 80/2024/NĐ-CP",
-      "Luật Điện lực số 61/2024/QH15"
+      "Decree No. 57/2025/NĐ-CP",
+      "Decree No. 243/2026/NĐ-CP",
+      "Law on Electricity No. 61/2024/QH15",
+      "Decree No. 80/2024/NĐ-CP (no longer in force)"
     ],
     "author": "Lawyer Trung Phạm"
   },
@@ -684,13 +686,15 @@ export const EN_ARTICLES = {
     "title": "Rooftop solar for self-consumption: the legal boundary of the model",
     "excerpt": "Self-generation for self-consumption is encouraged, but when surplus fed to the grid exceeds a threshold, the legal character of the project changes.",
     "content": [
-      "Electricity Law No. 61/2024/QH15 and Decree No. 58/2025/NĐ-CP regulate development of rooftop solar for self-consumption, including investment conditions, grid connection and treatment of surplus generation fed into the grid.",
+      "Law on Electricity No. 61/2024/QH15 and Decree No. 58/2025/NĐ-CP govern the development of rooftop solar for self-generation and self-consumption, including investment conditions, grid connection and the treatment of surplus output fed into the grid.",
       "The critical boundary is the purpose of use. Systems installed to meet on-site demand are subject to much lighter procedures than generation projects. When the proportion of electricity sold to the grid exceeds the level necessary for internal use, the project risks recharacterisation with attendant permitting obligations.",
+      "The cap on surplus output sold to the grid has already moved once: Decree No. 243/2026/NĐ-CP dated 26 June 2026 raised it from 20% to a maximum of 50% of output measured at the inverter. Investment cases built on the former cap should be recalculated before they are fixed.",
       "For manufacturing enterprises, the advisable pre-investment step is to calculate hourly load profiles rather than annual aggregate consumption. Situations such as the factory being idle on weekends while the solar system continues to generate can unexpectedly increase the ratio of surplus electricity fed to the grid."
     ],
     "basis": [
-      "Luật Điện lực số 61/2024/QH15",
-      "Nghị định số 58/2025/NĐ-CP"
+      "Law on Electricity No. 61/2024/QH15",
+      "Decree No. 58/2025/NĐ-CP",
+      "Decree No. 243/2026/NĐ-CP"
     ],
     "author": "Lawyer Long Nguyễn"
   },
@@ -705,8 +709,8 @@ export const EN_ARTICLES = {
       "Clauses that need careful drafting include: responsibility for structural integrity and waterproofing of the roof, the procedure and cost allocation for dismantling and reinstallation during repairs, treatment upon transfer of the leased facility by the lessor, and restoration of the condition at lease termination."
     ],
     "basis": [
-      "Bộ luật Dân sự số 91/2015/QH13",
-      "Nghị định số 58/2025/NĐ-CP"
+      "Civil Code No. 91/2015/QH13",
+      "Decree No. 58/2025/NĐ-CP"
     ],
     "author": "Lawyer Trung Phạm"
   },
@@ -721,9 +725,9 @@ export const EN_ARTICLES = {
       "Key contractual clauses to negotiate include: mechanisms for dealing with reduced load, the customer's right to buy out the system early and the buyout pricing formula, and consequences if the customer relocates its operations."
     ],
     "basis": [
-      "Bộ luật Dân sự số 91/2015/QH13",
-      "Luật Điện lực số 61/2024/QH15",
-      "Nghị định số 58/2025/NĐ-CP"
+      "Civil Code No. 91/2015/QH13",
+      "Law on Electricity No. 61/2024/QH15",
+      "Decree No. 58/2025/NĐ-CP"
     ],
     "author": "Lawyer Long Nguyễn"
   },
@@ -733,13 +737,13 @@ export const EN_ARTICLES = {
     "title": "Power industry operation permits: when mandatory and when exempt",
     "excerpt": "Not all generation activities require a permit, but misclassification is a legal risk persisting throughout the project lifecycle.",
     "content": [
-      "Electricity Law No. 61/2024/QH15 and Decree No. 58/2025/NĐ-CP set out which electricity activities require an operating permit and the cases exempted by scale or by the nature of the activity.",
+      "Law on Electricity No. 61/2024/QH15 and Decree No. 61/2025/NĐ-CP dated 4 March 2025 set out which electricity activities require an operating licence, the application file and procedure, and the cases exempted by capacity threshold or by the nature of the activity. Licensing sits in its own instrument and is not part of Decree No. 58/2025/NĐ-CP on renewable energy development.",
       "A common problem is a project that starts under an exemption, then later increases capacity or begins selling electricity to third parties without reassessing permit obligations. At that point the activity has exceeded the scope of the exemption.",
       "For projects planned to expand in phases, determine at the outset the capacity thresholds and sales models that will trigger a permitting obligation and incorporate those thresholds into the project execution plan rather than waiting until the facility is operational."
     ],
     "basis": [
-      "Luật Điện lực số 61/2024/QH15",
-      "Nghị định số 58/2025/NĐ-CP"
+      "Law on Electricity No. 61/2024/QH15",
+      "Decree No. 61/2025/NĐ-CP"
     ],
     "author": "Lawyer Trung Phạm"
   },
@@ -757,8 +761,8 @@ export const EN_ARTICLES = {
       "For projects not yet in dispute but with incomplete documentation, proactively reconcile and supplement records while parties remain cooperative. Requesting the power utility to confirm historical metering data or to reconfirm the commercial operation date is straightforward in normal relations and almost impossible once a dispute has arisen."
     ],
     "basis": [
-      "Quyết định số 13/2020/QĐ-TTg ngày 06/4/2020 (expired)",
-      "Luật Điện lực số 28/2004/QH11 (no longer in effect)"
+      "Decision No. 13/2020/QĐ-TTg dated 6 April 2020 (application period expired)",
+      "Law on Electricity No. 28/2004/QH11 (no longer in force)"
     ],
     "author": "Lawyer Long Nguyễn"
   },
@@ -776,9 +780,9 @@ export const EN_ARTICLES = {
       "Beyond performance at acceptance, include a re-test milestone after a full operating cycle—typically one year—to exclude short-term weather effects. The result of that re-test should be tied to release of the final retention amount, creating a continuing obligation through the period when defects most commonly surface."
     ],
     "basis": [
-      "Luật Xây dựng số 50/2014/QH13",
-      "Nghị định số 06/2021/NĐ-CP",
-      "Bộ luật Dân sự số 91/2015/QH13"
+      "Law on Construction No. 50/2014/QH13",
+      "Decree No. 06/2021/NĐ-CP",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Trung Phạm"
   },
@@ -793,8 +797,8 @@ export const EN_ARTICLES = {
       "Investors should require, at contract signature, that the contractor transfer to the investor all manufacturer warranty certificates in the investor's name rather than the contractor's. If the contractor is later dissolved, warranties issued in the contractor's name can become ineffective."
     ],
     "basis": [
-      "Nghị định số 06/2021/NĐ-CP",
-      "Bộ luật Dân sự số 91/2015/QH13"
+      "Decree No. 06/2021/NĐ-CP",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Long Nguyễn"
   },
@@ -810,7 +814,7 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Civil Code No. 91/2015/QH13",
-      "Electricity Law No. 61/2024/QH15"
+      "Law on Electricity No. 61/2024/QH15"
     ],
     "author": "Attorney Trung Pham"
   },
@@ -825,7 +829,7 @@ export const EN_ARTICLES = {
       "Risk mitigation is to resolve interconnection feasibility before making the investment decision, and to make the interconnection agreement milestone a condition precedent in the EPC contract rather than leaving the issue until after the contractor hands over the works."
     ],
     "basis": [
-      "Electricity Law No. 61/2024/QH15",
+      "Law on Electricity No. 61/2024/QH15",
       "Decree No. 58/2025/NĐ-CP"
     ],
     "author": "Attorney Long Nguyen"
@@ -841,7 +845,7 @@ export const EN_ARTICLES = {
       "Before construction, three reviews are advisable: the building’s existing fire‑safety approvals, requirements for DC source isolation in an emergency, and the terms of the existing property insurance policy."
     ],
     "basis": [
-      "Construction Law No. 50/2014/QH13",
+      "Law on Construction No. 50/2014/QH13",
       "Decree No. 06/2021/NĐ-CP",
       "Decree No. 58/2025/NĐ-CP"
     ],
@@ -853,13 +857,15 @@ export const EN_ARTICLES = {
     "title": "Exporting Surplus Generation to the Grid: Rights, Limits and Procedures",
     "excerpt": "Surplus output from a self-consumption system is not automatically purchased at the price the owner expects.",
     "content": [
-      "Decree No. 58/2025/NĐ-CP, implementing Electricity Law No. 61/2024/QH15, sets out the treatment of surplus generation from rooftop self-consumption solar systems exported to the national grid.",
-      "For project owners, two questions must be clarified before preparing the financial model: the proportion of surplus generation that will be recognized and the basis for price determination. Financial models that assume all surplus is sold at the retail tariff commonly do not reflect the legal framework.",
+      "Decree No. 58/2025/NĐ-CP, implementing Law on Electricity No. 61/2024/QH15, sets out the treatment of surplus generation from rooftop self-consumption solar systems exported to the national grid. From 26 June 2026, Decree No. 243/2026/NĐ-CP raised the cap on surplus output that may be sold from 20% to a maximum of 50% of output measured at the inverter.",
+      "For an investor, two questions must be settled before the financial model is built: the share of surplus output that will be recognised, and the basis on which its price is set. A model that assumes the entire surplus can be sold at the retail tariff still does not reflect the legal framework, even after the cap rose to 50%.",
+      "Two exceptions matter. Until 31 December 2030 the buyer and seller may agree a share above 50% where the grid at the connection point has capacity to absorb it and the accompanying conditions are met. For systems in mountainous, border and island areas not yet supplied from the national grid, the volume of surplus output that may be sold is not capped.",
       "Procedurally, the metering method for bi-directional measurement and the approach to recording exported volumes should be agreed with the power utility in advance, since these records are the primary data in any later payment disputes."
     ],
     "basis": [
       "Decree No. 58/2025/NĐ-CP",
-      "Electricity Law No. 61/2024/QH15"
+      "Decree No. 243/2026/NĐ-CP",
+      "Law on Electricity No. 61/2024/QH15"
     ],
     "author": "Attorney Long Nguyen"
   },
@@ -876,9 +882,9 @@ export const EN_ARTICLES = {
       "On deal structure, a mechanism retaining part of the purchase price tied to remediation of outstanding legal issues often works better than relying solely on the seller’s warranties and indemnities. Warranties have value only if the seller retains sufficient assets to satisfy indemnity obligations."
     ],
     "basis": [
-      "Decision No. 13/2020/QĐ-TTg dated 06/4/2020 (no longer in force)",
-      "Electricity Law No. 61/2024/QH15",
-      "Investment Law No. 61/2020/QH14"
+      "Decision No. 13/2020/QĐ-TTg dated 6 April 2020 (application period expired)",
+      "Law on Electricity No. 61/2024/QH15",
+      "Law on Investment No. 61/2020/QH14"
     ],
     "author": "Attorney Trung Pham"
   },
@@ -893,8 +899,8 @@ export const EN_ARTICLES = {
       "For PPAs in negotiation, parties should specify a detailed mechanism to address material cost or obligation changes arising from new law, including notice obligations, a defined renegotiation period and the consequences if renegotiation fails."
     ],
     "basis": [
-      "Electricity Law No. 61/2024/QH15",
-      "Electricity Law No. 28/2004/QH11 (no longer in force)",
+      "Law on Electricity No. 61/2024/QH15",
+      "Law on Electricity No. 28/2004/QH11 (no longer in force)",
       "Civil Code No. 91/2015/QH13"
     ],
     "author": "Attorney Long Nguyen"
@@ -906,12 +912,13 @@ export const EN_ARTICLES = {
     "excerpt": "An importer may require proof of electricity origin. Installing rooftop solar alone may not satisfy that requirement.",
     "content": [
       "Exporters increasingly face demands to demonstrate the share of renewable electricity used in production, driven by customers’ commitments abroad and by regulatory mechanisms related to emissions.",
-      "Domestically, the direct electricity sale mechanism under Decree No. 80/2024/NĐ-CP is the primary legal tool to link renewable generation to a specific offtaker. Rooftop self-consumption contributes but is often insufficient for a large manufacturing load.",
+      "Domestically, the direct power purchase mechanism under Decree No. 57/2025/NĐ-CP, as amended by Decree No. 243/2026/NĐ-CP, is the primary legal tool to link renewable generation to a specific offtaker. Rooftop self-consumption contributes but is often insufficient for a large manufacturing load.",
       "When engaging partners, it is essential to agree early on which certification standard will be accepted and which party will issue it. Investing in infrastructure before confirming the acceptable certification standard is a costly mistake."
     ],
     "basis": [
-      "Decree No. 80/2024/NĐ-CP",
-      "Electricity Law No. 61/2024/QH15"
+      "Decree No. 57/2025/NĐ-CP",
+      "Decree No. 243/2026/NĐ-CP",
+      "Law on Electricity No. 61/2024/QH15"
     ],
     "author": "Attorney Trung Pham"
   },
@@ -926,8 +933,8 @@ export const EN_ARTICLES = {
       "A control measure is to make all financial commitments conditional on the project’s inclusion in the power development plan and its implementation schedule, with a clear repayment mechanism if the condition is not met within the specified timeframe."
     ],
     "basis": [
-      "Electricity Law No. 61/2024/QH15",
-      "Investment Law No. 61/2020/QH14"
+      "Law on Electricity No. 61/2024/QH15",
+      "Law on Investment No. 61/2020/QH14"
     ],
     "author": "Attorney Long Nguyen"
   },
@@ -958,7 +965,7 @@ export const EN_ARTICLES = {
       "Project owners should independently store data from their own monitoring systems in parallel with meter readings, and require periodic calibration/verification of metering equipment. When a discrepancy is detected, the objection should be made in writing within the relevant billing period rather than accumulating multiple periods."
     ],
     "basis": [
-      "Electricity Law No. 61/2024/QH15",
+      "Law on Electricity No. 61/2024/QH15",
       "Civil Code No. 91/2015/QH13"
     ],
     "author": "Attorney-at-law Long Nguyễn"
@@ -975,7 +982,7 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Law on Enterprises No. 59/2020/QH14",
-      "Electricity Law No. 61/2024/QH15",
+      "Law on Electricity No. 61/2024/QH15",
       "Civil Code No. 91/2015/QH13"
     ],
     "author": "Attorney-at-law Trung Phạm"
@@ -1008,7 +1015,7 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Law on Enterprises No. 59/2020/QH14",
-      "Law No. 76/2025/QH15"
+      "Law No. 76/2025/QH15 amending the Law on Enterprises"
     ],
     "author": "Attorney-at-law Huy Đặng"
   },
@@ -1026,7 +1033,7 @@ export const EN_ARTICLES = {
       "Finally, review any tax incentives declared in older investment registration certificates. Corporate Income Tax Law No. 67/2025/QH15 adjusts the list of eligible sectors, and incentives are tied to actual activity rather than to wording on permits. Continuing to claim previous incentives without reassessment risks future assessments."
     ],
     "basis": [
-      "Corporate Income Tax Law No. 67/2025/QH15",
+      "Law on Corporate Income Tax No. 67/2025/QH15",
       "Law on Tax Administration No. 38/2019/QH14"
     ],
     "author": "Attorney-at-law Phú Hoàng"
@@ -1042,8 +1049,8 @@ export const EN_ARTICLES = {
       "Concurrently, the law narrows the categories exempt from VAT and tightens input VAT deduction requirements. Both changes should be reviewed together because they jointly affect a company's tax cash flow."
     ],
     "basis": [
-      "Value Added Tax Law No. 48/2024/QH15",
-      "Value Added Tax Law No. 13/2008/QH12 (no longer in force)"
+      "Law on Value-Added Tax No. 48/2024/QH15",
+      "Law on Value-Added Tax No. 13/2008/QH12 (no longer in force)"
     ],
     "author": "Attorney-at-law Huy Đặng"
   },
@@ -1058,7 +1065,7 @@ export const EN_ARTICLES = {
       "Reviews should start with the most frequent transaction templates during the year, because a recurring process error multiplies into a large disallowed deduction when subject to a tax audit."
     ],
     "basis": [
-      "Value Added Tax Law No. 48/2024/QH15",
+      "Law on Value-Added Tax No. 48/2024/QH15",
       "Law on Tax Administration No. 38/2019/QH14"
     ],
     "author": "Attorney-at-law Phú Hoàng"
@@ -1074,8 +1081,8 @@ export const EN_ARTICLES = {
       "This is a real risk in companies with multiple shareholder blocs. The control is to specify in the charter the categories of transactions each representative may sign independently and which types of transactions require the signatures of both."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14",
-      "Bộ luật Dân sự số 91/2015/QH13"
+      "Law on Enterprises No. 59/2020/QH14",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1090,7 +1097,7 @@ export const EN_ARTICLES = {
       "In M&A practice, this is a point to check at the outset, together with reviewing the company's charter to see if it contains stricter provisions than the law. Many charters add approval conditions that the buyer only becomes aware of at the time of registering the change of ownership."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14"
+      "Law on Enterprises No. 59/2020/QH14"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -1105,7 +1112,7 @@ export const EN_ARTICLES = {
       "With an increase of capital, the risk lies elsewhere: the registered capital is increased but not paid in within the statutory period. In that event the enterprise must adjust its registered capital and may be sanctioned, while the shareholding ratios among members are affected."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14"
+      "Law on Enterprises No. 59/2020/QH14"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1120,8 +1127,8 @@ export const EN_ARTICLES = {
       "Concurrently, the corporate resolution authorizing the issuance must be adopted in accordance with the company's charter. Defects at this internal stage are a frequently overlooked risk when attention focuses solely on financial conditions."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14",
-      "Luật số 76/2025/QH15"
+      "Law on Enterprises No. 59/2020/QH14",
+      "Law No. 76/2025/QH15 amending the Law on Enterprises"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -1136,7 +1143,7 @@ export const EN_ARTICLES = {
       "For companies with latent internal disputes, standardizing meeting procedures and retaining complete proof of notice delivery is the least costly preventive measure. The cost of addressing an annulled resolution is typically far greater."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14"
+      "Law on Enterprises No. 59/2020/QH14"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1151,7 +1158,7 @@ export const EN_ARTICLES = {
       "A basic control is to maintain an up-to-date list of related parties and to cross-check it before each significant transaction, rather than auditing only after contracts have been signed."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14"
+      "Law on Enterprises No. 59/2020/QH14"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -1166,8 +1173,8 @@ export const EN_ARTICLES = {
       "When drafting the plan, prepare a detailed list of obligations with designation of the successor company for each item, and notify creditors in accordance with the required procedure. For secured loans, coordinate with the bank in advance because credit agreements often contain clauses addressing changes in corporate structure."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14",
-      "Bộ luật Dân sự số 91/2015/QH13"
+      "Law on Enterprises No. 59/2020/QH14",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1182,8 +1189,8 @@ export const EN_ARTICLES = {
       "When an enterprise is insolvent, the appropriate route is bankruptcy proceedings rather than dissolution. Prolonging a state of legal uncertainty increases obligations and shifts risk onto the company’s management."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14",
-      "Luật Quản lý thuế số 38/2019/QH14"
+      "Law on Enterprises No. 59/2020/QH14",
+      "Law on Tax Administration No. 38/2019/QH14"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -1200,7 +1207,7 @@ export const EN_ARTICLES = {
       "Alongside the written rules, an employer must have an operational procedure for documenting violations: who prepares the violation record, what the record must contain, and where it is filed. Most enforcement failures in litigation are not due to defective rules but to the absence of contemporaneous records made at the time the alleged violation occurred."
     ],
     "basis": [
-      "Bộ luật Lao động số 45/2019/QH14"
+      "Labour Code No. 45/2019/QH14"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1215,7 +1222,7 @@ export const EN_ARTICLES = {
       "When disputes arise, such arrangements are typically assessed by the substance of the relationship rather than the title of the contract. Employers may be ordered to pay the salary differential and to make retroactive social insurance contributions for the entire relevant period."
     ],
     "basis": [
-      "Bộ luật Lao động số 45/2019/QH14"
+      "Labour Code No. 45/2019/QH14"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -1232,7 +1239,7 @@ export const EN_ARTICLES = {
       "In many instances, a negotiated mutual termination of the employment contract yields a better outcome for both parties. The cost of a negotiated exit is often substantially lower than the risk and expense of reinstatement and back pay resulting from litigation."
     ],
     "basis": [
-      "Bộ luật Lao động số 45/2019/QH14"
+      "Labour Code No. 45/2019/QH14"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1247,7 +1254,7 @@ export const EN_ARTICLES = {
       "When contributions are retroactively assessed, the employer must pay both the employer's and the employee's shares for the prior period, together with interest. For enterprises with significant headcount, these amounts can be large enough to materially affect annual business results."
     ],
     "basis": [
-      "Bộ luật Lao động số 45/2019/QH14"
+      "Labour Code No. 45/2019/QH14"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -1262,7 +1269,7 @@ export const EN_ARTICLES = {
       "Accordingly, a document retention policy should be governed by the tax recovery period rather than routine accounting retention periods, and should include electronic records such as digitally signed contracts, payment vouchers and correspondence confirming receivables/payables."
     ],
     "basis": [
-      "Luật Quản lý thuế số 38/2019/QH14"
+      "Law on Tax Administration No. 38/2019/QH14"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1277,7 +1284,7 @@ export const EN_ARTICLES = {
       "For a company expanding into a new field, the first step before signing any contract is to determine whether the sector is conditional and, if so, what conditions apply. Signing contracts before securing the required approvals creates legal risk for the validity and enforceability of those contracts."
     ],
     "basis": [
-      "Luật Đầu tư số 61/2020/QH14"
+      "Law on Investment No. 61/2020/QH14"
     ],
     "author": "Attorney Phú Hoàng"
   },
@@ -1295,9 +1302,9 @@ export const EN_ARTICLES = {
       "Timing-wise, preliminary due diligence should start before signing a term sheet, not after. Some issues, such as the legal status of core assets or ongoing disputes, can be identified through public records searches, and early detection helps the buyer avoid incurring costs on a transaction that should be abandoned."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14",
-      "Luật Đầu tư số 61/2020/QH14",
-      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15"
+      "Law on Enterprises No. 59/2020/QH14",
+      "Law on Investment No. 61/2020/QH14",
+      "Law on Personal Data Protection No. 91/2025/QH15"
     ],
     "author": "Attorney Huy Đặng"
   },
@@ -1312,18 +1319,18 @@ export const EN_ARTICLES = {
       "A safer practice is to document clearly the consideration provided to the subsidiary, complete the required internal approvals, and retain contemporaneous analysis of the subsidiary's ability to perform the secured obligations at the time of the decision."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14",
-      "Bộ luật Dân sự số 91/2015/QH13"
+      "Law on Enterprises No. 59/2020/QH14",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Attorney Phú Hoàng"
   },
   "a81": {
     "id": "a81",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Legal bases for processing personal data: consent is not the only basis",
     "excerpt": "Relying exclusively on a single one-off consent places a business on the weakest legal footing.",
     "content": [
-      "Law on Personal Data Protection No. 91/2025/QH15, effective 01/01/2026, establishes the rights of data subjects and the obligations of data controllers and data processors.",
+      "Law on Personal Data Protection No. 91/2025/QH15, effective 01/01/2026, establishes the rights of data subjects and the obligations of data controllers and data processors. Decree No. 356/2025/NĐ-CP details it and provides implementing measures; it took effect on the same date and replaced Decree No. 13/2023/NĐ-CP.",
       "The correct understanding is that each processing activity must have its own legal basis tied to a specific purpose. A general consent signed at account registration does not automatically cover all subsequent purposes, particularly marketing or behavioral analytics.",
       "The first task is not to rewrite the privacy policy but to prepare a data flow map: what is collected, from whom, for what purposes, where it is stored, and to whom it is disclosed. Without this map, all compliance documentation is speculative.",
       "The data flow map should be prepared by business process rather than by department. A customer passes through multiple units from the moment they leave contact details to contract completion, and their data is copied into many systems along the way. Mapping by department will miss these transfer points.",
@@ -1332,13 +1339,13 @@ export const EN_ARTICLES = {
     ],
     "basis": [
       "Law on Personal Data Protection No. 91/2025/QH15",
-      "Decree No. 13/2023/NĐ-CP"
+      "Decree No. 356/2025/NĐ-CP"
     ],
     "author": "Attorney-at-law Huy Đặng"
   },
   "a82": {
     "id": "a82",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Data subject consent: conditions for valid consent",
     "excerpt": "Consent must be specific, voluntary and revocable. Pre-ticked boxes or lumping multiple purposes into one statement are weaknesses.",
     "content": [
@@ -1353,39 +1360,41 @@ export const EN_ARTICLES = {
   },
   "a83": {
     "id": "a83",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Sensitive personal data: data categories requiring higher protection",
     "excerpt": "Misclassifying a data field leads to the wrong processing regime being applied to that field.",
     "content": [
-      "Decree No. 13/2023/NĐ-CP provides a classification of personal data into basic and sensitive categories, an approach that the Law on Personal Data Protection No. 91/2025/QH15 has adopted and elevated to statutory level.",
+      "The classification of personal data into basic and sensitive categories was first set out in Decree No. 13/2023/NĐ-CP, then inherited and elevated to statutory level by the Law on Personal Data Protection No. 91/2025/QH15. The detailed list now sits in Decree No. 356/2025/NĐ-CP, which replaced Decree No. 13/2023/NĐ-CP on 1 January 2026.",
       "This distinction is not academic. Sensitive data requires stricter requirements for legal basis, for notice to data subjects and for technical safeguards.",
       "Within businesses, fields commonly misclassified include health information in personnel files, biometric data from timekeeping systems, and customers' financial status information. Reviews should start with these internal systems."
     ],
     "basis": [
       "Law on Personal Data Protection No. 91/2025/QH15",
-      "Decree No. 13/2023/NĐ-CP"
+      "Decree No. 356/2025/NĐ-CP",
+      "Decree No. 13/2023/NĐ-CP (no longer in force)"
     ],
     "author": "Attorney-at-law Huy Đặng"
   },
   "a84": {
     "id": "a84",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Data processing impact assessment records: a living document, not a one‑off exercise",
     "excerpt": "An impact assessment put on a shelf loses value as soon as the business adds a new feature that collects data.",
     "content": [
-      "Decree No. 13/2023/NĐ-CP requires the preparation of data processing impact assessment records, and the Law on Personal Data Protection No. 91/2025/QH15 retains the impact assessment mechanism at statutory level.",
-      "Enterprises that prepared records under the Decree should reassess them against the standards of the new Law rather than assume older records remain adequate. Impact records must be updated when there are significant changes to processing purposes, data categories or recipients.",
+      "The requirement to prepare a personal data processing impact assessment record first appeared in Decree No. 13/2023/NĐ-CP. The Law on Personal Data Protection No. 91/2025/QH15 retains the mechanism at statutory level, while the current form sits in the appendix to Decree No. 356/2025/NĐ-CP.",
+      "Enterprises that prepared records under Decree No. 13/2023/NĐ-CP must redo them on the new forms rather than merely update the content, since that decree ceased to have effect on 1 January 2026. The record must also be updated whenever there is a material change in processing purpose, data categories or recipients.",
       "A practical way to maintain records is to embed updates into the product development lifecycle: any new feature that collects or shares data must pass a review step before release, instead of relying solely on an annual review."
     ],
     "basis": [
       "Law on Personal Data Protection No. 91/2025/QH15",
-      "Decree No. 13/2023/NĐ-CP"
+      "Decree No. 356/2025/NĐ-CP",
+      "Decree No. 13/2023/NĐ-CP (no longer in force)"
     ],
     "author": "Attorney-at-law Phú Hoàng"
   },
   "a85": {
     "id": "a85",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Contracts with outsourced data processors: allocate responsibilities in writing",
     "excerpt": "Outsourcing data processing does not transfer the data controller's responsibilities to the contractor.",
     "content": [
@@ -1404,7 +1413,7 @@ export const EN_ARTICLES = {
   },
   "a86": {
     "id": "a86",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Cross‑border transfers of personal data: obligations that accompany the data",
     "excerpt": "Using management software whose servers are located abroad is already a cross‑border transfer, even if the business did not realize it.",
     "content": [
@@ -1419,7 +1428,7 @@ export const EN_ARTICLES = {
   },
   "a87": {
     "id": "a87",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Personal data breaches: response procedures must work on day one",
     "excerpt": "Response time is measured in hours, while most businesses take days just to decide who is responsible.",
     "content": [
@@ -1437,7 +1446,7 @@ export const EN_ARTICLES = {
   },
   "a88": {
     "id": "a88",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Right of access and right to erasure: can your systems comply?",
     "excerpt": "A data subject requests deletion of all their data. Can the business locate all such data across its systems?",
     "content": [
@@ -1452,7 +1461,7 @@ export const EN_ARTICLES = {
   },
   "a89": {
     "id": "a89",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Ban on Buying and Selling Personal Data: The Boundary with Lawful Data Sharing",
     "excerpt": "The law absolutely prohibits buying and selling personal data. The practical question is whether sharing data with partners falls within that prohibition.",
     "content": [
@@ -1467,7 +1476,7 @@ export const EN_ARTICLES = {
   },
   "a90": {
     "id": "a90",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Personnel Data: The Most Overlooked Category in Compliance Programs",
     "excerpt": "Companies focus on protecting customer data, while personnel files often contain far more sensitive data.",
     "content": [
@@ -1483,7 +1492,7 @@ export const EN_ARTICLES = {
   },
   "a91": {
     "id": "a91",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Workplace Surveillance Cameras: Balancing Security and Privacy",
     "excerpt": "Installing cameras in production areas is entirely different from installing them in rest areas, both in purpose and in legal terms.",
     "content": [
@@ -1499,7 +1508,7 @@ export const EN_ARTICLES = {
   },
   "a92": {
     "id": "a92",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Direct Marketing by Email and Messages: Legal Basis and Opt‑Out Mechanisms",
     "excerpt": "Having an existing customer list does not automatically entitle a company to send marketing to that list.",
     "content": [
@@ -1514,7 +1523,7 @@ export const EN_ARTICLES = {
   },
   "a93": {
     "id": "a93",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Cookies and Tracking Tools on Websites: A Frequently Overlooked Compliance Area",
     "excerpt": "Corporate websites often embed more third‑party measurement tools than the legal team is aware of.",
     "content": [
@@ -1529,23 +1538,23 @@ export const EN_ARTICLES = {
   },
   "a94": {
     "id": "a94",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Biometric Data in Timekeeping and Access Control Systems",
     "excerpt": "Fingerprints and facial images cannot be changed if compromised. This is why this category requires a higher level of protection.",
     "content": [
-      "Biometric data is a category of personal data requiring high levels of protection under Decree No. 13/2023/NĐ‑CP and Law on Personal Data Protection No. 91/2025/QH15.",
+      "Biometric data is a category of personal data requiring a high level of protection under the Law on Personal Data Protection No. 91/2025/QH15 and Decree No. 356/2025/NĐ-CP.",
       "What makes this data group riskier is its irreplaceability. A compromised password can be changed; fingerprints or facial data cannot. Selecting technical solutions—such as storing encrypted feature templates rather than raw images—has legal significance in addition to technical merits.",
       "Before deploying biometric timekeeping, employers should consider less intrusive alternatives and document the reasons for their choice. If a complaint arises, the ability to demonstrate consideration of alternative measures is an important argument."
     ],
     "basis": [
       "Law on Personal Data Protection No. 91/2025/QH15",
-      "Decree No. 13/2023/NĐ‑CP"
+      "Decree No. 356/2025/NĐ-CP"
     ],
     "author": "Attorney‑at‑law Phú Hoàng"
   },
   "a95": {
     "id": "a95",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "New Limits on Identity Verification on Digital Platforms",
     "excerpt": "Requiring users to photograph identity documents for verification has been restricted for social networks.",
     "content": [
@@ -1560,7 +1569,7 @@ export const EN_ARTICLES = {
   },
   "a96": {
     "id": "a96",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Credit Scoring and the Use of Personal Credit Information",
     "excerpt": "Credit institutions may not use personal credit information for scoring without the data subject's consent.",
     "content": [
@@ -1576,7 +1585,7 @@ export const EN_ARTICLES = {
   },
   "a97": {
     "id": "a97",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Information System Security by Levels: Parallel Obligations",
     "excerpt": "Personal data compliance does not replace obligations for information system security. Many businesses only do half the work.",
     "content": [
@@ -1585,14 +1594,14 @@ export const EN_ARTICLES = {
       "Reviews should be conducted concurrently for both sets of obligations, because most technical tasks overlap: inventorying systems, classifying data, managing access rights, and logging mechanisms. Separating the two programs increases costs without increasing protection."
     ],
     "basis": [
-      "Nghị định số 85/2016/NĐ-CP",
-      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15"
+      "Decree No. 85/2016/NĐ-CP",
+      "Law on Personal Data Protection No. 91/2025/QH15"
     ],
     "author": "Lawyer Huy Đặng"
   },
   "a98": {
     "id": "a98",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Terms of Service of Digital Platforms: Draft to Be Usable, Not Lengthy",
     "excerpt": "Long terms that do not clearly delineate data processing rights are the worst type of document in disputes.",
     "content": [
@@ -1601,14 +1610,14 @@ export const EN_ARTICLES = {
       "Drafting principles to keep: separate the two documents; write the data sections in language understandable to ordinary users; and specify how notifications of changes will be made instead of merely stating that the platform may amend terms at any time."
     ],
     "basis": [
-      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Bộ luật Dân sự số 91/2015/QH13"
+      "Law on Personal Data Protection No. 91/2025/QH15",
+      "Civil Code No. 91/2015/QH13"
     ],
     "author": "Lawyer Phú Hoàng"
   },
   "a99": {
     "id": "a99",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Personal Data in M&A: Compliance Obligations Transfer with the Company",
     "excerpt": "Acquiring a company with a large customer base means also acquiring years' worth of accumulated data compliance risk.",
     "content": [
@@ -1617,14 +1626,14 @@ export const EN_ARTICLES = {
       "Data sharing during the due diligence process must also be controlled: personal data of customers and personnel should not be placed in a data room in an identifiable form unless necessary for evaluation."
     ],
     "basis": [
-      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Luật Doanh nghiệp số 59/2020/QH14"
+      "Law on Personal Data Protection No. 91/2025/QH15",
+      "Law on Enterprises No. 59/2020/QH14"
     ],
     "author": "Lawyer Huy Đặng"
   },
   "a100": {
     "id": "a100",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Building a Data Compliance Program: Six‑Step Sequence for the First Year",
     "excerpt": "Starting by writing the policy is putting the cart before the horse. A data map must come first; everything else follows.",
     "content": [
@@ -1635,9 +1644,9 @@ export const EN_ARTICLES = {
       "On prioritization in the first year, focus on processing activities of the largest scale and the most sensitive data categories, rather than attempting to perfect everything equally. A program that adequately handles 80% of data volume is far more valuable than a complete set of documents that does not reflect actual operations."
     ],
     "basis": [
-      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15",
-      "Nghị định số 13/2023/NĐ-CP",
-      "Nghị định số 85/2016/NĐ-CP"
+      "Law on Personal Data Protection No. 91/2025/QH15",
+      "Decree No. 356/2025/NĐ-CP",
+      "Decree No. 85/2016/NĐ-CP"
     ],
     "author": "Lawyer Phú Hoàng"
   }
@@ -1646,17 +1655,20 @@ export const EN_ARTICLES = {
 export const EN_NEWS = {
   "n1": {
     "id": "n1",
-    "category": "Data",
+    "category": "Data Protection",
     "title": "Personal Data Protection Law in Force: Businesses Enter the First Year of Compliance",
     "excerpt": "From 01/01/2026, Law No. 91/2025/QH15 applies directly. All enterprises processing customer and employee data must reassess the legal basis for their processing activities.",
     "content": [
       "Law on Personal Data Protection No. 91/2025/QH15 was adopted by the National Assembly on 26/6/2025 and took effect on 01/01/2026. This is the first time Vietnam has enacted a stand‑alone statute at law level on personal data, rather than regulating it primarily by decree as before.",
+      "Alongside the Law sits Decree No. 356/2025/NĐ-CP dated 31 December 2025, effective on the same date of 1 January 2026 and replacing Decree No. 13/2023/NĐ-CP. It runs to five chapters, 42 articles and an appendix of 10 forms, among them the personal data processing impact assessment record. An enterprise still holding a record prepared under Decree 13/2023 must redo it on the new form, not merely refresh its content.",
       "Three groups of obligations will exert the greatest pressure in the first year. First, businesses must identify a clear legal basis for each processing activity and can no longer rely on a single blanket consent signed once. Second, contractual chains with outsourced data processors must be redrafted to allocate responsibilities. Third, procedures for detecting and responding to data breaches must be operational in practice, not merely documented on paper.",
       "The Law also imposes hard limits on several common practices. The buying and selling of personal data is absolutely prohibited. Social networks are forbidden from requiring users to provide photos or videos of identity documents as an authentication factor. Credit institutions may not use personal credit information to score or assess repayment capacity without the data subject’s consent.",
       "The highest‑risk groups are e‑commerce platforms, fintech companies and building operators that use recognition systems. For these entities, reviews should start from a data‑flow map rather than from the privacy policy posted on the website."
     ],
     "basis": [
-      "Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15"
+      "Law on Personal Data Protection No. 91/2025/QH15",
+      "Decree No. 356/2025/NĐ-CP",
+      "Decree No. 13/2023/NĐ-CP (no longer in force)"
     ],
     "author": ""
   },
@@ -1672,8 +1684,8 @@ export const EN_NEWS = {
       "The Law also adjusts the list of incentivized industries and expands certain tax‑exemption cases. Enterprises currently enjoying incentives under older investment certificates should re‑check eligibility, as incentives are tied to the economic activity rather than the permit itself."
     ],
     "basis": [
-      "Luật Thuế thu nhập doanh nghiệp số 67/2025/QH15",
-      "Luật Thuế thu nhập doanh nghiệp số 14/2008/QH12 (đã hết hiệu lực)"
+      "Law on Corporate Income Tax No. 67/2025/QH15",
+      "Law on Corporate Income Tax No. 14/2008/QH12 (no longer in force)"
     ],
     "author": ""
   },
@@ -1689,9 +1701,9 @@ export const EN_NEWS = {
       "Projects undergoing appraisal at the time the Decree entered into force should reconcile the transitional provisions before deciding whether to refile under the new templates."
     ],
     "basis": [
-      "Nghị định số 175/2024/NĐ-CP ngày 30/12/2024",
-      "Nghị định số 15/2021/NĐ-CP ngày 03/3/2021 (đã hết hiệu lực)",
-      "Luật Xây dựng số 50/2014/QH13"
+      "Decree No. 175/2024/NĐ-CP dated 30 December 2024",
+      "Decree No. 15/2021/NĐ-CP dated 3 March 2021 (no longer in force)",
+      "Law on Construction No. 50/2014/QH13"
     ],
     "author": ""
   },
@@ -1707,27 +1719,32 @@ export const EN_NEWS = {
       "For companies in ongoing operations, an immediate practical step is to reconcile the company charter with the newly consolidated version. Charters drafted under the 2020 framework may contain clauses that are no longer appropriate after the amendments."
     ],
     "basis": [
-      "Luật Doanh nghiệp số 59/2020/QH14",
-      "Luật sửa đổi, bổ sung một số điều của Luật Doanh nghiệp số 76/2025/QH15"
+      "Law on Enterprises No. 59/2020/QH14",
+      "Law No. 76/2025/QH15 amending the Law on Enterprises"
     ],
     "author": ""
   },
   "n5": {
     "id": "n5",
     "category": "Energy",
-    "title": "One Year of the Electricity Law 2024: Direct Electricity Sale Mechanism Begins Real Transactions",
-    "excerpt": "Law No. 61/2024/QH15, effective 01/02/2025, established the legal basis for DPPAs. Decree No. 80/2024/NĐ-CP and Decree No. 58/2025/NĐ-CP specify operational mechanisms.",
+    "title": "Direct Power Purchase After Two Changes of Framework: From Decree 80/2024 to Decree 243/2026",
+    "excerpt": "Law No. 61/2024/QH15, effective 01/02/2025, established the legal basis for DPPAs. Decree No. 57/2025/NĐ-CP replaced Decree No. 80/2024/NĐ-CP, and Decree No. 243/2026/NĐ-CP has since relaxed the mechanism further.",
     "content": [
       "Electricity Law No. 61/2024/QH15 took effect on 01/02/2025, replacing Electricity Law No. 28/2004/QH11 and its amendments. This represents the most significant revision of the electricity sector’s legal framework in two decades.",
-      "The mechanism for direct sale of electricity between renewable energy generators and large electricity consumers is regulated in Decree No. 80/2024/NĐ-CP, with two forms: via a dedicated connection line and via the national grid. Decree No. 58/2025/NĐ-CP further guides implementation of the Electricity Law, including provisions on self‑consumption rooftop solar and electricity operation licenses.",
+      "The mechanism for direct power purchase between renewable energy generators and large electricity consumers now sits in Decree No. 57/2025/NĐ-CP dated 3 March 2025, in two forms: via a dedicated connection line and via the national grid. That decree repealed Decree No. 80/2024/NĐ-CP, but agreements signed before 3 March 2025 that comply with the rules may run to the end of their term or be renegotiated under the new regime.",
+      "On the same day, Decree No. 58/2025/NĐ-CP detailed the Law on Electricity on developing renewable and new energy, including rooftop solar for self-generation and self-consumption. Electricity operation licensing sits in a separate instrument, Decree No. 61/2025/NĐ-CP dated 4 March 2025 — the point at which many files cite the wrong decree.",
+      "On 26 June 2026, Decree No. 243/2026/NĐ-CP amended both. The change with the clearest financial effect raises the share of surplus rooftop self-consumption solar output that may be sold to the grid from 20% to a maximum of 50% of output measured at the inverter, with scope to agree a higher share until 31 December 2030 where the local grid can absorb it.",
       "For manufacturers located in industrial parks, the commercial value of a Direct Power Purchase Agreement (DPPA) lies in the ability to prove renewable origin to their export supply chains — an increasingly strict requirement from European partners.",
       "A key negotiation point is the allocation of generation‑volume risk. Forward contract structures and difference‑payment mechanisms allocate risk differently between the two connection forms, and many subsequent disputes originate from this allocation."
     ],
     "basis": [
-      "Luật Điện lực số 61/2024/QH15",
-      "Luật Điện lực số 28/2004/QH11 (đã hết hiệu lực)",
-      "Nghị định số 80/2024/NĐ-CP",
-      "Nghị định số 58/2025/NĐ-CP"
+      "Law on Electricity No. 61/2024/QH15",
+      "Law on Electricity No. 28/2004/QH11 (no longer in force)",
+      "Decree No. 57/2025/NĐ-CP",
+      "Decree No. 58/2025/NĐ-CP",
+      "Decree No. 61/2025/NĐ-CP",
+      "Decree No. 243/2026/NĐ-CP",
+      "Decree No. 80/2024/NĐ-CP (no longer in force)"
     ],
     "author": ""
   },
@@ -1743,9 +1760,9 @@ export const EN_NEWS = {
       "A practical recommendation is to document the legal framework applicable to each financial obligation in writing before signing contract annexes, and to include a price‑adjustment mechanism in pending transfer agreements rather than leaving this issue open."
     ],
     "basis": [
-      "Luật Đất đai số 31/2024/QH15",
-      "Luật số 43/2024/QH15 ngày 29/6/2024",
-      "Luật Đất đai số 45/2013/QH13 (đã hết hiệu lực)"
+      "Land Law No. 31/2024/QH15",
+      "Law No. 43/2024/QH15 dated 29 June 2024",
+      "Land Law No. 45/2013/QH13 (no longer in force)"
     ],
     "author": ""
   },
@@ -1761,8 +1778,8 @@ export const EN_NEWS = {
       "When reviewing standard contracts, check at minimum three items: the name of the arbitral institution, the number of arbitrators, and the language of the proceedings. Absence of any of these increases the risk of jurisdictional disputes."
     ],
     "basis": [
-      "Luật Trọng tài thương mại số 54/2010/QH12",
-      "Bộ luật Tố tụng dân sự số 92/2015/QH13"
+      "Law on Commercial Arbitration No. 54/2010/QH12",
+      "Civil Procedure Code No. 92/2015/QH13"
     ],
     "author": ""
   }
@@ -1965,23 +1982,26 @@ export const EN_LEGAL_DOCS = {
     "name": "Decree on the Mechanism for Direct Power Purchase Agreements (DPPA)",
     "type": "Decree",
     "field": "Energy",
-    "summary": "Mechanism for direct power sales via dedicated connection lines and via the national grid: eligibility of large customers, term contracts and settlement of differences.",
+    "summary": "Direct power purchase between renewable energy generators and large electricity consumers, via a dedicated connection line and via the national grid: eligibility conditions, term contracts and settlement of differences.",
     "highlights": [
+      "Replaces Decree No. 80/2024/NĐ-CP with effect from its signing date, 3 March 2025.",
       "Differentiates two DPPA forms with substantially different generation-volume risk allocations.",
-      "Sets eligibility conditions for large electricity consumers participating in the mechanism.",
-      "Functions as a tool for businesses to certify the renewable origin of electricity for foreign partners."
+      "Amended and supplemented by Decree No. 243/2026/NĐ-CP dated 26 June 2026.",
+      "Power purchase agreements signed before 3 March 2025 that comply with the rules may run to the end of their term or be renegotiated under the new regime."
     ],
     "replacedBy": ""
   },
   "d17": {
     "id": "d17",
-    "name": "Decree guiding the implementation of the Law on Electricity",
+    "name": "Decree detailing the Law on Electricity regarding renewable and new energy development",
     "type": "Decree",
     "field": "Energy",
-    "summary": "Development of renewable electricity, rooftop solar for self-consumption, electricity operation permits and the electricity pricing mechanism.",
+    "summary": "Details certain provisions of the Law on Electricity on the development of renewable electricity and new energy sources, including rooftop solar for self-generation and self-consumption.",
     "highlights": [
-      "Specifies conditions for developing rooftop solar for self-consumption.",
-      "Clarifies cases in which an electricity operation permit is required and cases of exemption."
+      "Replaces Decree No. 135/2024/NĐ-CP on rooftop solar for self-consumption.",
+      "Specifies the conditions, capacity, procedures for developing self-consumption generation and the treatment of surplus output.",
+      "Amended by Decree No. 243/2026/NĐ-CP dated 26 June 2026, raising the share of surplus output that may be sold to the grid from 20% to a maximum of 50%.",
+      "Does not govern electricity operation licences — that subject sits in Decree No. 61/2025/NĐ-CP."
     ],
     "replacedBy": ""
   },
@@ -2124,11 +2144,12 @@ export const EN_LEGAL_DOCS = {
     "field": "Data Protection",
     "summary": "The initial regulatory framework for personal data in Vietnam: classifies basic and sensitive data, sets out data subject consent, processing notice requirements and records for impact assessments.",
     "highlights": [
-      "Provides the foundational concepts that Personal Data Protection Law 91/2025/QH15 inherits and elevates to statute.",
-      "Serves as the reference for assessing data‑processing acts that occurred during 2023–2025.",
-      "Enterprises that prepared impact assessment records under this decree should review and update them to meet the standards of the new law."
+      "Ceased to be effective on 1 January 2026 and was replaced by Decree No. 356/2025/NĐ-CP.",
+      "Provides the foundational concepts that Personal Data Protection Law No. 91/2025/QH15 inherits and elevates to statute.",
+      "Serves as the reference for assessing data-processing acts that occurred from July 2023 to the end of 2025.",
+      "Enterprises that prepared impact assessment records under this decree must redo them to the standards of the new law and decree."
     ],
-    "replacedBy": ""
+    "replacedBy": "Decree No. 356/2025/NĐ-CP"
   },
   "d29": {
     "id": "d29",
@@ -2176,6 +2197,60 @@ export const EN_LEGAL_DOCS = {
       "Serves as the general law, applied where special laws do not provide or are incomplete.",
       "Contains rules on limitation periods for bringing actions, an element often overlooked until it is too late.",
       "Approaches to liquidated damages and compensation differ from those in the Commercial Law 2005."
+    ],
+    "replacedBy": ""
+  },
+  "d33": {
+    "id": "d33",
+    "name": "Decree on the Mechanism for Direct Power Purchase Agreements (2024 version)",
+    "type": "Decree",
+    "field": "Energy",
+    "summary": "The first instrument establishing a direct power purchase mechanism in Vietnam, in force from July 2024 to early March 2025.",
+    "highlights": [
+      "Repealed by Decree No. 57/2025/NĐ-CP dated 3 March 2025.",
+      "Remains the legal basis of DPPA contracts signed while it was in force and still being performed.",
+      "Must be consulted for disputes arising from the period July 2024 to March 2025."
+    ],
+    "replacedBy": "Decree No. 57/2025/NĐ-CP"
+  },
+  "d34": {
+    "id": "d34",
+    "name": "Decree on Electricity Operation Licences",
+    "type": "Decree",
+    "field": "Energy",
+    "summary": "Details certain provisions of the Law on Electricity on electricity operation licences: conditions by field of activity, application files and procedures, capacity thresholds exempt from licensing, licence duration and revocation.",
+    "highlights": [
+      "Five chapters and 28 articles; applies to generation, transmission, distribution, wholesale and retail of electricity.",
+      "Sets out the capacity thresholds exempt from an electricity operation licence.",
+      "The instrument to consult when a self-consumption project scales up or begins selling power to a third party."
+    ],
+    "replacedBy": ""
+  },
+  "d35": {
+    "id": "d35",
+    "name": "Decree amending Decree No. 57/2025/NĐ-CP and Decree No. 58/2025/NĐ-CP",
+    "type": "Decree",
+    "field": "Energy",
+    "summary": "Amends the direct power purchase mechanism and the rules on developing renewable and new energy; materially relaxes the cap on selling surplus output from rooftop solar for self-consumption.",
+    "highlights": [
+      "Raises the share of surplus rooftop self-consumption solar output that may be sold to the grid from 20% to a maximum of 50% of output measured at the inverter.",
+      "Until 31 December 2030 the parties may agree a share above 50% where the local grid at the connection point has capacity to absorb it and the accompanying conditions are met.",
+      "No cap on surplus output sold for systems in mountainous, border and island areas not yet supplied from the national grid.",
+      "Financial models built on the former 20% cap need to be recalculated."
+    ],
+    "replacedBy": ""
+  },
+  "d36": {
+    "id": "d36",
+    "name": "Decree detailing and providing measures to implement the Law on Personal Data Protection",
+    "type": "Decree",
+    "field": "Data Protection",
+    "summary": "Details certain provisions of and measures implementing the Law on Personal Data Protection No. 91/2025/QH15: classification of basic and sensitive data, compliance procedures and forms.",
+    "highlights": [
+      "Issued on 31 December 2025 and effective on 1 January 2026, the same date as Law No. 91/2025/QH15.",
+      "Replaces Decree No. 13/2023/NĐ-CP dated 17 April 2023.",
+      "Five chapters, 42 articles and an appendix of 10 forms, including the personal data processing impact assessment record.",
+      "Applies to foreign organisations and individuals processing personal data in Vietnam as well."
     ],
     "replacedBy": ""
   }

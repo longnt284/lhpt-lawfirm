@@ -15,6 +15,7 @@ import {
   type PolicyItem,
 } from "../data";
 import { useDebounced, useSpotlight } from "../hooks";
+import { AREA_BY_SERVICE, backendReady, describeError, sb } from "../lib/supabase";
 import {
   interpolate,
   localizeCategory,
@@ -876,21 +877,79 @@ export function SecondaryContent({ onOpen }: { onOpen: (d: DocItem) => void }) {
 
 export function Contact() {
   const { locale, isEnglish, t } = useLocale();
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", area: AREAS[0], msg: "" });
+  // Bẫy mật ong: người dùng thật không bao giờ thấy ô này nên không bao giờ điền.
+  const [trap, setTrap] = useState("");
   // Handler gắn cho cả <a> và <div>, nên khai báo ở mức HTMLElement.
   const onMove = useSpotlight<HTMLElement>();
 
-  const submit = (e: FormEvent) => {
+  /*
+   * Gửi thẳng vào bảng contact_requests thay vì mở mailto.
+   *
+   * mailto phụ thuộc vào việc máy khách có trình soạn thư hay không, và yêu cầu
+   * gửi đi thì hãng không có bản ghi nào để đối chiếu. Trigger
+   * guard_contact_request() ở phía cơ sở dữ liệu lo giới hạn tần suất theo băm
+   * địa chỉ IP và chấm điểm nội dung rác trước khi ghi.
+   */
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`[LHPT] ${form.area} — ${form.name || (isEnglish ? "Client" : "Khách hàng")}`);
-    const body = encodeURIComponent(
-      isEnglish
-        ? `Contact: ${form.name}\nPhone/Email: ${form.phone}\nPractice area: ${form.area}\n\nMatter details:\n${form.msg}`
-        : `Liên hệ: ${form.name}\nSĐT/Email: ${form.phone}\nLĩnh vực: ${form.area}\n\nNội dung:\n${form.msg}`
-    );
-    window.location.href = `mailto:${FIRM.email}?subject=${subject}&body=${body}`;
-    setSent(true);
+    if (trap) return; // im lặng bỏ qua trình gửi rác tự động
+    setError("");
+    setSent("");
+
+    if (!backendReady) {
+      // Chưa cấu hình backend thì vẫn phải có đường liên hệ, quay về mailto.
+      const subject = encodeURIComponent(
+        `[LHPT] ${form.area} — ${form.name || (isEnglish ? "Client" : "Khách hàng")}`
+      );
+      const body = encodeURIComponent(
+        isEnglish
+          ? `Contact: ${form.name}\nPhone/Email: ${form.phone}\nPractice area: ${form.area}\n\nMatter details:\n${form.msg}`
+          : `Liên hệ: ${form.name}\nSĐT/Email: ${form.phone}\nLĩnh vực: ${form.area}\n\nNội dung:\n${form.msg}`
+      );
+      window.location.href = `mailto:${FIRM.email}?subject=${subject}&body=${body}`;
+      setSent(isEnglish ? "Email composer opened." : "Đã mở trình soạn email.");
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const contact = form.phone.trim();
+      const looksLikeEmail = contact.includes("@");
+      const client = await sb();
+      const { data, error: err } = await client
+        .from("contact_requests")
+        .insert({
+          full_name: form.name.trim(),
+          contact,
+          email: looksLikeEmail ? contact : null,
+          phone: looksLikeEmail ? null : contact,
+          practice_area: AREA_BY_SERVICE[form.area] ?? "other",
+          message: form.msg.trim() || null,
+          locale,
+          source: "website_contact",
+          user_agent: navigator.userAgent.slice(0, 500),
+        })
+        .select("reference")
+        .maybeSingle();
+
+      if (err) {
+        setError(describeError(err, locale));
+        return;
+      }
+      const reference = (data as { reference?: string } | null)?.reference;
+      setSent(
+        isEnglish
+          ? `Enquiry received${reference ? ` · ref ${reference}` : ""} — we will respond within 24 hours.`
+          : `Đã nhận yêu cầu${reference ? ` · mã ${reference}` : ""} — chúng tôi phản hồi trong 24 giờ.`
+      );
+      setForm({ name: "", phone: "", area: AREAS[0], msg: "" });
+    } finally {
+      setBusy(false);
+    }
   };
 
   const inputCls =
@@ -973,7 +1032,7 @@ export function Contact() {
           <Reveal delay={140} className="lg:col-span-6">
             <form
               onSubmit={submit}
-              className="border border-snow/12 bg-ink-850 p-7 shadow-[0_40px_100px_-45px_rgba(0,0,0,0.9)] sm:p-9"
+              className="relative border border-snow/12 bg-ink-850 p-7 shadow-[0_40px_100px_-45px_rgba(0,0,0,0.9)] sm:p-9"
             >
               <p className="label text-[10px] text-brass-400">{isEnglish ? "Consultation enquiry" : "Yêu cầu tư vấn"}</p>
               <GoldRule className="mt-3 w-14" />
@@ -1035,27 +1094,64 @@ export function Contact() {
                   className={`${inputCls} resize-none`}
                 />
               </div>
+              {/*
+                Bẫy mật ong. Đặt ngoài khung nhìn thay vì display:none, vì nhiều
+                bot bỏ qua trường bị ẩn hoàn toàn nhưng vẫn điền trường có nhãn.
+              */}
+              <div
+                className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden"
+                aria-hidden="true"
+              >
+                <label htmlFor="ct-company-url">Company URL</label>
+                <input
+                  id="ct-company-url"
+                  name="company_url"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={trap}
+                  onChange={(e) => setTrap(e.target.value)}
+                />
+              </div>
+
               <motion.button
                 type="submit"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.985 }}
+                disabled={busy}
+                whileHover={{ y: busy ? 0 : -2 }}
+                whileTap={{ scale: busy ? 1 : 0.985 }}
                 transition={{ type: "spring", ...SOFT }}
-                className="sheen group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-brass-500 px-6 py-4 text-[14px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400 hover:shadow-[0_15px_45px_-12px_rgba(201,164,76,0.6)]"
+                className="sheen group mt-7 inline-flex w-full items-center justify-center gap-2.5 bg-brass-500 px-6 py-4 text-[14px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400 hover:shadow-[0_15px_45px_-12px_rgba(201,164,76,0.6)] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {t("sendRequest")}
+                {busy ? t("loading") : t("sendRequest")}
                 <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </motion.button>
               <AnimatePresence>
                 {sent && (
                   <motion.p
+                    key="ok"
+                    role="status"
                     initial={{ opacity: 0, y: -6, height: 0 }}
                     animate={{ opacity: 1, y: 0, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.4, ease: EASE_LUXE }}
-                    className="label mt-4 flex items-center gap-2 overflow-hidden text-[10px] text-jade-300"
+                    className="mt-4 flex items-start gap-2 overflow-hidden text-[12.5px] leading-[1.6] text-jade-300"
                   >
-                    <span className="h-1.5 w-1.5 rounded-full bg-jade-500" />
-                    {isEnglish ? "Email composer opened · we will respond within 24 hours" : "Đã mở trình soạn email · chúng tôi phản hồi trong 24 giờ"}
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-jade-500" />
+                    {sent}
+                  </motion.p>
+                )}
+                {error && (
+                  <motion.p
+                    key="err"
+                    role="alert"
+                    initial={{ opacity: 0, y: -6, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.4, ease: EASE_LUXE }}
+                    className="mt-4 flex items-start gap-2 overflow-hidden text-[12.5px] leading-[1.6] text-[#f2a2a2]"
+                  >
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#e07070]" />
+                    {error}
                   </motion.p>
                 )}
               </AnimatePresence>

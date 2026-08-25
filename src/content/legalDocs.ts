@@ -275,18 +275,37 @@ export const LEGAL_DOCS: LegalDoc[] = [
   },
   {
     id: "d16",
-    code: "80/2024/NĐ-CP",
+    code: "57/2025/NĐ-CP",
     name: "Nghị định về cơ chế mua bán điện trực tiếp (DPPA)",
     type: "Nghị định",
     field: "Năng lượng",
-    effective: "03/07/2024",
+    effective: "03/03/2025",
     status: "Còn hiệu lực",
     summary:
-      "Cơ chế mua bán điện trực tiếp qua đường dây kết nối riêng và qua lưới điện quốc gia: điều kiện khách hàng lớn, hợp đồng kỳ hạn và thanh toán chênh lệch.",
+      "Cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo và khách hàng sử dụng điện lớn, qua đường dây kết nối riêng và qua lưới điện quốc gia: điều kiện tham gia, hợp đồng kỳ hạn và thanh toán chênh lệch.",
     highlights: [
+      "Thay thế Nghị định số 80/2024/NĐ-CP kể từ ngày ký ban hành 03/3/2025.",
       "Phân định hai hình thức DPPA với cấu trúc rủi ro sản lượng rất khác nhau.",
-      "Đặt điều kiện với khách hàng sử dụng điện lớn tham gia cơ chế.",
-      "Là công cụ để doanh nghiệp xuất khẩu chứng minh nguồn gốc điện tái tạo với đối tác nước ngoài.",
+      "Đã được sửa đổi, bổ sung bởi Nghị định số 243/2026/NĐ-CP ngày 26/6/2026.",
+      "Hợp đồng ký trước ngày 03/3/2025 và phù hợp quy định được thực hiện tiếp đến hết thời hạn hoặc đàm phán sửa đổi theo quy định mới.",
+    ],
+  },
+  {
+    id: "d33",
+    code: "80/2024/NĐ-CP",
+    name: "Nghị định về cơ chế mua bán điện trực tiếp (bản 2024)",
+    type: "Nghị định",
+    field: "Năng lượng",
+    effective: "03/07/2024",
+    expired: "03/03/2025",
+    status: "Hết hiệu lực",
+    replacedBy: "Nghị định số 57/2025/NĐ-CP",
+    summary:
+      "Văn bản đầu tiên đặt nền cho cơ chế mua bán điện trực tiếp tại Việt Nam, áp dụng từ tháng 7/2024 đến đầu tháng 3/2025.",
+    highlights: [
+      "Bị bãi bỏ bởi Nghị định số 57/2025/NĐ-CP ngày 03/3/2025.",
+      "Vẫn là căn cứ pháp lý của các hợp đồng DPPA ký trong giai đoạn hiệu lực và đang được thực hiện tiếp.",
+      "Cần đối chiếu khi xử lý tranh chấp phát sinh từ giai đoạn 07/2024 đến 03/2025.",
     ],
   },
   {
@@ -298,10 +317,45 @@ export const LEGAL_DOCS: LegalDoc[] = [
     effective: "03/03/2025",
     status: "Còn hiệu lực",
     summary:
-      "Phát triển điện năng lượng tái tạo, điện mặt trời mái nhà tự sản tự tiêu, giấy phép hoạt động điện lực và cơ chế giá điện.",
+      "Quy định chi tiết một số điều của Luật Điện lực về phát triển điện năng lượng tái tạo và điện năng lượng mới, trong đó có điện mặt trời mái nhà tự sản xuất, tự tiêu thụ.",
     highlights: [
-      "Cụ thể hóa điều kiện phát triển điện mặt trời mái nhà tự sản tự tiêu.",
-      "Làm rõ trường hợp phải có và được miễn giấy phép hoạt động điện lực.",
+      "Thay thế Nghị định số 135/2024/NĐ-CP về điện mặt trời mái nhà tự sản tự tiêu.",
+      "Cụ thể hóa điều kiện, công suất, trình tự phát triển nguồn điện tự sản tự tiêu và cách xử lý sản lượng dư.",
+      "Đã được sửa đổi, bổ sung bởi Nghị định số 243/2026/NĐ-CP ngày 26/6/2026: nâng tỷ lệ sản lượng dư được bán lên lưới từ 20% lên tối đa 50%.",
+      "Không điều chỉnh giấy phép hoạt động điện lực — nội dung đó thuộc Nghị định số 61/2025/NĐ-CP.",
+    ],
+  },
+  {
+    id: "d34",
+    code: "61/2025/NĐ-CP",
+    name: "Nghị định về giấy phép hoạt động điện lực",
+    type: "Nghị định",
+    field: "Năng lượng",
+    effective: "04/03/2025",
+    status: "Còn hiệu lực",
+    summary:
+      "Quy định chi tiết một số điều của Luật Điện lực về giấy phép hoạt động điện lực: điều kiện theo từng lĩnh vực, hồ sơ và trình tự cấp phép, mức công suất được miễn trừ, thời hạn và thu hồi giấy phép.",
+    highlights: [
+      "Gồm 5 chương, 28 điều; áp dụng cho phát điện, truyền tải, phân phối, bán buôn và bán lẻ điện.",
+      "Xác định rõ ngưỡng công suất được miễn giấy phép hoạt động điện lực.",
+      "Là văn bản phải tra khi dự án tự sản tự tiêu mở rộng quy mô hoặc chuyển sang bán điện cho bên thứ ba.",
+    ],
+  },
+  {
+    id: "d35",
+    code: "243/2026/NĐ-CP",
+    name: "Nghị định sửa đổi, bổ sung Nghị định số 57/2025/NĐ-CP và Nghị định số 58/2025/NĐ-CP",
+    type: "Nghị định",
+    field: "Năng lượng",
+    effective: "26/06/2026",
+    status: "Còn hiệu lực",
+    summary:
+      "Sửa đổi, bổ sung cơ chế mua bán điện trực tiếp và quy định về phát triển điện năng lượng tái tạo, điện năng lượng mới; nới đáng kể giới hạn bán sản lượng dư của điện mặt trời mái nhà tự sản tự tiêu.",
+    highlights: [
+      "Nâng tỷ lệ sản lượng dư được bán lên lưới của điện mặt trời mái nhà tự sản tự tiêu từ 20% lên tối đa 50% sản lượng tại đầu ra inverter.",
+      "Đến hết ngày 31/12/2030, các bên được thỏa thuận tỷ lệ cao hơn 50% nếu lưới điện khu vực đấu nối còn khả năng tiếp nhận và đáp ứng các điều kiện kèm theo.",
+      "Không giới hạn sản lượng dư được bán với hệ thống tại khu vực miền núi, biên giới, hải đảo chưa được cấp điện từ lưới quốc gia.",
+      "Doanh nghiệp đã lập mô hình tài chính theo trần 20% cần tính lại phương án đầu tư.",
     ],
   },
   {
@@ -484,13 +538,33 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Nghị định",
     field: "Dữ liệu",
     effective: "01/07/2023",
-    status: "Hết hiệu lực một phần",
+    expired: "01/01/2026",
+    status: "Hết hiệu lực",
+    replacedBy: "Nghị định số 356/2025/NĐ-CP",
     summary:
       "Nền tảng pháp lý đầu tiên về dữ liệu cá nhân tại Việt Nam: phân loại dữ liệu cơ bản và nhạy cảm, sự đồng ý của chủ thể, thông báo xử lý và hồ sơ đánh giá tác động.",
     highlights: [
+      "Hết hiệu lực từ ngày 01/01/2026, được thay thế bởi Nghị định số 356/2025/NĐ-CP.",
       "Đưa ra bộ khái niệm nền mà Luật số 91/2025/QH15 kế thừa và nâng lên cấp luật.",
-      "Là căn cứ đánh giá hành vi xử lý dữ liệu diễn ra trong giai đoạn 2023 đến 2025.",
-      "Doanh nghiệp đã lập hồ sơ đánh giá tác động theo nghị định này cần rà lại theo chuẩn của luật mới.",
+      "Là căn cứ đánh giá hành vi xử lý dữ liệu diễn ra trong giai đoạn 07/2023 đến hết 2025.",
+      "Doanh nghiệp đã lập hồ sơ đánh giá tác động theo nghị định này cần lập lại theo chuẩn của luật và nghị định mới.",
+    ],
+  },
+  {
+    id: "d36",
+    code: "356/2025/NĐ-CP",
+    name: "Nghị định quy định chi tiết và biện pháp thi hành Luật Bảo vệ dữ liệu cá nhân",
+    type: "Nghị định",
+    field: "Dữ liệu",
+    effective: "01/01/2026",
+    status: "Còn hiệu lực",
+    summary:
+      "Quy định chi tiết một số điều và biện pháp thi hành Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15: phân loại dữ liệu cơ bản và nhạy cảm, quy trình, thủ tục và biểu mẫu tuân thủ.",
+    highlights: [
+      "Ban hành ngày 31/12/2025, có hiệu lực cùng ngày với Luật số 91/2025/QH15 là 01/01/2026.",
+      "Thay thế Nghị định số 13/2023/NĐ-CP ngày 17/4/2023.",
+      "Gồm 5 chương, 42 điều và một phụ lục với 10 biểu mẫu, trong đó có hồ sơ đánh giá tác động xử lý dữ liệu cá nhân.",
+      "Áp dụng cả với tổ chức, cá nhân nước ngoài có hoạt động xử lý dữ liệu cá nhân tại Việt Nam.",
     ],
   },
   {

@@ -120,47 +120,59 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
-  overscroll-behavior-y: none;
-}
-
-body {
-  background-color: var(--color-ink-950);
-  color: var(--color-snow);
-  font-family: var(--font-body);
-  /*
-   * Tiếng Việt xếp dấu chồng lên nguyên âm (Ế, Ộ, Ữ). Line-height dưới 1.15 làm
-   * dấu bị cắt hoặc chạm vào dòng trên, nên toàn trang lấy mốc an toàn 1.6 và
-   * các tiêu đề ghi đè lên mức riêng, không bao giờ thấp hơn 1.15.
-   */
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  overflow-x: hidden;
-  overscroll-behavior-x: none;
-}
-
 /*
- * Chặn tình trạng chữ đè nhau ở tiêu đề: mọi thẻ tiêu đề có sàn line-height
- * và bỏ letter-spacing âm, vì dấu tiếng Việt cần chỗ thở theo cả chiều ngang.
+ * Quy tắc nền phải nằm trong @layer base.
+ *
+ * CSS xếp mọi khai báo không thuộc layer nào lên trên các khai báo trong layer,
+ * bất kể độ cụ thể. Khi khối này còn để trần, `p { text-wrap: pretty }` thắng cả
+ * `.truncate` của Tailwind (nằm trong @layer utilities), vì `text-wrap` đặt lại
+ * `text-wrap-mode: wrap` và ghi đè phần `white-space: nowrap` của truncate. Hệ
+ * quả là mọi thẻ <p> có class truncate đều xuống dòng thay vì cắt bằng dấu ba
+ * chấm — lỗi âm thầm, chỉ lộ ra ở khung hẹp.
  */
-h1,
-h2,
-h3,
-h4 {
-  line-height: 1.18;
-  letter-spacing: 0;
-  text-wrap: balance;
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    overscroll-behavior-y: none;
+  }
 
-h1 {
-  line-height: 1.14;
-}
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-snow);
+    font-family: var(--font-body);
+    /*
+     * Tiếng Việt xếp dấu chồng lên nguyên âm (Ế, Ộ, Ữ). Line-height dưới 1.15 làm
+     * dấu bị cắt hoặc chạm vào dòng trên, nên toàn trang lấy mốc an toàn 1.6 và
+     * các tiêu đề ghi đè lên mức riêng, không bao giờ thấp hơn 1.15.
+     */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
 
-p {
-  text-wrap: pretty;
+  /*
+   * Chặn tình trạng chữ đè nhau ở tiêu đề: mọi thẻ tiêu đề có sàn line-height
+   * và bỏ letter-spacing âm, vì dấu tiếng Việt cần chỗ thở theo cả chiều ngang.
+   */
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.18;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  h1 {
+    line-height: 1.14;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
 }
 
 ::selection {

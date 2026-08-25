@@ -1,5 +1,6 @@
 import { MotionConfig } from "framer-motion";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useCallback, useState } from "react";
+import { AuthProvider } from "./auth";
 import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } from "./components/Chrome";
 import { Approach, Hero, Pricing, Services, StatsBand } from "./components/Home1";
 import type { DocItem } from "./content/types";
@@ -7,6 +8,15 @@ import { LocaleProvider } from "./i18n";
 
 const SecondaryContent = lazy(() =>
   import("./components/Home2").then(({ SecondaryContent: Content }) => ({ default: Content }))
+);
+
+/*
+ * Cổng khách hàng tách thành chunk riêng: nó kéo theo @supabase/supabase-js và
+ * chỉ mở khi người dùng bấm vào tài khoản, nên không có lý do gì để nằm trong
+ * gói tải đầu của một trang mà phần lớn khách chỉ đọc bài viết.
+ */
+const AccountDialog = lazy(() =>
+  import("./components/Account").then(({ AccountDialog: Dialog }) => ({ default: Dialog }))
 );
 
 function SecondaryContentFallback() {
@@ -24,6 +34,9 @@ function SecondaryContentFallback() {
 
 export default function App() {
   const [doc, setDoc] = useState<DocItem | null>(null);
+  const [accountOpen, setAccountOpen] = useState(false);
+
+  const openAccount = useCallback(() => setAccountOpen(true), []);
 
   return (
     /*
@@ -32,26 +45,35 @@ export default function App() {
      * từng component không phải tự kiểm tra lại.
      */
     <LocaleProvider>
-      <MotionConfig reducedMotion="user">
-        <div className="noise relative min-h-screen">
-        <Ambient />
-        <Header />
-        <main className="relative" aria-label="Nội dung LHPT Law Firm">
-          <Hero />
-          <StatsBand />
-          <Services />
-          <Approach />
-          <Pricing />
-          <Suspense fallback={<SecondaryContentFallback />}>
-            <SecondaryContent onOpen={setDoc} />
-          </Suspense>
-        </main>
-        <Footer />
-        <MobileActionBar />
-        <ScrollTop />
-        <ArticleModal item={doc} onClose={() => setDoc(null)} />
-        </div>
-      </MotionConfig>
+      <AuthProvider>
+        <MotionConfig reducedMotion="user">
+          <div className="noise relative min-h-screen">
+            <Ambient />
+            <Header onOpenAccount={openAccount} />
+            <main className="relative" aria-label="Nội dung LHPT Law Firm">
+              <Hero />
+              <StatsBand />
+              <Services />
+              <Approach />
+              <Pricing />
+              <Suspense fallback={<SecondaryContentFallback />}>
+                <SecondaryContent onOpen={setDoc} />
+              </Suspense>
+            </main>
+            <Footer />
+            <MobileActionBar onOpenAccount={openAccount} />
+            <ScrollTop />
+            <ArticleModal
+              item={doc}
+              onClose={() => setDoc(null)}
+              onRequireAccount={openAccount}
+            />
+            <Suspense fallback={null}>
+              <AccountDialog open={accountOpen} onClose={() => setAccountOpen(false)} />
+            </Suspense>
+          </div>
+        </MotionConfig>
+      </AuthProvider>
     </LocaleProvider>
   );
 }
