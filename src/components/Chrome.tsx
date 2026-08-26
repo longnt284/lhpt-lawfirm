@@ -19,6 +19,7 @@ import { useSpotlight } from "../hooks";
 import {
   IconArrowUpRight,
   IconClose,
+  IconCube,
   IconDiscord,
   IconFacebook,
   IconGlobe,
@@ -292,6 +293,33 @@ export function LanguageSwitch({
 }
 
 /* ---------- header + progress bar ---------- */
+/*
+ * Hai trang dựng bằng đồ hoạ ba chiều.
+ *
+ * Chúng được liệt kê riêng thay vì trộn vào NAV_LINKS vì hai lý do. Thứ nhất,
+ * thanh điều hướng ngang đã kín chỗ ở mức 1024px — thêm một mục nữa là các mục
+ * bắt đầu dính vào nhau. Thứ hai, đây là loại nội dung khác hẳn phần còn lại:
+ * không phải một khối chữ trong trang chủ mà là một trang chạy được, nên nó
+ * đáng được giới thiệu bằng ngôn ngữ riêng chứ không phải thêm một dòng chữ
+ * giống hệt bảy dòng bên trên.
+ */
+const THREE_D_PAGES: { to: string; vi: string; en: string; hintVi: string; hintEn: string }[] = [
+  {
+    to: "/nen-mong-phap-ly",
+    vi: "Nền móng pháp lý",
+    en: "Legal foundations",
+    hintVi: "Cuộn để dựng công trình",
+    hintEn: "Scroll to build",
+  },
+  {
+    to: "/ban-do-nang-luc",
+    vi: "Bản đồ năng lực",
+    en: "Practice map",
+    hintVi: "Bấm vào một lĩnh vực",
+    hintEn: "Select a practice area",
+  },
+];
+
 export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
   const [open, setOpen] = useState(false);
   const { isEnglish, t } = useLocale();
@@ -373,6 +401,25 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
                 />
               )}
               {t("nav")[i]}
+              {/*
+                Mục nào trỏ tới một trang riêng thì mang nhãn 3D. Người dùng
+                không có cách nào khác để biết "Năng lực" mở ra một cảnh chạy
+                được chứ không phải một khối chữ nữa trong trang chủ.
+
+                Nhãn được đặt tuyệt đối vào khoảng đệm sẵn có của chính mục đó
+                nên nó không chiếm một điểm ảnh chiều ngang nào. Đây không phải
+                sở thích: hàng ngang của header đã chật sẵn ở khoảng 1024–1280px,
+                nhất là ở bản tiếng Anh, nên mọi thứ thêm vào thanh điều hướng
+                đều phải có bề rộng bằng không.
+              */}
+              {l.href.startsWith("/") && (
+                <span
+                  aria-hidden="true"
+                  className="label pointer-events-none absolute top-0.5 right-0.5 text-[7.5px] leading-none text-brass-400"
+                >
+                  3D
+                </span>
+              )}
             </SectionLink>
           ))}
         </nav>
@@ -419,11 +466,21 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
             transition={{ duration: 0.45, ease: EASE_LUXE }}
             className="overflow-hidden border-t border-snow/10 bg-ink-950/97 backdrop-blur-xl lg:hidden"
           >
+            {/*
+              Panel tự cuộn được, và chừa đáy đủ rộng.
+
+              Trên máy 844px, tám mục điều hướng cộng khối 3D cộng phần đổi ngôn
+              ngữ và tài khoản đã cao hơn khung nhìn, mà lớp bọc bên ngoài phải
+              giữ overflow-hidden cho phần chuyển động mở ra. Không có hai dòng
+              này thì mấy mục cuối bị cắt và không có cách nào chạm tới. Khoảng
+              đệm đáy là để nhường chỗ cho thanh gọi/đặt lịch cố định ở chân màn
+              hình, vốn nổi lên trên panel.
+            */}
             <motion.nav
               variants={stagger(0.05, 0.08)}
               initial="hidden"
               animate="show"
-              className="flex flex-col gap-1 px-5 py-6"
+              className="flex max-h-[calc(100svh-4.75rem)] flex-col gap-1 overflow-y-auto overscroll-contain px-5 pt-6 pb-28"
             >
               {NAV_LINKS.map((l, i) => (
                 <motion.div key={l.href} variants={fadeUpSmall}>
@@ -439,7 +496,39 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
                   </SectionLink>
                 </motion.div>
               ))}
-              <motion.div variants={fadeUpSmall} className="mt-4">
+              {/*
+                Trên di động, menu là màn hình duy nhất người dùng thực sự đọc
+                hết trước khi quyết định đi đâu. Hai trang 3D được bày thành thẻ
+                có kèm câu chỉ dẫn thao tác, thay vì hai dòng chữ lẫn giữa tám
+                mục neo trong trang chủ.
+              */}
+              <motion.div variants={fadeUpSmall} className="mt-5 border-t border-snow/10 pt-5">
+                <p className="label mb-3 flex items-center gap-2 text-[9px] text-brass-400">
+                  <IconCube className="h-3.5 w-3.5 shrink-0" />
+                  {isEnglish ? "3D experience" : "Trải nghiệm 3D"}
+                </p>
+                <div className="grid gap-2">
+                  {THREE_D_PAGES.map((page) => (
+                    <Link
+                      key={page.to}
+                      to={page.to}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-between gap-3 border border-snow/10 bg-ink-900/60 px-4 py-3 transition-colors hover:border-brass-500/50"
+                    >
+                      <span className="min-w-0">
+                        <span className="block truncate text-[14px] font-medium text-fog-200">
+                          {isEnglish ? page.en : page.vi}
+                        </span>
+                        <span className="label mt-1 block text-[9px] text-fog-500">
+                          {isEnglish ? page.hintEn : page.hintVi}
+                        </span>
+                      </span>
+                      <IconArrowUpRight className="h-4 w-4 shrink-0 text-brass-400" />
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+              <motion.div variants={fadeUpSmall} className="mt-5">
                 <p className="label mb-2 text-[9px] text-fog-500">{t("languageLabel")}</p>
                 <LanguageSwitch variant="panel" className="w-fit" />
               </motion.div>
@@ -798,8 +887,19 @@ function FooterColumn({
       <ul className="mt-5 space-y-3 text-[13.5px] leading-[1.6] text-fog-300">
         {items.map(([t, h]) => (
           <li key={t}>
-            <SectionLink href={h} className="link-underline transition-colors hover:text-brass-300">
+            <SectionLink
+              href={h}
+              className="link-underline inline-flex items-baseline gap-2 transition-colors hover:text-brass-300"
+            >
               {t}
+              {/*
+                Cùng quy ước với thanh điều hướng: href trỏ tới một trang riêng
+                thì đó là một trang 3D. Ở chân trang, nơi mọi mục trông giống hệt
+                nhau, cái nhãn này là thứ duy nhất phân biệt được chúng.
+              */}
+              {h.startsWith("/") && (
+                <span className="label text-[7.5px] text-brass-500">3D</span>
+              )}
             </SectionLink>
           </li>
         ))}

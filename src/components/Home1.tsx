@@ -1,5 +1,5 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../firm";
 import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
@@ -15,12 +15,15 @@ import {
   stagger,
 } from "../motion";
 import { Kicker, Reveal, SectionHead } from "./Chrome";
+import { ExplorePreview } from "./ExplorePreview";
 import { GoldRule, Magnetic, TiltCard } from "./Motion";
 import {
   IconArrowRight,
   IconArrowUpRight,
   IconCheck,
   IconCrane,
+  IconCube,
+  IconCursor,
   IconDeal,
   IconScale,
   IconShield,
@@ -179,7 +182,46 @@ export function Hero() {
                 </a>
               </Magnetic>
             </motion.div>
-            <motion.p variants={fadeUpSmall} className="label mt-8 text-[10px] text-fog-500">
+            {/*
+              Cửa vào sớm nhất cho hai trang 3D.
+
+              Khối "Trải nghiệm 3D" ở giữa trang chủ mới là nơi giới thiệu chúng
+              tử tế, nhưng nó nằm sau hero, dải chỉ số và sáu thẻ dịch vụ — với
+              người chỉ lướt một màn hình rồi quyết định đi tiếp hay ở lại thì
+              nó không tồn tại. Hai dòng chữ ở đây rẻ về mặt thị giác, không
+              tranh chỗ với hai nút chính, mà vẫn nói được rằng website này có
+              thứ để xem chứ không chỉ để đọc.
+            */}
+            <motion.div
+              variants={fadeUpSmall}
+              className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-l-2 border-brass-500/60 pl-4"
+            >
+              <span className="label flex items-center gap-2 text-[9.5px] whitespace-nowrap text-brass-400">
+                <IconCube className="h-3.5 w-3.5 shrink-0" />
+                {isEnglish ? "See it in 3D" : "Xem bằng 3D"}
+              </span>
+              {(
+                [
+                  ["/nen-mong-phap-ly", "Nền móng pháp lý", "Legal foundations"],
+                  ["/ban-do-nang-luc", "Bản đồ năng lực", "Practice map"],
+                ] as const
+              ).map(([to, vi, en], index) => (
+                <span key={to} className="flex items-center gap-3">
+                  {index > 0 && <span className="text-fog-500">·</span>}
+                  <Link
+                    to={to}
+                    // Rê chuột là tín hiệu sớm nhất của ý định bấm: bắt đầu tải
+                    // chunk trang ngay từ đây thì lúc bấm gần như không phải chờ.
+                    onPointerEnter={() => prefetchPage(to)}
+                    onFocus={() => prefetchPage(to)}
+                    className="link-underline text-[12.5px] font-medium whitespace-nowrap text-fog-300 transition-colors duration-300 hover:text-brass-300"
+                  >
+                    {isEnglish ? en : vi}
+                  </Link>
+                </span>
+              ))}
+            </motion.div>
+            <motion.p variants={fadeUpSmall} className="label mt-7 text-[10px] text-fog-500">
               {t("response")} · {t("confidential")}
             </motion.p>
           </motion.div>
@@ -537,132 +579,281 @@ export function Services() {
   );
 }
 
-/* ================= KHÁM PHÁ — HAI TRANG CHUYÊN ĐỀ ================= */
+/* ================= TRẢI NGHIỆM 3D — HAI TRANG CHUYÊN ĐỀ ================= */
 /*
  * Hai trang này giải thích cách hãng làm việc bằng hình thay vì bằng đoạn văn:
  * một trang dựng công trình theo nhịp cuộn, một trang bày ra bản đồ các lĩnh
- * vực. Chúng nằm ngoài trang chủ nên cần một cửa vào đủ rõ ở đây, thay vì chỉ
- * nấp trong chân trang.
+ * vực và các điểm giao giữa chúng.
+ *
+ * Bản trước đại diện cho mỗi trang bằng một hình vẽ nét mảnh rộng 96px nằm nép
+ * ở mép thẻ, màu xám nhạt, đứng yên. Đặt cạnh năm thẻ dịch vụ và một bảng phí,
+ * nó không có gì để mắt bám vào: người lướt trang chủ đọc lướt tiêu đề rồi đi
+ * tiếp, và hai trang công phu nhất của website gần như không ai mở.
+ *
+ * Bản này đổi cách nói. Mỗi thẻ mở đầu bằng chính cảnh 3D của trang đó, thu nhỏ
+ * và tự chạy: công trình tự dựng lên từng tầng, chòm sao lĩnh vực xoay chậm với
+ * những chấm hồ sơ chạy dọc các đường nối. Một khối đang chuyển động trong
+ * không gian nói ngay được điều mà dòng chữ "trang tương tác" phải mất vài giây
+ * mới nói xong — và nó nói đúng vào lúc mắt quét qua.
+ *
+ * Phần chi phí của lựa chọn đó được xử lý ở `ExplorePreview`: three.js chỉ được
+ * tải khi thẻ sắp vào khung nhìn, trên máy đủ khoẻ, và người dùng chưa nói là
+ * muốn ít chuyển động. Ai không rơi vào diện đó vẫn thấy một hình tĩnh vẽ đúng
+ * cảnh ấy.
  */
 const EXPLORE_PAGES = [
   {
     to: "/nen-mong-phap-ly",
+    variant: "foundation" as const,
     kicker: { vi: "Vòng đời dự án", en: "Project life cycle" },
     title: { vi: "Nền móng pháp lý", en: "Legal foundations" },
     body: {
       vi: "Năm tầng hồ sơ của một dự án xây dựng, từ đất đai tới tranh chấp. Cuộn tới đâu, công trình dựng lên tới đó.",
       en: "The five layers of a construction project's legal file, from land to dispute. The building goes up as you scroll.",
     },
+    /* Nói thẳng người dùng phải làm gì ở trang kia — ý định bấm đến từ đây. */
+    hint: { vi: "Cuộn để dựng công trình", en: "Scroll to build" },
+    meta: { vi: "5 tầng hồ sơ", en: "5 layers" },
     accent: "brass" as const,
-    art: (
-      <>
-        <path d="M8 62h48M14 62V38M26 62V38M38 62V38M50 62V38" />
-        <path d="M14 48h36M14 38h36" />
-        <path d="M8 38 32 22l24 16" className="text-brass-400" />
-        <path d="M32 22V10" className="text-jade-400" />
-      </>
-    ),
   },
   {
     to: "/ban-do-nang-luc",
+    variant: "practice" as const,
     kicker: { vi: "Bản đồ năng lực", en: "Practice map" },
     title: { vi: "Nơi các lĩnh vực gặp nhau", en: "Where practices meet" },
     body: {
       vi: "Năm lĩnh vực hành nghề và bảy điểm giao có thật giữa chúng. Bấm vào một lĩnh vực để xem nó thường kéo theo điều gì.",
       en: "Five practice areas and seven real crossings between them. Select one to see what it usually pulls in.",
     },
+    hint: { vi: "Bấm vào một lĩnh vực", en: "Select a practice area" },
+    meta: { vi: "5 lĩnh vực · 7 điểm giao", en: "5 areas · 7 crossings" },
     accent: "jade" as const,
-    art: (
-      <>
-        <path d="M16 20 46 30M46 30 30 52M30 52 16 20M46 30 56 50M16 20 12 44M12 44 30 52" className="opacity-50" />
-        <circle cx="16" cy="20" r="3.5" className="text-brass-400" />
-        <circle cx="46" cy="30" r="3.5" className="text-brass-400" />
-        <circle cx="30" cy="52" r="3.5" className="text-jade-400" />
-        <circle cx="56" cy="50" r="2.5" className="text-jade-400" />
-        <circle cx="12" cy="44" r="2.5" className="text-brass-400" />
-      </>
-    ),
   },
 ];
 
+/*
+ * Nạp trước chunk của trang đích ngay khi con trỏ chạm vào thẻ.
+ *
+ * Hai trang này nặng: mã trang cộng với thư viện đồ hoạ. Nếu chỉ bắt đầu tải lúc
+ * người dùng bấm thì họ nhìn một màn hình trống chừng một nhịp — đúng lúc vừa
+ * quyết định là muốn xem. Rê chuột đi trước cú bấm khoảng vài trăm mili giây, đủ
+ * để phần lớn quãng tải diễn ra trước khi trang đổi.
+ *
+ * Vite đã tách sẵn hai trang này thành chunk riêng (xem `lazy()` trong App.tsx),
+ * nên `import()` ở đây trỏ đúng vào chunk đó chứ không tạo bản sao thứ hai.
+ */
+const PAGE_CHUNKS: Record<string, () => Promise<unknown>> = {
+  "/nen-mong-phap-ly": () => import("../pages/FoundationPage"),
+  "/ban-do-nang-luc": () => import("../pages/PracticeMapPage"),
+};
+const prefetched = new Set<string>();
+
+function prefetchPage(to: string) {
+  if (prefetched.has(to)) return;
+  prefetched.add(to);
+  // Tải hỏng thì bỏ dấu để lần rê chuột sau còn thử lại; người dùng không cần
+  // biết gì, cú bấm vẫn đi qua đường tải bình thường của router.
+  PAGE_CHUNKS[to]?.().catch(() => prefetched.delete(to));
+}
+
+function ExploreCard({
+  page,
+  lang,
+}: {
+  page: (typeof EXPLORE_PAGES)[number];
+  lang: "vi" | "en";
+}) {
+  const onMove = useSpotlight<HTMLAnchorElement>();
+  /*
+   * Trạng thái rê chuột nằm ở từng thẻ chứ không ở khối cha: đặt ở cha thì mỗi
+   * lần con trỏ đi qua một thẻ, React dựng lại cả hai — kể cả thẻ không liên
+   * quan — và cảnh 3D bên trong nhận một lượt render thừa ở mỗi lần.
+   */
+  const [active, setActive] = useState(false);
+  const jade = page.accent === "jade";
+
+  /*
+   * Cùng một cử chỉ vừa bật hiệu ứng vừa châm ngòi tải trước. Bàn phím đi qua
+   * `focus` nên người dùng không dùng chuột cũng được lợi như nhau.
+   */
+  const engage = useCallback(() => {
+    setActive(true);
+    prefetchPage(page.to);
+  }, [page.to]);
+  const release = useCallback(() => setActive(false), []);
+
+  return (
+    <motion.article
+      variants={cardIn}
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", ...SOFT }}
+      className="h-full"
+    >
+      <Link
+        to={page.to}
+        onPointerEnter={engage}
+        onPointerLeave={release}
+        onFocus={engage}
+        onBlur={release}
+        onPointerMove={onMove}
+        className={`spotlight ${
+          jade ? "spotlight-jade" : ""
+        } group flex h-full flex-col overflow-hidden border bg-ink-850/80 transition-[border-color,box-shadow] duration-500 ${
+          jade
+            ? "border-jade-500/35 hover:border-jade-400/75 hover:shadow-[0_30px_84px_-32px_rgba(34,196,156,0.45)]"
+            : "border-brass-500/30 hover:border-brass-400/75 hover:shadow-[0_30px_84px_-32px_rgba(201,164,76,0.42)]"
+        }`}
+      >
+        {/*
+          Khung xem trước. Tỉ lệ cố định bằng aspect-ratio chứ không bằng chiều
+          cao tính theo màn hình: chiều cao khung phải chốt được từ trước khi
+          canvas gắn vào, nếu không bố cục nhảy một nhịp ngay giữa lúc người dùng
+          đang cuộn tới.
+        */}
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-ink-950">
+          <ExplorePreview variant={page.variant} hovered={active} />
+          {/*
+            Quầng tối bốn góc: giữ cho nhãn và đường viền thẻ không bị các nét
+            sáng của cảnh cắt ngang, đồng thời tạo cảm giác cảnh chìm vào trong
+            thẻ thay vì dán lên trên.
+          */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_45%,transparent_38%,rgba(5,11,19,0.72)_100%)]"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-ink-850 to-transparent"
+          />
+
+          {/*
+            Nhãn "3D · Tương tác" là chi tiết làm nhiều việc nhất trong cả khối:
+            nó nói rõ đây không phải ảnh minh hoạ mà là một thứ mở ra được. Chấm
+            nhấp nháy mượn đúng ngôn ngữ của thẻ "Live" ở hero, nên người đã cuộn
+            qua hero hiểu ngay nó nghĩa là gì.
+          */}
+          <span
+            className={`label absolute top-4 left-4 inline-flex items-center gap-2 border px-2.5 py-1.5 text-[9px] backdrop-blur-sm transition-colors duration-500 ${
+              jade
+                ? "border-jade-500/40 bg-ink-950/70 text-jade-300 group-hover:border-jade-400/70"
+                : "border-brass-500/40 bg-ink-950/70 text-brass-300 group-hover:border-brass-400/70"
+            }`}
+          >
+            <span
+              className={`animate-pulse-dot h-1.5 w-1.5 rounded-full ${
+                jade ? "bg-jade-500" : "bg-brass-500"
+              }`}
+            />
+            {lang === "en" ? "3D · Interactive" : "3D · Tương tác"}
+          </span>
+
+          <span className="label absolute top-4 right-4 text-[9px] text-fog-500">
+            {page.meta[lang]}
+          </span>
+
+          {/*
+            Câu chỉ dẫn thao tác đặt ngay trên cảnh, không đẩy xuống thân thẻ:
+            người đọc phải biết mình sẽ *làm gì* ở trang kia trước khi cân nhắc
+            có bấm hay không.
+          */}
+          <span className="label absolute bottom-4 left-6 flex items-center gap-2.5 text-[9.5px] text-fog-400">
+            <IconCursor
+              className={`h-3.5 w-3.5 shrink-0 transition-colors duration-500 ${
+                jade ? "text-jade-400" : "text-brass-400"
+              }`}
+            />
+            {page.hint[lang]}
+          </span>
+        </div>
+
+        {/* ---------- thân thẻ ---------- */}
+        <div className="flex flex-1 flex-col p-6 sm:p-8">
+          <p className={`label text-[10px] ${jade ? "text-jade-400" : "text-brass-400"}`}>
+            {page.kicker[lang]}
+          </p>
+          <h3 className="font-display mt-3 text-[1.4rem] leading-[1.22] font-semibold text-snow sm:text-[1.65rem]">
+            {page.title[lang]}
+          </h3>
+          <p className="mt-3.5 mb-7 max-w-md text-[13.5px] leading-[1.7] text-fog-400">
+            {page.body[lang]}
+          </p>
+
+          {/*
+            Lời gọi hành động là một nút thật, không phải một dòng chữ có mũi
+            tên. Cả thẻ vẫn là một liên kết, nhưng mắt cần một đích rõ ràng để
+            biết chỗ nào bấm được — đó là chênh lệch giữa "chắc là đọc thêm được"
+            và "bấm vào đây".
+          */}
+          {/*
+            `mt-auto` đẩy nút xuống đáy thẻ. Hai thẻ nằm cạnh nhau trong lưới nên
+            luôn cao bằng nhau; không có nó thì thẻ nào có đoạn mô tả ngắn hơn sẽ
+            có nút nằm cao hơn thẻ kia, và hai lời gọi hành động lệch nhau đúng
+            một dòng chữ.
+          */}
+          <span
+            className={`mt-auto inline-flex w-fit items-center gap-2.5 border px-5 py-2.5 text-[13px] font-semibold transition-all duration-300 ${
+              jade
+                ? "border-jade-500/50 text-jade-300 group-hover:border-jade-400 group-hover:bg-jade-500/10"
+                : "border-brass-500/50 text-brass-300 group-hover:border-brass-400 group-hover:bg-brass-500/10"
+            }`}
+          >
+            {lang === "en" ? "Open the 3D page" : "Mở trang 3D"}
+            <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+        </div>
+      </Link>
+    </motion.article>
+  );
+}
+
 export function Explore() {
-  const { isEnglish, t } = useLocale();
-  const onMove = useSpotlight<HTMLElement>();
+  const { isEnglish } = useLocale();
   const lang = isEnglish ? "en" : "vi";
 
   return (
-    <section className="relative z-10 px-5 py-20 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    /*
+      Khối này có nền riêng và hai đường kẻ ngang chặn hai đầu, khác với các khối
+      kể chuyện bằng chữ phía trên và phía dưới. Đó là cách rẻ nhất để cắt nhịp
+      cuộn: mắt đang đọc lướt một chuỗi khối giống nhau thì dừng lại ở chỗ nền
+      đổi màu, và đúng lúc đó nó gặp hai cảnh 3D đang chạy.
+    */
+    <section
+      id="trai-nghiem-3d"
+      className="relative z-10 overflow-hidden border-y border-snow/10 bg-ink-900/45 px-5 py-24 lg:px-8"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 left-1/2 h-[30rem] w-[46rem] -translate-x-1/2 rounded-full bg-brass-500/[0.07] blur-[130px]"
+      />
+      <div className="relative mx-auto max-w-7xl">
         <SectionHead
-          kicker={isEnglish ? "Explore" : "Khám phá"}
+          kicker={isEnglish ? "3D experience" : "Trải nghiệm 3D"}
           title={
             isEnglish ? (
               <>
-                Two ways to see <span className="gilded italic">how we work.</span>
+                Two ways to <span className="gilded italic">see how we work.</span>
               </>
             ) : (
               <>
-                Hai cách để thấy <span className="gilded italic">cách chúng tôi làm việc.</span>
+                Hai cách để <span className="gilded italic">thấy cách chúng tôi làm việc.</span>
               </>
             )
           }
+          sub={
+            isEnglish
+              ? "Two interactive pages built in real-time 3D, running in your browser. Not a brochure — you drive them by scrolling and clicking."
+              : "Hai trang tương tác dựng bằng đồ hoạ ba chiều, chạy thẳng trong trình duyệt. Không phải ảnh giới thiệu — bạn điều khiển chúng bằng thao tác cuộn và bấm."
+          }
         />
         <motion.div
-          variants={stagger(0.1, 0.15)}
+          variants={stagger(0.12, 0.15)}
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT}
-          className="mt-11 grid gap-6 lg:grid-cols-2"
+          className="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-7"
         >
           {EXPLORE_PAGES.map((page) => (
-            <motion.article key={page.to} variants={cardIn} whileHover={{ y: -6 }} transition={{ type: "spring", ...SOFT }}>
-              <Link
-                to={page.to}
-                onPointerMove={onMove}
-                className={`spotlight ${
-                  page.accent === "jade" ? "spotlight-jade" : ""
-                } group flex h-full flex-col justify-between gap-8 border bg-ink-850/80 p-7 transition-[border-color,box-shadow] duration-500 sm:flex-row sm:items-center sm:p-9 ${
-                  page.accent === "jade"
-                    ? "border-jade-500/30 hover:border-jade-400/70 hover:shadow-[0_25px_70px_-30px_rgba(34,196,156,0.4)]"
-                    : "border-snow/10 hover:border-brass-500/60 hover:shadow-[0_25px_70px_-30px_rgba(201,164,76,0.35)]"
-                }`}
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="label text-[10px] text-brass-400">{page.kicker[lang]}</p>
-                  <h3 className="font-display mt-3 text-[1.3rem] leading-[1.25] font-semibold text-snow sm:text-[1.5rem]">
-                    {page.title[lang]}
-                  </h3>
-                  <p className="mt-3.5 max-w-md text-[13.5px] leading-[1.7] text-fog-400">
-                    {page.body[lang]}
-                  </p>
-                  <span
-                    className={`mt-6 inline-flex items-center gap-2 text-[13px] font-semibold transition-colors duration-300 ${
-                      page.accent === "jade"
-                        ? "text-jade-300 group-hover:text-jade-400"
-                        : "text-brass-300 group-hover:text-brass-400"
-                    }`}
-                  >
-                    {t("viewDetails")}
-                    <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                </div>
-                {/*
-                  Hình minh hoạ là bản rút gọn của chính cảnh 3D bên trong trang,
-                  để người dùng nhận ra mình sắp đi tới đâu trước khi bấm.
-                */}
-                <svg
-                  viewBox="0 0 64 72"
-                  aria-hidden="true"
-                  className="h-24 w-24 shrink-0 self-end text-fog-500 transition-transform duration-700 group-hover:scale-105 sm:h-28 sm:w-28 sm:self-center"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                >
-                  {page.art}
-                </svg>
-              </Link>
-            </motion.article>
+            <ExploreCard key={page.to} page={page} lang={lang} />
           ))}
         </motion.div>
       </div>

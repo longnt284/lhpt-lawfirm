@@ -98,6 +98,25 @@ export const IconArrowRight = ({ className }: P) => (
   </svg>
 );
 
+/*
+ * Con trỏ chuột. Dùng để báo "chỗ này thao tác được" ở những nơi mà bản thân
+ * hình ảnh không nói ra điều đó — ví dụ khung xem trước 3D, vốn dễ bị nhìn nhầm
+ * thành một tấm ảnh minh hoạ.
+ */
+export const IconCursor = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.7} aria-hidden="true">
+    <path d="M5.5 3.4 18.2 11l-5.6 1.3-2.1 5.4z" />
+  </svg>
+);
+
+/* Khối lập phương dạng khung dây — dấu hiệu quy ước cho nội dung ba chiều. */
+export const IconCube = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.6} aria-hidden="true">
+    <path d="M12 2.8 20 7.4v9.2L12 21.2 4 16.6V7.4z" />
+    <path d="M4 7.4 12 12l8-4.6M12 12v9.2" />
+  </svg>
+);
+
 export const IconSearch = ({ className }: P) => (
   <svg viewBox="0 0 24 24" className={className} {...base} aria-hidden="true">
     <circle cx="11" cy="11" r="6.2" />
