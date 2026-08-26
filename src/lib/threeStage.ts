@@ -76,6 +76,13 @@ export type StageOptions = {
   trackPointer?: boolean;
   fov?: number;
   cameraZ?: number;
+  /**
+   * Trần devicePixelRatio riêng cho cảnh này, dùng khi cảnh không cần nét bằng
+   * mặc định. Một khung xem trước rộng 600px trên màn Retina phải vẽ 1,4 triệu
+   * điểm ảnh ở mức 2 và chỉ 800 nghìn ở mức 1,5 — với hình chỉ gồm đường mảnh
+   * thì mắt gần như không phân biệt được, còn GPU thì tiết kiệm gần một nửa.
+   */
+  maxPixelRatio?: number;
 };
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -91,7 +98,13 @@ const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
  */
 export function useThreeStage(
   setup: (init: StageInit) => StageHandle,
-  { scrollRef, trackPointer = false, fov = 45, cameraZ = 9 }: StageOptions = {}
+  {
+    scrollRef,
+    trackPointer = false,
+    fov = 45,
+    cameraZ = 9,
+    maxPixelRatio,
+  }: StageOptions = {}
 ) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const setupRef = useRef(setup);
@@ -133,7 +146,8 @@ export function useThreeStage(
      * chín lần số điểm ảnh của khung logic. Mắt gần như không phân biệt được quá
      * mức 2, còn GPU thì thấy rõ.
      */
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, compact ? 1.5 : 2));
+    const pixelCap = Math.min(maxPixelRatio ?? Infinity, compact ? 1.5 : 2);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, pixelCap));
     renderer.setClearAlpha(0);
     container.appendChild(renderer.domElement);
 
@@ -366,7 +380,7 @@ export function useThreeStage(
       }
       requestFrameRef.current = () => {};
     };
-  }, [scrollRef, trackPointer, fov, cameraZ]);
+  }, [scrollRef, trackPointer, fov, cameraZ, maxPixelRatio]);
 
   // Bọc qua ref để danh tính hàm không đổi giữa các lần render, nhờ vậy component
   // gọi dùng được nó trong deps của useEffect mà không tạo vòng lặp cập nhật.
