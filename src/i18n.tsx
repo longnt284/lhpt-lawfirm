@@ -42,10 +42,6 @@ const DICTIONARY = {
     firstTimeDetail: "Doanh nghiệp ký hợp đồng dịch vụ pháp lý với LHPT lần đầu được giảm 50% phí của kỳ hợp đồng đầu tiên.",
     mostComplete: "Đầy đủ nhất",
     choosePlan: "Nhận đề xuất gói",
-    approachKicker: "Cách chúng tôi làm việc",
-    approachTitle: "Rõ từ đầu. Chắc đến cuối.",
-    approachSub: "Một quy trình tốt không làm hồ sơ trở nên nặng nề hơn. Nó khiến quyết định lớn trở nên dễ nhìn thấy và dễ hành động.",
-    approachNote: "đầu mối tiếp nhận, một người phụ trách, một lộ trình có thể kiểm tra.",
     newsKicker: "Theo dõi pháp lý",
     newsTitle: "Những thay đổi cần biết.",
     newsSub: "Cập nhật ngắn gọn các chuyển động pháp lý có thể tác động trực tiếp tới doanh nghiệp.",
@@ -226,10 +222,6 @@ const DICTIONARY = {
     firstTimeDetail: "Businesses signing their first legal services agreement with LHPT receive 50% off the first contract term.",
     mostComplete: "Most comprehensive",
     choosePlan: "Request a proposal",
-    approachKicker: "How we work",
-    approachTitle: "Clear from day one. Certain through the finish.",
-    approachSub: "A good process does not make a matter heavier. It makes significant decisions visible and actionable.",
-    approachNote: "one intake point, one responsible counsel, one trackable path.",
     newsKicker: "Legal watch",
     newsTitle: "Changes worth knowing.",
     newsSub: "Concise updates on legal developments that may directly affect businesses.",
@@ -613,12 +605,6 @@ const POLICY_EN: Record<string, PolicyItem> = {
 export function localizePolicy(item: PolicyItem, locale: Locale): PolicyItem {
   return locale === "en" ? POLICY_EN[item.q] ?? item : item;
 }
-
-export const APPROACH_EN = {
-  "01": { title: "Start with the operating reality", body: "We begin with how the business actually runs, not with a standard consultation template." },
-  "02": { title: "Close with the record", body: "Every recommendation resolves into a legal basis, a timeline, and one clearly responsible person." },
-  "03": { title: "Stay through the finish", body: "From permits and contracts to disputes, the team keeps one consistent standard across the file." },
-};
 
 /** Ghép số phút đọc với đơn vị theo ngôn ngữ đang hiển thị. */
 export function formatReadingTime(minutes: number, locale: Locale) {
