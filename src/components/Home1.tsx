@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../firm";
 import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
 import { APPROACH_EN, localizeCategory, localizePlan, localizeService, useLocale } from "../i18n";
@@ -531,6 +532,139 @@ export function Services() {
             })}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================= KHÁM PHÁ — HAI TRANG CHUYÊN ĐỀ ================= */
+/*
+ * Hai trang này giải thích cách hãng làm việc bằng hình thay vì bằng đoạn văn:
+ * một trang dựng công trình theo nhịp cuộn, một trang bày ra bản đồ các lĩnh
+ * vực. Chúng nằm ngoài trang chủ nên cần một cửa vào đủ rõ ở đây, thay vì chỉ
+ * nấp trong chân trang.
+ */
+const EXPLORE_PAGES = [
+  {
+    to: "/nen-mong-phap-ly",
+    kicker: { vi: "Vòng đời dự án", en: "Project life cycle" },
+    title: { vi: "Nền móng pháp lý", en: "Legal foundations" },
+    body: {
+      vi: "Năm tầng hồ sơ của một dự án xây dựng, từ đất đai tới tranh chấp. Cuộn tới đâu, công trình dựng lên tới đó.",
+      en: "The five layers of a construction project's legal file, from land to dispute. The building goes up as you scroll.",
+    },
+    accent: "brass" as const,
+    art: (
+      <>
+        <path d="M8 62h48M14 62V38M26 62V38M38 62V38M50 62V38" />
+        <path d="M14 48h36M14 38h36" />
+        <path d="M8 38 32 22l24 16" className="text-brass-400" />
+        <path d="M32 22V10" className="text-jade-400" />
+      </>
+    ),
+  },
+  {
+    to: "/ban-do-nang-luc",
+    kicker: { vi: "Bản đồ năng lực", en: "Practice map" },
+    title: { vi: "Nơi các lĩnh vực gặp nhau", en: "Where practices meet" },
+    body: {
+      vi: "Năm lĩnh vực hành nghề và bảy điểm giao có thật giữa chúng. Bấm vào một lĩnh vực để xem nó thường kéo theo điều gì.",
+      en: "Five practice areas and seven real crossings between them. Select one to see what it usually pulls in.",
+    },
+    accent: "jade" as const,
+    art: (
+      <>
+        <path d="M16 20 46 30M46 30 30 52M30 52 16 20M46 30 56 50M16 20 12 44M12 44 30 52" className="opacity-50" />
+        <circle cx="16" cy="20" r="3.5" className="text-brass-400" />
+        <circle cx="46" cy="30" r="3.5" className="text-brass-400" />
+        <circle cx="30" cy="52" r="3.5" className="text-jade-400" />
+        <circle cx="56" cy="50" r="2.5" className="text-jade-400" />
+        <circle cx="12" cy="44" r="2.5" className="text-brass-400" />
+      </>
+    ),
+  },
+];
+
+export function Explore() {
+  const { isEnglish, t } = useLocale();
+  const onMove = useSpotlight<HTMLElement>();
+  const lang = isEnglish ? "en" : "vi";
+
+  return (
+    <section className="relative z-10 px-5 py-20 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <SectionHead
+          kicker={isEnglish ? "Explore" : "Khám phá"}
+          title={
+            isEnglish ? (
+              <>
+                Two ways to see <span className="gilded italic">how we work.</span>
+              </>
+            ) : (
+              <>
+                Hai cách để thấy <span className="gilded italic">cách chúng tôi làm việc.</span>
+              </>
+            )
+          }
+        />
+        <motion.div
+          variants={stagger(0.1, 0.15)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="mt-11 grid gap-6 lg:grid-cols-2"
+        >
+          {EXPLORE_PAGES.map((page) => (
+            <motion.article key={page.to} variants={cardIn} whileHover={{ y: -6 }} transition={{ type: "spring", ...SOFT }}>
+              <Link
+                to={page.to}
+                onPointerMove={onMove}
+                className={`spotlight ${
+                  page.accent === "jade" ? "spotlight-jade" : ""
+                } group flex h-full flex-col justify-between gap-8 border bg-ink-850/80 p-7 transition-[border-color,box-shadow] duration-500 sm:flex-row sm:items-center sm:p-9 ${
+                  page.accent === "jade"
+                    ? "border-jade-500/30 hover:border-jade-400/70 hover:shadow-[0_25px_70px_-30px_rgba(34,196,156,0.4)]"
+                    : "border-snow/10 hover:border-brass-500/60 hover:shadow-[0_25px_70px_-30px_rgba(201,164,76,0.35)]"
+                }`}
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="label text-[10px] text-brass-400">{page.kicker[lang]}</p>
+                  <h3 className="font-display mt-3 text-[1.3rem] leading-[1.25] font-semibold text-snow sm:text-[1.5rem]">
+                    {page.title[lang]}
+                  </h3>
+                  <p className="mt-3.5 max-w-md text-[13.5px] leading-[1.7] text-fog-400">
+                    {page.body[lang]}
+                  </p>
+                  <span
+                    className={`mt-6 inline-flex items-center gap-2 text-[13px] font-semibold transition-colors duration-300 ${
+                      page.accent === "jade"
+                        ? "text-jade-300 group-hover:text-jade-400"
+                        : "text-brass-300 group-hover:text-brass-400"
+                    }`}
+                  >
+                    {t("viewDetails")}
+                    <IconArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                </div>
+                {/*
+                  Hình minh hoạ là bản rút gọn của chính cảnh 3D bên trong trang,
+                  để người dùng nhận ra mình sắp đi tới đâu trước khi bấm.
+                */}
+                <svg
+                  viewBox="0 0 64 72"
+                  aria-hidden="true"
+                  className="h-24 w-24 shrink-0 self-end text-fog-500 transition-transform duration-700 group-hover:scale-105 sm:h-28 sm:w-28 sm:self-center"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                >
+                  {page.art}
+                </svg>
+              </Link>
+            </motion.article>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
