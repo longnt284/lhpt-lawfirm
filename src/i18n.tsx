@@ -13,7 +13,7 @@ const DICTIONARY = {
   vi: {
     language: "English",
     languageLabel: "Đổi sang tiếng Anh",
-    nav: ["Dịch vụ", "Bảng phí", "Tin tức", "Bài viết", "Văn bản", "Đội ngũ", "Chính sách"],
+    nav: ["Dịch vụ", "Năng lực", "Bảng phí", "Tin tức", "Bài viết", "Văn bản", "Đội ngũ", "Chính sách"],
     book: "Đặt lịch tư vấn",
     explore: "Khám phá dịch vụ",
     legalFirm: "Hãng luật doanh nghiệp",
@@ -197,7 +197,7 @@ const DICTIONARY = {
   en: {
     language: "Tiếng Việt",
     languageLabel: "Switch to Vietnamese",
-    nav: ["Services", "Fee schedule", "News", "Insights", "Legal library", "Our team", "Policies"],
+    nav: ["Services", "Practice map", "Fee schedule", "News", "Insights", "Legal library", "Our team", "Policies"],
     book: "Book a consultation",
     explore: "Explore services",
     legalFirm: "Corporate law firm",

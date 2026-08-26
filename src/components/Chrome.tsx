@@ -8,7 +8,8 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type AnchorHTMLAttributes, type ReactNode } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../auth";
 import { FIRM, NAV_LINKS } from "../firm";
 import type { DocItem } from "../content/types";
@@ -32,6 +33,49 @@ import { GoldRule, Magnetic, Reveal } from "./Motion";
 import { Comments } from "./Comments";
 
 export { Reveal, RevealGroup, RevealItem } from "./Motion";
+
+/* ---------- liên kết vừa dùng được cho neo trong trang, vừa cho trang riêng ---------- */
+/*
+ * Header và footer xuất hiện trên mọi trang, nhưng phần lớn mục của chúng trỏ
+ * tới các khối nằm trong trang chủ. Một thẻ <a href="#dich-vu"> đứng ở trang con
+ * chỉ đổi phần neo của địa chỉ mà không đi đâu cả — người dùng bấm và không có
+ * gì xảy ra. Component này bịt đúng khe hở đó:
+ *
+ *  - href bắt đầu bằng "/" là một trang riêng, luôn điều hướng qua router;
+ *  - href bắt đầu bằng "#" khi đang ở trang chủ thì giữ nguyên thẻ <a>, để trình
+ *    duyệt tự lo phần cuộn mượt như trước giờ;
+ *  - href bắt đầu bằng "#" khi đang ở trang con thì phải về trang chủ trước, rồi
+ *    ScrollManager trong App mới đưa tới đúng khối.
+ */
+export function SectionLink({
+  href,
+  children,
+  ...rest
+}: { href: string; children: ReactNode } & Omit<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  "href"
+>) {
+  const { pathname } = useLocation();
+  if (!href.startsWith("#")) {
+    return (
+      <Link to={href} {...rest}>
+        {children}
+      </Link>
+    );
+  }
+  if (pathname === "/") {
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link to={`/${href}`} {...rest}>
+      {children}
+    </Link>
+  );
+}
 
 /* ---------- nền ambient nhiều lớp ---------- */
 /*
@@ -291,7 +335,7 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
         transition={{ duration: 0.5, ease: EASE_LUXE }}
         className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8"
       >
-            <a href="#top" className="group flex items-center gap-3" aria-label="LHPT Law Firm">
+            <SectionLink href="#top" className="group flex items-center gap-3" aria-label="LHPT Law Firm">
           <motion.span
             whileHover={{ rotate: -6, scale: 1.06 }}
             transition={{ type: "spring", ...SOFT }}
@@ -305,13 +349,13 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
             </span>
             <span className="label block text-[9px] whitespace-nowrap text-fog-500">Law Firm · {t("scope")}</span>
           </span>
-        </a>
+        </SectionLink>
         <nav
           className="hidden items-center gap-1 lg:flex"
           onPointerLeave={() => setHovered(null)}
         >
           {NAV_LINKS.map((l, i) => (
-            <a
+            <SectionLink
               key={l.href}
               href={l.href}
               onPointerEnter={() => setHovered(l.href)}
@@ -329,7 +373,7 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
                 />
               )}
               {t("nav")[i]}
-            </a>
+            </SectionLink>
           ))}
         </nav>
         <div className="flex items-center gap-2.5">
@@ -347,13 +391,13 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
             </button>
           )}
           <Magnetic className="hidden sm:inline-flex">
-            <a
+            <SectionLink
               href="#lien-he"
               className="sheen group inline-flex items-center gap-2 whitespace-nowrap bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950 transition-colors duration-300 hover:bg-brass-400"
             >
               {t("book")}
               <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            </SectionLink>
           </Magnetic>
           <button
             onClick={() => setOpen((v) => !v)}
@@ -382,18 +426,18 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
               className="flex flex-col gap-1 px-5 py-6"
             >
               {NAV_LINKS.map((l, i) => (
-                <motion.a
-                  key={l.href}
-                  variants={fadeUpSmall}
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-baseline gap-3 py-2.5 text-[15px] font-medium text-fog-300 transition-colors hover:text-brass-300"
-                >
-                  <span className="label text-[10px] text-brass-500/70">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  {t("nav")[i]}
-                </motion.a>
+                <motion.div key={l.href} variants={fadeUpSmall}>
+                  <SectionLink
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className="flex items-baseline gap-3 py-2.5 text-[15px] font-medium text-fog-300 transition-colors hover:text-brass-300"
+                  >
+                    <span className="label text-[10px] text-brass-500/70">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {t("nav")[i]}
+                  </SectionLink>
+                </motion.div>
               ))}
               <motion.div variants={fadeUpSmall} className="mt-4">
                 <p className="label mb-2 text-[9px] text-fog-500">{t("languageLabel")}</p>
@@ -413,15 +457,16 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
                   {user ? t("portal") : t("signIn")}
                 </motion.button>
               )}
-              <motion.a
-                variants={fadeUpSmall}
-                href="#lien-he"
-                onClick={() => setOpen(false)}
-                className="mt-3 inline-flex w-fit items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950"
-              >
-                {t("book")}
-                <IconArrowUpRight className="h-4 w-4" />
-              </motion.a>
+              <motion.div variants={fadeUpSmall} className="mt-3">
+                <SectionLink
+                  href="#lien-he"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex w-fit items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950"
+                >
+                  {t("book")}
+                  <IconArrowUpRight className="h-4 w-4" />
+                </SectionLink>
+              </motion.div>
             </motion.nav>
           </motion.div>
         )}
@@ -462,13 +507,13 @@ export function MobileActionBar({ onOpenAccount }: { onOpenAccount?: () => void 
         <p className="truncate text-[12px] font-semibold text-snow">{t("mobileResponse")}</p>
       </div>
       <div className="flex-1 min-[420px]:hidden" />
-      <a
+      <SectionLink
         href="#lien-he"
         className="sheen inline-flex shrink-0 items-center gap-1.5 bg-brass-500 px-3.5 py-3 text-[12px] font-semibold text-ink-950 active:scale-[0.98]"
       >
         {t("book")}
         <IconArrowUpRight className="h-3.5 w-3.5" />
-      </a>
+      </SectionLink>
     </div>
   );
 }
@@ -721,6 +766,8 @@ const FOOTER_SERVICES = [
 ];
 
 const FOOTER_SYSTEM: [string, string][] = [
+  ["Bản đồ năng lực", "/ban-do-nang-luc"],
+  ["Nền móng pháp lý", "/nen-mong-phap-ly"],
   ["Bài viết pháp lý", "#bai-viet"],
   ["Tin tức nổi bật", "#tin-tuc"],
   ["Hệ thống văn bản", "#van-ban"],
@@ -751,9 +798,9 @@ function FooterColumn({
       <ul className="mt-5 space-y-3 text-[13.5px] leading-[1.6] text-fog-300">
         {items.map(([t, h]) => (
           <li key={t}>
-            <a href={h} className="link-underline transition-colors hover:text-brass-300">
+            <SectionLink href={h} className="link-underline transition-colors hover:text-brass-300">
               {t}
-            </a>
+            </SectionLink>
           </li>
         ))}
       </ul>
@@ -775,7 +822,15 @@ export function Footer() {
     ? ["Construction · Real Estate", "Litigation · Disputes", "Solar · Energy", "Corporate · Compliance", "Data Protection"]
     : FOOTER_SERVICES;
   const footerSystem: [string, string][] = isEnglish
-    ? [["Legal insights", "#bai-viet"], ["Featured news", "#tin-tuc"], ["Legal library", "#van-ban"], ["Our lawyers", "#doi-ngu"], ["Fee schedule", "#bang-phi"]]
+    ? [
+        ["Practice map", "/ban-do-nang-luc"],
+        ["Legal foundations", "/nen-mong-phap-ly"],
+        ["Legal insights", "#bai-viet"],
+        ["Featured news", "#tin-tuc"],
+        ["Legal library", "#van-ban"],
+        ["Our lawyers", "#doi-ngu"],
+        ["Fee schedule", "#bang-phi"],
+      ]
     : FOOTER_SYSTEM;
   const footerPolicy = isEnglish
     ? ["Service policy", "Privacy policy", "Privacy & cookies", "Conflicts of interest"]
@@ -786,7 +841,7 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <Reveal>
-              <a href="#top" className="flex items-center gap-3">
+              <SectionLink href="#top" className="flex items-center gap-3">
                 <LogoMark className="h-10 w-10 text-snow" />
                 <span>
                   <span className="font-display block text-xl leading-tight font-bold text-snow">
@@ -794,7 +849,7 @@ export function Footer() {
                   </span>
                   <span className="label block text-[9px] text-fog-500">Law Firm · {t("scope")}</span>
                 </span>
-              </a>
+              </SectionLink>
               <p className="mt-5 max-w-sm text-[14.5px] leading-[1.75] text-fog-400">
                 {isEnglish
                   ? "A specialist firm in construction and real estate, disputes, solar energy, corporate, compliance and personal data protection. Sound legal ground, durable foundations."

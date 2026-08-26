@@ -16,6 +16,13 @@ export default defineConfig({
           react: ["react", "react-dom"],
           motion: ["framer-motion"],
           /*
+           * three.js chỉ được hai trang chuyên đề dùng tới, và cả hai trang đó
+           * đều nạp động. Tách riêng để nó nằm ngoài đường tải đầu của trang chủ
+           * — nếu trộn chung, mọi khách vào đọc bài viết đều phải tải một thư
+           * viện đồ hoạ mà họ không bao giờ nhìn thấy.
+           */
+          three: ["three"],
+          /*
            * Supabase chỉ được nạp động (xem sb() trong src/lib/supabase.ts) nên
            * nó vẫn là chunk tải theo yêu cầu; khai báo ở đây chỉ để đặt tên cho
            * file, giúp nhìn ra ngay trong bảng phân tích gói khi nào tầng

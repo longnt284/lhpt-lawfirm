@@ -312,6 +312,11 @@ export const TICKER: string[] = [
 
 export const NAV_LINKS = [
   { href: "#dich-vu", label: "Dịch vụ" },
+  /*
+   * Mục duy nhất trỏ tới một trang riêng thay vì một neo trong trang chủ. Header
+   * phân biệt hai loại bằng ký tự mở đầu của href, xem SectionLink ở Chrome.tsx.
+   */
+  { href: "/ban-do-nang-luc", label: "Năng lực" },
   { href: "#bang-phi", label: "Bảng phí" },
   { href: "#tin-tuc", label: "Tin tức" },
   { href: "#bai-viet", label: "Bài viết" },
