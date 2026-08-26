@@ -16,6 +16,7 @@ import {
 } from "../motion";
 import { Kicker, Reveal, SectionHead } from "./Chrome";
 import { ExplorePreview } from "./ExplorePreview";
+import { HeroBackdrop } from "./HeroBackdrop";
 import { GoldRule, Magnetic, TiltCard } from "./Motion";
 import {
   IconArrowRight,
@@ -120,7 +121,19 @@ export function Hero() {
       ref={sectionRef}
       className="relative z-10 pt-[128px] pb-0 lg:pt-[150px]"
     >
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+      {/*
+        Gian sảnh có hàng cột, dựng bằng WebGL, nằm dưới toàn bộ nội dung hero.
+        Nó tới muộn và tự vắng mặt trên máy yếu — xem `HeroBackdrop`. Hero được
+        thiết kế để đứng vững khi không có nó, nên đây thuần tuý là phần cộng
+        thêm chứ không phải một mảnh của bố cục.
+      */}
+      <HeroBackdrop sectionRef={sectionRef} />
+      {/*
+        `relative z-10` là thứ giữ chữ nằm trên nền 3D: lớp nền là một phần tử
+        định vị tuyệt đối, mà phần tử định vị luôn được vẽ đè lên khối tĩnh nếu
+        khối tĩnh không tự khai báo lớp của mình.
+      */}
+      <div className="relative z-10 mx-auto max-w-7xl px-5 lg:px-8">
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-8">
           {/* trái */}
           <motion.div

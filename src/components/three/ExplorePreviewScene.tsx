@@ -556,7 +556,10 @@ export default function ExplorePreviewScene({
    * mảnh, nên phần nét thêm ở mức 2 gần như không nhìn ra, trong khi số điểm ảnh
    * phải vẽ tăng gần gấp đôi — và ở đây có hai khung chạy cùng lúc.
    */
-  const options = useMemo(() => ({ fov: 40, cameraZ: 9, maxPixelRatio: 1.5 }), []);
+  const options = useMemo(
+    () => ({ fov: 40, cameraZ: 9, maxPixelRatio: 1.5, maxFps: 30 }),
+    []
+  );
   const { containerRef, supported, requestFrame } = useThreeStage(setup, options);
 
   /*

@@ -83,6 +83,19 @@ export type StageOptions = {
    * thì mắt gần như không phân biệt được, còn GPU thì tiết kiệm gần một nửa.
    */
   maxPixelRatio?: number;
+  /**
+   * Trần số khung hình mỗi giây.
+   *
+   * Dành cho cảnh trang trí có chuyển động chậm hơn hẳn một hoạt ảnh giao diện:
+   * ở đây một vòng đưa máy quay mất hơn một phút và hạt bụi trôi vài điểm ảnh
+   * mỗi giây, nên vẽ 60 lần mỗi giây là vẽ đi vẽ lại gần như đúng một hình.
+   * Hạ xuống 30 thì mắt không phân biệt được, còn chi phí thì giảm một nửa —
+   * và chi phí đó không nằm ở hình học (cả cảnh chỉ hai lệnh vẽ) mà ở việc xoá
+   * rồi ghép lại hàng triệu điểm ảnh của một canvas trong suốt cỡ màn hình.
+   *
+   * Bỏ trống thì cảnh chạy theo đúng nhịp màn hình.
+   */
+  maxFps?: number;
 };
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -104,6 +117,7 @@ export function useThreeStage(
     fov = 45,
     cameraZ = 9,
     maxPixelRatio,
+    maxFps,
   }: StageOptions = {}
 ) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -242,7 +256,19 @@ export function useThreeStage(
       });
     };
 
+    /*
+     * Trừ đi một nửa chu kỳ màn hình 60Hz: nếu so đúng bằng 1000/maxFps thì một
+     * khung hình tới sớm hơn ngưỡng đúng vài phần nghìn giây sẽ bị bỏ, và nhịp
+     * thực tế tụt xuống còn một nửa trần mong muốn thay vì đúng bằng nó.
+     */
+    const minFrameGap = maxFps ? 1000 / maxFps - 8 : 0;
+
     const loop = (now: number) => {
+      // Xin khung tiếp theo trước khi làm gì khác, để một khung bị bỏ qua vì
+      // trần tốc độ không làm đứt cả vòng lặp.
+      rafId = requestAnimationFrame(loop);
+      if (minFrameGap && now - lastFrame < minFrameGap) return;
+
       const delta = Math.min(0.05, (now - lastFrame) / 1000);
       lastFrame = now;
       /*
@@ -254,7 +280,6 @@ export function useThreeStage(
       pointerX += (targetPointerX - pointerX) * ease;
       pointerY += (targetPointerY - pointerY) * ease;
       drawFrame(delta, now);
-      rafId = requestAnimationFrame(loop);
     };
 
     const startLoop = () => {
@@ -380,7 +405,7 @@ export function useThreeStage(
       }
       requestFrameRef.current = () => {};
     };
-  }, [scrollRef, trackPointer, fov, cameraZ, maxPixelRatio]);
+  }, [scrollRef, trackPointer, fov, cameraZ, maxPixelRatio, maxFps]);
 
   // Bọc qua ref để danh tính hàm không đổi giữa các lần render, nhờ vậy component
   // gọi dùng được nó trong deps của useEffect mà không tạo vòng lặp cập nhật.

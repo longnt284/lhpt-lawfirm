@@ -361,9 +361,22 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
       <motion.div
         animate={{ height: scrolled ? 66 : 76 }}
         transition={{ duration: 0.5, ease: EASE_LUXE }}
-        className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8"
+        className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 lg:px-8"
       >
-            <SectionLink href="#top" className="group flex items-center gap-3" aria-label="LHPT Law Firm">
+        {/*
+          Logo và thanh điều hướng đi chung một nhóm dồn về mép trái, thay vì
+          ba khối rải đều bằng justify-between.
+
+          Lý do là số học chứ không phải thẩm mỹ. Khung nội dung tối đa rộng
+          1216px; cộng lại logo, tám mục điều hướng, ô đổi ngôn ngữ, nút tài
+          khoản và nút đặt lịch thì bản tiếng Việt cần 1303px còn bản tiếng Anh
+          cần 1395px. Nghĩa là hàng này *không bao giờ* đủ chỗ, ở mọi bề rộng
+          màn hình, và nút đặt lịch — thứ duy nhất mang lại khách — chính là thứ
+          bị đẩy ra ngoài mép. Gom về trái khiến mọi khoảng trống dôi ra đều rơi
+          vào đúng một chỗ: khe giữa thanh điều hướng và nhóm nút bên phải.
+        */}
+        <div className="flex min-w-0 items-center gap-5 xl:gap-7">
+            <SectionLink href="#top" className="group flex shrink-0 items-center gap-3" aria-label="LHPT Law Firm">
           <motion.span
             whileHover={{ rotate: -6, scale: 1.06 }}
             transition={{ type: "spring", ...SOFT }}
@@ -375,11 +388,35 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
             <span className="font-display block text-[18px] leading-tight font-bold text-snow">
               LHPT
             </span>
-            <span className="label block text-[9px] whitespace-nowrap text-fog-500">Law Firm · {t("scope")}</span>
+            {/*
+              Dòng phụ này rộng 170–179px, tức gần bằng cả nút đặt lịch, nên nó
+              chỉ xuất hiện ở dải bề rộng thực sự có chỗ cho nó.
+
+              Dưới 768px: ẩn. Điện thoại 360–390px chỉ còn khoảng 350px cho cả
+              hàng, mà riêng ô đổi ngôn ngữ và nút menu đã lấy 150px. Ở 640px thì
+              nút đăng nhập và nút đặt lịch xuất hiện, và bản tiếng Anh dài hơn
+              lại đẩy nhóm nút lấn sang trái. Cả hai trường hợp đều kết thúc bằng
+              việc dòng chữ chui xuống dưới nhóm nút bên phải.
+
+              Từ 1280px: cũng ẩn, vì đó là lúc thanh điều hướng ngang hiện ra và
+              chiếm hết phần dôi.
+
+              Không mất mát gì ở hai đầu: cùng thông tin đó đã có ở dòng mở đầu
+              hero, ở chân trang và trong menu di động.
+            */}
+            <span className="label hidden text-[9px] whitespace-nowrap text-fog-500 md:block xl:hidden">
+              Law Firm · {t("scope")}
+            </span>
           </span>
         </SectionLink>
+        {/*
+          Mốc xl chứ không phải lg. Ở 1024px, khung nội dung chỉ còn 960px mà
+          riêng tám mục tiếng Anh đã chiếm 663px — cộng logo và ba nút bên phải
+          là tràn gần 200px. Dưới 1280px, menu bung xuống (đã cuộn được, có khối
+          3D riêng) phục vụ tốt hơn hẳn một hàng chữ chen chúc bị cắt cụt.
+        */}
         <nav
-          className="hidden items-center gap-1 lg:flex"
+          className="hidden items-center gap-0.5 xl:flex"
           onPointerLeave={() => setHovered(null)}
         >
           {NAV_LINKS.map((l, i) => (
@@ -387,7 +424,7 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
               key={l.href}
               href={l.href}
               onPointerEnter={() => setHovered(l.href)}
-              className="relative px-3 py-2 text-[13.5px] font-medium whitespace-nowrap text-fog-300 transition-colors duration-300 hover:text-snow"
+              className="relative px-2 py-2 text-[13.5px] font-medium whitespace-nowrap text-fog-300 transition-colors duration-300 hover:text-snow"
             >
               {/*
                 layoutId cho phép khối nền trượt liền mạch giữa các mục thay vì
@@ -423,7 +460,8 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
             </SectionLink>
           ))}
         </nav>
-        <div className="flex items-center gap-2.5">
+        </div>
+        <div className="flex shrink-0 items-center gap-2.5">
           <LanguageSwitch />
           {onOpenAccount && (
             <button
@@ -434,7 +472,19 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
               className="hidden items-center gap-2 border border-snow/20 px-3 py-2 text-[12.5px] font-medium whitespace-nowrap text-fog-300 transition-colors hover:border-brass-500 hover:text-brass-300 sm:inline-flex"
             >
               <IconUser className="h-4 w-4" />
-              <span className="hidden lg:inline">{user ? t("portal") : t("signIn")}</span>
+              {/*
+                Từ xl trở lên, nơi thanh điều hướng ngang đã ăn hết chỗ, nút này
+                rút về chỉ còn biểu tượng. Nghĩa của nó không mất đi: aria-label
+                và title ở trên vẫn nói đủ cho trình đọc màn hình và cho chú
+                thích khi rê chuột.
+
+                Không có biến thể "trả lại chữ ở màn rộng hơn": khung nội dung
+                bị max-w-7xl chặn ở 1216px, nên từ 1280px trở lên chỗ trống
+                không tăng thêm một điểm ảnh nào dù màn hình rộng bao nhiêu.
+              */}
+              <span className="hidden lg:inline xl:hidden">
+                {user ? t("portal") : t("signIn")}
+              </span>
             </button>
           )}
           <Magnetic className="hidden sm:inline-flex">
@@ -448,7 +498,7 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
           </Magnetic>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="text-snow lg:hidden"
+            className="text-snow xl:hidden"
             aria-label={open ? (isEnglish ? "Close menu" : "Đóng menu") : isEnglish ? "Open menu" : "Mở menu"}
             aria-expanded={open}
           >
@@ -464,7 +514,7 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.45, ease: EASE_LUXE }}
-            className="overflow-hidden border-t border-snow/10 bg-ink-950/97 backdrop-blur-xl lg:hidden"
+            className="overflow-hidden border-t border-snow/10 bg-ink-950/97 backdrop-blur-xl xl:hidden"
           >
             {/*
               Panel tự cuộn được, và chừa đáy đủ rộng.

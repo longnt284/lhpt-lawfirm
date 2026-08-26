@@ -24,6 +24,7 @@
  * thì thay vì đứng ở màn hình trống chờ tải thư viện.
  */
 import { useEffect, useRef, useState, type ComponentType } from "react";
+import { cancelIdle, shouldRunWebGL, whenIdle, type IdleHandle } from "../lib/lazyWebgl";
 
 export type PreviewVariant = "foundation" | "practice";
 
@@ -42,51 +43,6 @@ function loadScene() {
     }));
   }
   return scenePromise;
-}
-
-/*
- * Máy nào thì không nên dựng thêm một ngữ cảnh WebGL.
- *
- * Các trường dưới đây không có ở mọi trình duyệt, nên phép kiểm tra được viết
- * theo hướng "chỉ loại khi biết chắc": thiếu thông tin thì cho chạy, vì đa số
- * máy không khai báo `deviceMemory` là máy tính để bàn.
- */
-function shouldRunWebGL(): boolean {
-  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-
-  const nav = navigator as Navigator & {
-    connection?: { saveData?: boolean; effectiveType?: string };
-    deviceMemory?: number;
-  };
-
-  if (nav.connection?.saveData) return false;
-  const effective = nav.connection?.effectiveType;
-  if (effective === "slow-2g" || effective === "2g") return false;
-  if (typeof nav.deviceMemory === "number" && nav.deviceMemory < 4) return false;
-  if (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency < 4) return false;
-
-  return true;
-}
-
-/* Trình duyệt chưa có requestIdleCallback (Safari cũ) thì lùi về một hẹn giờ ngắn. */
-type IdleHandle = { kind: "idle" | "timeout"; id: number };
-
-function whenIdle(run: () => void, timeout = 1200): IdleHandle {
-  const ric = (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number })
-    .requestIdleCallback;
-  if (typeof ric === "function") return { kind: "idle", id: ric(run, { timeout }) };
-  return { kind: "timeout", id: window.setTimeout(run, 220) };
-}
-
-function cancelIdle(handle: IdleHandle | null) {
-  if (!handle) return;
-  if (handle.kind === "timeout") {
-    window.clearTimeout(handle.id);
-    return;
-  }
-  const cic = (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback;
-  cic?.(handle.id);
 }
 
 export function ExplorePreview({
