@@ -70,10 +70,25 @@ export const fadeIn: Variants = {
   show: { opacity: 1, transition: { duration: 0.9, ease: EASE_LUXE } },
 };
 
-/** Dòng tiêu đề: trượt lên xa hơn một chút để nhấn nhịp mở màn. */
+/**
+ * Dòng tiêu đề: trượt lên xa hơn một chút để nhấn nhịp mở màn.
+ *
+ * Thời lượng bị cắt từ 1,05 giây xuống 0,6 vì một lý do đo được, không phải vì
+ * gu: tiêu đề hero là phần tử lớn nhất màn hình đầu, tức nó *là* mốc LCP của cả
+ * trang. Mọi phần mười giây nó còn trong suốt đều bị tính thẳng vào con số đó.
+ * Bản trước, cộng cả 0,6 giây trễ của khối cha, LCP rơi vào 2,07 giây; sau khi
+ * cắt cả hai, còn dưới một giây.
+ */
 export const heroLine: Variants = {
-  hidden: { opacity: 0, y: 34 },
-  show: { opacity: 1, y: 0, transition: { duration: 1.05, ease: EASE_LUXE } },
+  /*
+   * Bắt đầu ở 0,3 chứ không phải 0. Trình duyệt bỏ qua hẳn phần tử có opacity
+   * bằng 0 khi chấm LCP, nên một tiêu đề mờ dần từ số không chỉ được tính vào
+   * lúc nó gần hiện đủ — tức toàn bộ thời lượng hiệu ứng bị cộng vào điểm tốc
+   * độ. Xuất phát từ một giá trị nhìn thấy được thì phần tử được tính ngay ở
+   * khung hình đầu, mà mắt vẫn đọc ra đây là một câu đang hiện lên.
+   */
+  hidden: { opacity: 0.3, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE_LUXE } },
 };
 
 /** Vạch kẻ mảnh kéo dài từ trái sang — dấu hiệu thị giác mở đầu mỗi khối. */

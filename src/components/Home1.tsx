@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../firm";
 import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
-import { APPROACH_EN, localizeCategory, localizePlan, localizeService, useLocale } from "../i18n";
+import { localizePlan, localizeService, useLocale } from "../i18n";
 import {
   EASE_LUXE,
   SOFT,
@@ -16,8 +16,8 @@ import {
 } from "../motion";
 import { Kicker, Reveal, SectionHead } from "./Chrome";
 import { ExplorePreview } from "./ExplorePreview";
-import { HeroBackdrop } from "./HeroBackdrop";
-import { GoldRule, Magnetic, TiltCard } from "./Motion";
+import { OpeningBackdrop } from "./OpeningBackdrop";
+import { GoldRule, Magnetic } from "./Motion";
 import {
   IconArrowRight,
   IconArrowUpRight,
@@ -90,13 +90,45 @@ function CountUp({
   return <>{value}</>;
 }
 
-/* ================= HERO ================= */
-export function Hero() {
+/* ================= SÂN KHẤU MỞ ĐẦU ================= */
+/*
+ * Hai màn hình đầu tiên của trang chủ dùng chung *một* cảnh 3D dính giữa khung
+ * nhìn, và chính thao tác cuộn điều khiển máy quay đi từ màn này sang màn kia.
+ *
+ * Bản trước là hai khối rời: hero có nền 3D riêng, dải chỉ số là một hàng bốn ô
+ * phẳng bên dưới. Người dùng đọc ra hai thứ không liên quan tới nhau. Bản này
+ * kể một mạch: màn một là công trình đứng trên mặt đất, cuộn xuống thì máy quay
+ * hạ qua vạch nền và phần móng hiện ra — đúng câu mà cả hãng nói về mình. Những
+ * con số được đặt xuống đúng chỗ đó, nên chúng không còn là bốn ô thống kê mà
+ * là phần chìm dưới đất của công trình phía trên.
+ *
+ * Bố cục dựa trên hai thứ: canvas `sticky` đứng yên đúng một khung nhìn, và
+ * khối chữ bị kéo ngược lên đè lên nó bằng `-mt-[100svh]`. Khối chữ đứng sau
+ * canvas trong DOM nên nó được vẽ đè lên — không cần z-index nào cả.
+ */
+export function OpeningStage() {
+  const stageRef = useRef<HTMLElement | null>(null);
+
+  return (
+    <section ref={stageRef} className="relative z-10">
+      <div className="pointer-events-none sticky top-0 h-[100svh] w-full overflow-hidden">
+        <OpeningBackdrop stageRef={stageRef} />
+      </div>
+      <div className="relative -mt-[100svh]">
+        <Hero />
+        <Numbers />
+      </div>
+    </section>
+  );
+}
+
+/* ================= MÀN MỘT — CÔNG TRÌNH ================= */
+function Hero() {
   const { isEnglish, t } = useLocale();
   const reduced = useReducedMotion();
   const sectionRef = useRef<HTMLElement | null>(null);
   /*
-   * Chữ và bảng số liệu trôi lệch tốc độ khi cuộn, tạo lớp gần — lớp xa.
+   * Chữ trôi lệch tốc độ so với nền 3D khi cuộn, tạo lớp gần — lớp xa.
    *
    * Mốc đo phải là chính khối hero. Bản trước dùng scrollYProgress của cả trang:
    * trang cao hơn 12.000px nên lúc hero rời khỏi màn hình, tiến trình mới đạt
@@ -107,42 +139,37 @@ export function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-  const cardY = useTransform(scrollYProgress, [0, 1], [0, -140]);
-  const heroFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  /*
+   * Chữ nhạt hẳn trước khi hero rời khung nhìn. Đây không phải hiệu ứng trang
+   * trí: đúng lúc đó máy quay bắt đầu hạ xuống dưới nền móng, và nếu tiêu đề
+   * còn đậm thì hai chuyển động giành nhau sự chú ý.
+   */
+  const heroFade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
 
   const ticker = isEnglish ? TICKER_EN : TICKER;
-  const { ref, inView } = useInView<HTMLDivElement>(0.3);
-  const onMove = useSpotlight<HTMLDivElement>();
 
   return (
     <section
       id="top"
       ref={sectionRef}
-      className="relative z-10 pt-[128px] pb-0 lg:pt-[150px]"
+      className="relative flex min-h-[100svh] flex-col justify-between pt-[116px] lg:pt-[132px]"
     >
-      {/*
-        Gian sảnh có hàng cột, dựng bằng WebGL, nằm dưới toàn bộ nội dung hero.
-        Nó tới muộn và tự vắng mặt trên máy yếu — xem `HeroBackdrop`. Hero được
-        thiết kế để đứng vững khi không có nó, nên đây thuần tuý là phần cộng
-        thêm chứ không phải một mảnh của bố cục.
-      */}
-      <HeroBackdrop sectionRef={sectionRef} />
-      {/*
-        `relative z-10` là thứ giữ chữ nằm trên nền 3D: lớp nền là một phần tử
-        định vị tuyệt đối, mà phần tử định vị luôn được vẽ đè lên khối tĩnh nếu
-        khối tĩnh không tự khai báo lớp của mình.
-      */}
-      <div className="relative z-10 mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-8">
-          {/* trái */}
-          <motion.div
-            style={reduced ? undefined : { y: textY, opacity: heroFade }}
-            variants={stagger(0.13, 0.6)}
-            initial="hidden"
-            animate="show"
-            className="lg:col-span-7"
-          >
+      <div className="flex flex-1 items-center">
+        <motion.div
+          style={reduced ? undefined : { y: textY, opacity: heroFade }}
+          /*
+            Trễ 0,08 giây chứ không phải 0,6. Khối chữ này chứa tiêu đề hero,
+            tức phần tử lớn nhất của màn hình đầu — nó quyết định luôn mốc LCP
+            của cả trang, nên mỗi phần mười giây chờ ở đây là một phần mười giây
+            cộng thẳng vào điểm tốc độ.
+          */
+          variants={stagger(0.09, 0.08)}
+          initial="hidden"
+          animate="show"
+          className="mx-auto w-full max-w-7xl px-5 lg:px-8"
+        >
+          <div className="max-w-3xl">
             <motion.p
               variants={fadeUpSmall}
               className="label flex items-center gap-3 text-[11px] text-fog-400"
@@ -151,11 +178,14 @@ export function Hero() {
               {t("legalFirm")} · {t("scope")}
             </motion.p>
             {/*
-              Tiêu đề serif chữ thường, leading 1.14. Không bọc trong khung
+              Tiêu đề serif chữ thường, leading 1.12. Không bọc trong khung
               overflow:hidden vì khung che sẽ cắt dấu tiếng Việt ở đỉnh con chữ;
               hiệu ứng dùng mờ nhòe cộng trượt nhẹ để thay thế.
+
+              Cỡ chữ lớn hơn bản trước một bậc: bảng hồ sơ năng lực ở nửa phải đã
+              bỏ đi, nên tiêu đề được thừa hưởng chỗ trống đó thay vì để nó rỗng.
             */}
-            <h1 className="font-display mt-6 text-[clamp(2.35rem,5.6vw,4.2rem)] leading-[1.14] font-semibold tracking-[-0.012em] text-snow">
+            <h1 className="font-display mt-7 text-[clamp(2.5rem,6.2vw,4.9rem)] leading-[1.1] font-semibold tracking-[-0.015em] text-snow">
               <motion.span variants={heroLine} className="block">
                 {isEnglish ? "Sound legal ground," : "Nền pháp lý vững,"}
               </motion.span>
@@ -167,15 +197,15 @@ export function Hero() {
                 )}
               </motion.span>
             </h1>
-            <motion.p variants={fadeUpSmall} className="label mt-7 text-[12px] text-fog-300">
+            <motion.p variants={fadeUpSmall} className="label mt-8 text-[12px] text-fog-300">
               <span className="text-fog-500">{t("focus")}</span>{" "}
               <ScrambleWord words={isEnglish ? WORDS_EN : WORDS} />
               <span className="animate-caret ml-1 inline-block h-3.5 w-2 translate-y-0.5 bg-brass-400" />
             </motion.p>
-            <p className="mt-6 max-w-xl text-[15.5px] leading-[1.8] text-fog-400">
+            <p className="mt-7 max-w-xl text-[15.5px] leading-[1.8] text-fog-400">
               {t("heroBody")}
             </p>
-            <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-4">
+            <motion.div variants={fadeUp} className="mt-10 flex flex-wrap items-center gap-4">
               <Magnetic strength={8}>
                 <a
                   href="#lien-he"
@@ -207,7 +237,7 @@ export function Hero() {
             */}
             <motion.div
               variants={fadeUpSmall}
-              className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-l-2 border-brass-500/60 pl-4"
+              className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-l-2 border-brass-500/60 pl-4"
             >
               <span className="label flex items-center gap-2 text-[9.5px] whitespace-nowrap text-brass-400">
                 <IconCube className="h-3.5 w-3.5 shrink-0" />
@@ -237,117 +267,16 @@ export function Hero() {
             <motion.p variants={fadeUpSmall} className="label mt-7 text-[10px] text-fog-500">
               {t("response")} · {t("confidential")}
             </motion.p>
-          </motion.div>
-
-          {/* phải — bảng hồ sơ năng lực */}
-          <motion.div
-            style={reduced ? undefined : { y: cardY }}
-            initial={{ opacity: 0, y: 46, rotateX: 6 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            transition={{ duration: 1.1, ease: EASE_LUXE, delay: 0.75 }}
-            className="relative lg:col-span-5"
-          >
-            <div
-              className="animate-floaty-b absolute top-6 -right-3 h-full w-full rotate-2 border border-snow/10 bg-ink-800/30"
-              aria-hidden="true"
-            />
-            <TiltCard>
-              <div
-                ref={ref}
-                onPointerMove={onMove}
-                className="spotlight animate-floaty relative border border-snow/15 bg-ink-850/90 shadow-[0_40px_100px_-35px_rgba(0,0,0,0.85)] backdrop-blur-sm"
-              >
-                <div className="flex items-center justify-between border-b border-snow/10 px-6 py-4">
-                  <span className="label text-[10px] text-fog-400">{t("live")}</span>
-                  <span className="label flex items-center gap-2 text-[10px] text-jade-400">
-                    <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-jade-500" />
-                    Live · 2026
-                  </span>
-                </div>
-                <div className="flex items-end justify-between gap-4 px-6 pt-6">
-                  <div>
-                    <p className="font-display text-[3.2rem] leading-none font-bold text-snow">
-                      <CountUp target={600} start={inView} duration={1800} />
-                      <span className="text-brass-400">+</span>
-                    </p>
-                    <p className="mt-2.5 text-[13px] leading-[1.5] text-fog-400">
-                      {t("matters")}
-                    </p>
-                  </div>
-                  <div className="relative h-[104px] w-[104px] shrink-0">
-                    <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
-                      <circle cx="60" cy="60" r="52" fill="none" stroke="#17293f" strokeWidth="8" />
-                      <motion.circle
-                        cx="60"
-                        cy="60"
-                        r="52"
-                        fill="none"
-                        stroke="#22c49c"
-                        strokeWidth="8"
-                        strokeLinecap="round"
-                        pathLength={100}
-                        strokeDasharray="100"
-                        initial={{ strokeDashoffset: 100 }}
-                        whileInView={{ strokeDashoffset: 2 }}
-                        viewport={{ once: true, amount: 0.6 }}
-                        transition={{ duration: 1.8, ease: EASE_LUXE, delay: 0.2 }}
-                      />
-                    </svg>
-                    <span className="code absolute inset-0 flex items-center justify-center text-[15px] font-semibold text-jade-300">
-                      98%
-                    </span>
-                  </div>
-                </div>
-                <motion.div
-                  variants={stagger(0.12, 0.35)}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.4 }}
-                  className="mt-6 space-y-3.5 px-6"
-                >
-                  {(
-                    [
-                      ["Xây dựng · BĐS", 40, "bg-brass-500"],
-                      ["Tố tụng", 20, "bg-jade-500"],
-                      ["Năng lượng", 18, "bg-jade-600"],
-                      ["Doanh nghiệp", 12, "bg-ink-600"],
-                      ["Dữ liệu", 10, "bg-fog-500"],
-                    ] as const
-                  ).map(([label, w, color]) => (
-                    <motion.div key={label} variants={fadeUpSmall}>
-                      <div className="label mb-1.5 flex justify-between text-[9.5px] text-fog-400">
-                        <span>{localizeCategory(label, isEnglish ? "en" : "vi")}</span>
-                        <span>{w}%</span>
-                      </div>
-                      <div className="h-1.5 w-full bg-ink-700">
-                        <motion.div
-                          className={`h-full origin-left ${color}`}
-                          initial={{ scaleX: 0 }}
-                          whileInView={{ scaleX: 1 }}
-                          viewport={{ once: true, amount: 0.6 }}
-                          transition={{ duration: 1.2, ease: EASE_LUXE, delay: 0.25 }}
-                          style={{ width: `${w}%` }}
-                        />
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-                <div className="mt-6 flex items-center justify-between border-t border-snow/10 px-6 py-3.5">
-                  <span className="label text-[9px] text-fog-500">{t("internal")} · 2026</span>
-                  <span className="label text-[9px] text-brass-500">LHPT-CAP-26</span>
-                </div>
-              </div>
-            </TiltCard>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
 
-      {/* ticker văn bản */}
+      {/* ticker văn bản — cũng là đường chân trời của màn một */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: EASE_LUXE, delay: 1.15 }}
-        className="marquee relative z-10 mt-16 border-y border-snow/10 bg-ink-900/70 py-4 backdrop-blur-sm lg:mt-20"
+        transition={{ duration: 0.9, ease: EASE_LUXE, delay: 0.55 }}
+        className="marquee relative border-y border-snow/10 bg-ink-900/70 py-4 backdrop-blur-sm"
       >
         <div className="marquee-track">
           {[0, 1].map((dup) => (
@@ -370,39 +299,89 @@ export function Hero() {
   );
 }
 
-/* ================= STATS ================= */
+/* ================= MÀN HAI — PHẦN CHÌM DƯỚI ĐẤT ================= */
 /*
- * Chỉ số "2,4 GW công suất NLTT đã tư vấn" được thay bằng cam kết thời gian
- * phản hồi hồ sơ, thống nhất với cam kết dịch vụ nêu ở phần chính sách.
+ * Bản trước gọi khối này là "dải chỉ số": bốn ô số liệu nằm ngay dưới hero,
+ * không nói gì ngoài chính bốn con số. Ở đây chúng được đặt vào đúng lúc máy
+ * quay vừa hạ xuống dưới vạch nền, nên chúng đọc ra là *nền móng* của hãng chứ
+ * không phải một bảng thống kê. Cùng bốn con số, khác hẳn ý nghĩa.
  */
 const STATS = [
-  { v: 15, suffix: "+", label: "Năm hành nghề", decimals: 0 },
-  { v: 600, suffix: "+", label: "Vụ việc & dự án đã xử lý", decimals: 0 },
-  { v: 24, suffix: "h", label: "Cam kết phản hồi hồ sơ", decimals: 0 },
-  { v: 98, suffix: "%", label: "Khách hàng quay lại", decimals: 0 },
+  { v: 15, suffix: "+", decimals: 0 },
+  { v: 600, suffix: "+", decimals: 0 },
+  { v: 24, suffix: "h", decimals: 0 },
+  { v: 98, suffix: "%", decimals: 0 },
 ];
 
-export function StatsBand() {
-  const { t } = useLocale();
+function Numbers() {
+  const { isEnglish, t } = useLocale();
   const stats = [
     { ...STATS[0], label: t("practiceYears") },
     { ...STATS[1], label: t("handled") },
     { ...STATS[2], label: t("responseMetric") },
     { ...STATS[3], label: t("returning") },
   ];
+
   return (
-    <section className="relative z-10 mx-auto max-w-7xl px-5 py-16 lg:px-8">
-      <motion.div
-        variants={stagger(0.1)}
-        initial="hidden"
-        whileInView="show"
-        viewport={VIEWPORT}
-        className="grid grid-cols-2 border-snow/10 lg:grid-cols-4"
-      >
-        {stats.map((s) => (
-          <StatCell key={s.label} {...s} />
-        ))}
-      </motion.div>
+    <section className="relative flex min-h-[100svh] items-center px-5 py-24 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl">
+        <motion.div
+          variants={stagger(0.1)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="max-w-2xl"
+        >
+          <motion.div variants={fadeUpSmall}>
+            <Kicker>{isEnglish ? "Below ground" : "Phần chìm dưới đất"}</Kicker>
+          </motion.div>
+          <motion.h2
+            variants={fadeUp}
+            className="font-display mt-5 text-[clamp(1.8rem,4.2vw,3.1rem)] leading-[1.16] font-semibold text-snow"
+          >
+            {isEnglish ? (
+              <>
+                What holds a building up is{" "}
+                <span className="gilded italic">the part nobody sees.</span>
+              </>
+            ) : (
+              <>
+                Thứ giữ công trình đứng vững nằm ở{" "}
+                <span className="gilded italic">phần không ai nhìn thấy.</span>
+              </>
+            )}
+          </motion.h2>
+          <motion.p
+            variants={fadeUp}
+            className="mt-6 max-w-xl text-[15px] leading-[1.8] text-fog-400"
+          >
+            {isEnglish
+              ? "Fifteen years of files, six hundred matters closed, and a response clock we actually keep. That is the foundation sitting under every recommendation we sign."
+              : "Mười lăm năm hồ sơ, sáu trăm vụ việc đã khép lại, và một cam kết thời gian được giữ đúng. Đó là nền móng nằm dưới mọi khuyến nghị chúng tôi ký tên."}
+          </motion.p>
+        </motion.div>
+
+        {/*
+          Nền mờ là bắt buộc chứ không phải trang trí: các ô này nằm chồng lên hệ
+          giằng và bè móng đang chuyển động, mà một con số thì phải đọc được ngay
+          lập tức.
+          
+          Nhưng chỉ mờ 42%, và không làm nhoè hậu cảnh: hệ giằng phía sau vẫn đọc
+          ra được xuyên qua tấm nền. Đó là chủ ý — cả khối này nói rằng những con
+          số *là* phần móng, nên che khuất hẳn phần móng thì mất luôn ý đó.
+        */}
+        <motion.div
+          variants={stagger(0.1)}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="mt-14 grid grid-cols-2 border-t border-l border-snow/12 bg-ink-950/[0.42] lg:grid-cols-4"
+        >
+          {stats.map((s) => (
+            <StatCell key={s.label} {...s} />
+          ))}
+        </motion.div>
+      </div>
     </section>
   );
 }
@@ -426,9 +405,9 @@ function StatCell({
       variants={cardIn}
       whileHover={{ y: -4 }}
       transition={{ type: "spring", ...SOFT }}
-      className="group relative border-b border-l border-snow/10 px-6 py-8 transition-colors duration-300 hover:bg-ink-900/60 lg:border-b-0"
+      className="group relative border-r border-b border-snow/12 px-6 py-9 transition-colors duration-300 hover:bg-ink-900/70 lg:px-7 lg:py-11"
     >
-      <p className="font-display text-[2.2rem] leading-tight font-bold text-snow transition-colors duration-300 group-hover:text-brass-300 lg:text-[2.5rem]">
+      <p className="font-display text-[2.4rem] leading-tight font-bold text-snow transition-colors duration-300 group-hover:text-brass-300 lg:text-[3rem]">
         {decimals > 0 ? val.toFixed(decimals) : val}
         <span className="text-jade-400">{suffix}</span>
       </p>
@@ -869,88 +848,6 @@ export function Explore() {
             <ExploreCard key={page.to} page={page} lang={lang} />
           ))}
         </motion.div>
-      </div>
-    </section>
-  );
-}
-
-/* ================= PHƯƠNG PHÁP LÀM VIỆC ================= */
-const APPROACH = [
-  {
-    num: "01",
-    title: "Nhìn từ công trình",
-    body: "Chúng tôi bắt đầu từ cách doanh nghiệp đang vận hành, không bắt đầu bằng một mẫu tư vấn có sẵn.",
-    icon: IconCrane,
-  },
-  {
-    num: "02",
-    title: "Chốt bằng hồ sơ",
-    body: "Mọi khuyến nghị đều quy về căn cứ, mốc thời gian và một người chịu trách nhiệm rõ ràng.",
-    icon: IconScale,
-  },
-  {
-    num: "03",
-    title: "Đi cùng đến cùng",
-    body: "Từ giấy phép, hợp đồng đến tranh chấp, đội ngũ giữ nguyên một chuẩn mực xuyên suốt hồ sơ.",
-    icon: IconShield,
-  },
-];
-
-export function Approach() {
-  const { isEnglish, t } = useLocale();
-  return (
-    <section className="relative z-10 overflow-hidden border-y border-snow/10 bg-ink-900/55 py-24">
-      <div className="pointer-events-none absolute -top-28 right-[-8rem] h-[26rem] w-[26rem] rounded-full bg-brass-500/10 blur-[110px]" />
-      <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="grid gap-14 lg:grid-cols-12 lg:items-end lg:gap-10">
-          <div className="lg:col-span-5">
-            <SectionHead
-              kicker={t("approachKicker")}
-              title={
-                <>
-                  {isEnglish ? (
-                    <>Clear from day one.<br /><span className="gilded italic">Certain through the finish.</span></>
-                  ) : (
-                    <>Rõ từ đầu.<br /><span className="gilded italic">Chắc đến cuối.</span></>
-                  )}
-                </>
-              }
-              sub={t("approachSub")}
-            />
-            <div className="mt-9 flex items-center gap-4 border-l-2 border-brass-500 pl-5">
-              <span className="font-display text-[2.8rem] leading-none font-bold text-brass-300">01</span>
-              <p className="max-w-xs text-[13px] leading-[1.7] text-fog-400">
-                {t("approachNote")}
-              </p>
-            </div>
-          </div>
-          <div className="lg:col-span-7">
-            <div className="grid border border-snow/10 sm:grid-cols-3">
-              {APPROACH.map((item, idx) => {
-                const Icon = item.icon;
-                const copy = isEnglish ? { ...item, ...APPROACH_EN[item.num as keyof typeof APPROACH_EN] } : item;
-                return (
-                  <motion.article
-                    key={item.num}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={VIEWPORT}
-                    transition={{ duration: 0.65, ease: EASE_LUXE, delay: idx * 0.08 }}
-                    className="group relative border-b border-snow/10 bg-ink-850/75 p-6 transition-colors duration-500 last:border-b-0 hover:bg-ink-800/80 sm:border-r sm:border-b-0 sm:last:border-r-0"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <Icon className="h-6 w-6 text-brass-400 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110" />
-                      <span className="code text-[11px] text-fog-500">{item.num}</span>
-                    </div>
-                    <h3 className="font-display mt-12 text-[1.15rem] font-semibold text-snow">{copy.title}</h3>
-                    <p className="mt-3 text-[13px] leading-[1.7] text-fog-400">{copy.body}</p>
-                    <span className="absolute right-6 bottom-5 left-6 h-px origin-left scale-x-0 bg-gradient-to-r from-brass-500 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
-                  </motion.article>
-                );
-              })}
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

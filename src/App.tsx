@@ -3,7 +3,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AuthProvider } from "./auth";
 import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } from "./components/Chrome";
-import { Approach, Explore, Hero, Pricing, Services, StatsBand } from "./components/Home1";
+import { Explore, OpeningStage, Pricing, Services } from "./components/Home1";
 import type { DocItem } from "./content/types";
 import { LocaleProvider } from "./i18n";
 
@@ -88,11 +88,15 @@ function ScrollManager() {
 function HomeRoute({ onOpenDoc }: { onOpenDoc: (doc: DocItem | null) => void }) {
   return (
     <>
-      <Hero />
-      <StatsBand />
+      {/*
+        Sân khấu mở đầu gộp hai màn hình đầu tiên vào một cảnh 3D duy nhất: công
+        trình đứng trên mặt đất, rồi máy quay hạ xuống dưới nền móng. Vì hai màn
+        dùng chung một canvas dính, chúng phải nằm chung một component thay vì
+        đứng cạnh nhau ở đây.
+      */}
+      <OpeningStage />
       <Services />
       <Explore />
-      <Approach />
       <Pricing />
       <Suspense fallback={<SecondaryContentFallback />}>
         <SecondaryContent onOpen={onOpenDoc} />
