@@ -56,6 +56,12 @@
   --animate-caret: caret 1.15s steps(2, start) infinite;
   --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
   --animate-sheen: sheen 2.6s ease-in-out infinite;
+  /*
+   * Nền 3D của hero tới muộn hơn phần chữ vài trăm mili giây vì nó cố tình đợi
+   * trang tải xong. Hiện dần trong 1,4 giây thì người đọc không thấy trang giật
+   * một cái ngay lúc vừa bắt đầu đọc.
+   */
+  --animate-backdrop-in: backdrop-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 
   @keyframes marquee {
     to {
@@ -109,6 +115,15 @@
       box-shadow: 0 0 0 8px rgba(34, 196, 156, 0);
     }
   }
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   @keyframes sheen {
     0% {
       transform: translateX(-160%) skewX(-18deg);
