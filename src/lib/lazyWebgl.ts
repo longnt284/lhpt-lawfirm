@@ -13,6 +13,19 @@
  * Những trường dưới đây không có ở mọi trình duyệt, nên phép kiểm tra viết theo
  * hướng "chỉ loại khi biết chắc": thiếu thông tin thì cho chạy, vì phần lớn máy
  * không khai báo `deviceMemory` là máy tính để bàn.
+ *
+ * Ngưỡng ở đây từng đặt quá tay và đã gây ra một lỗi thật: bản đầu loại mọi máy
+ * dưới 4 nhân CPU, và một máy để bàn 2 nhân — WebGL chạy tốt, không bật giảm
+ * chuyển động — bị cắt sạch phần 3D ở trang chủ mà không một dòng lỗi nào hiện
+ * ra. Người dùng chỉ thấy trang thiếu hình, còn console thì im lặng, nên không
+ * có manh mối nào để lần ra.
+ *
+ * Bài học: số nhân CPU không nói lên được máy có chạy nổi cảnh này hay không.
+ * Ba cảnh 3D của trang đều chỉ gồm vài lệnh vẽ, bị chặn ở 30 khung hình mỗi
+ * giây, pixel ratio 1, và tự dừng khi khuất tầm nhìn — chúng nhẹ hơn hẳn phần
+ * hoạt hình giao diện chạy sẵn trên cùng trang đó. Thứ thực sự đáng chặn chỉ
+ * còn là ý muốn rõ ràng của người dùng (Data Saver), đường truyền quá chậm để
+ * tải thêm một thư viện, và những máy ít bộ nhớ tới mức có nguy cơ hết RAM.
  */
 export function shouldRunWebGL(): boolean {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
@@ -36,11 +49,20 @@ export function shouldRunWebGL(): boolean {
     deviceMemory?: number;
   };
 
+  // Người dùng đã bật chế độ tiết kiệm dữ liệu: tôn trọng, đừng tải thêm 130KB.
   if (nav.connection?.saveData) return false;
+
+  // Đường truyền quá chậm để tải thêm một thư viện đồ hoạ.
   const effective = nav.connection?.effectiveType;
   if (effective === "slow-2g" || effective === "2g") return false;
-  if (typeof nav.deviceMemory === "number" && nav.deviceMemory < 4) return false;
-  if (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency < 4) return false;
+
+  /*
+   * Chỉ chặn những máy ít bộ nhớ tới mức có nguy cơ hết RAM. Chrome làm tròn
+   * `deviceMemory` xuống các bậc 0,25 / 0,5 / 1 / 2 / 4 / 8, nên mốc dưới 2 chỉ
+   * bắt đúng nhóm máy rẻ nhất — chứ không bắt nhầm một máy để bàn 4GB như mốc
+   * cũ đã làm.
+   */
+  if (typeof nav.deviceMemory === "number" && nav.deviceMemory < 2) return false;
 
   return true;
 }
