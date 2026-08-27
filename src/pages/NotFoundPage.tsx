@@ -22,9 +22,9 @@ export default function NotFoundPage() {
         </p>
         <h1
           id="not-found-title"
-          className="font-display -mt-8 max-w-3xl text-[clamp(2.4rem,6vw,5.5rem)] font-semibold leading-[1.08] text-snow sm:-mt-14"
+          className="font-display -mt-8 max-w-3xl text-[clamp(2.4rem,6vw,5.5rem)] font-semibold leading-[1.08] text-pretty text-snow sm:-mt-14"
         >
-          Đường dẫn này không còn trong hồ sơ.
+          Không tìm thấy trang.
         </h1>
         <p className="mt-7 max-w-xl text-base leading-7 text-fog-300 sm:text-lg">
           Nội dung có thể đã được chuyển hoặc địa chỉ chưa chính xác. Bạn có thể trở về trang chủ hoặc tiếp tục từ danh mục dịch vụ pháp lý.

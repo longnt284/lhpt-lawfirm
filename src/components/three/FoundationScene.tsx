@@ -595,6 +595,7 @@ function createFoundationScene(
   let distance = 15;
   let focusOffsetX = 0;
   let focusOffsetY = 0;
+  let wideLayout = true;
   let currentLayer = -1;
 
   /*
@@ -609,6 +610,7 @@ function createFoundationScene(
   const towerHeight = mastTop - pileBottom;
   const reframe = () => {
     const wide = camera.aspect > 1.15;
+    wideLayout = wide;
     /*
      * `fill` chỉ có tác dụng trên màn rộng, và biết điều đó thì đỡ mất công chỉnh
      * nhầm chỗ: `fitDistance` lấy con số *lớn hơn* giữa ràng buộc theo chiều cao
@@ -756,7 +758,11 @@ function createFoundationScene(
        */
       const lift = lerp(3.4, 1.2, progress);
       camera.position.set(pointerX * 0.4, focusY + lift, distance - progress * distance * 0.08);
-      target.set(focusOffsetX, focusY + focusOffsetY, 0);
+      // Ở stage đầu trên mobile, nền móng là một mặt phẳng thấp và dễ nằm sau
+      // thẻ chữ. Hạ điểm ngắm (tức nâng vật thể trong khung) rồi trả dần về tâm
+      // khi tháp mọc cao để luôn có hình trong dải trống phía trên thẻ.
+      const compactIntroLift = wideLayout ? 0 : lerp(-1.55, 0, progress);
+      target.set(focusOffsetX, focusY + focusOffsetY + compactIntroLift, 0);
       camera.lookAt(target);
 
       /*

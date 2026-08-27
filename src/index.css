@@ -147,6 +147,8 @@
  */
 @layer base {
   html {
+    /* Framer Motion đo các target cuộn tương đối với documentElement. */
+    position: relative;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     overscroll-behavior-y: none;
