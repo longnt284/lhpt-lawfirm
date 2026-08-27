@@ -1,6 +1,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { TICKER_EN, WORDS_EN } from "../content/homeEnglish";
 import { FIRM, FIRST_TIME_DISCOUNT, PLANS, SERVICES, TICKER } from "../firm";
 import { useCountUp, useInView, useScrambleCycle, useSpotlight } from "../hooks";
 import { localizePlan, localizeService, useLocale } from "../i18n";
@@ -39,23 +40,6 @@ const WORDS = [
   "DOANH NGHIỆP",
   "BẢO MẬT DỮ LIỆU",
 ];
-
-const WORDS_EN = ["CONSTRUCTION", "REAL ESTATE", "LITIGATION", "SOLAR ENERGY", "CORPORATE", "DATA PROTECTION"];
-const TICKER_EN = [
-  "LAW ON PERSONAL DATA PROTECTION 2025 · EFFECTIVE 01.01.2026",
-  "LAW ON CORPORATE INCOME TAX 2025 · EFFECTIVE 01.10.2025",
-  "LAW ON VALUE-ADDED TAX 2024 · EFFECTIVE 01.07.2025",
-  "ELECTRICITY LAW 2024 · EFFECTIVE 01.02.2025",
-  "LAND LAW 2024 · EFFECTIVE 01.08.2024",
-  "LAW ON REAL ESTATE BUSINESS 2023 · EFFECTIVE 01.08.2024",
-  "HOUSING LAW 2023 · EFFECTIVE 01.08.2024",
-  "LAW ON BIDDING 2023 · EFFECTIVE 01.01.2024",
-  "DECREE 175/2024 · CONSTRUCTION ACTIVITY MANAGEMENT",
-  "DECREE 80/2024 · DIRECT POWER PURCHASE (DPPA)",
-  "DECREE 58/2025 · GUIDANCE ON THE ELECTRICITY LAW",
-  "LAW AMENDING THE LAW ON ENTERPRISES 2025 · NO. 76/2025/QH15",
-];
-
 
 const SERVICE_ICONS = {
   crane: IconCrane,
