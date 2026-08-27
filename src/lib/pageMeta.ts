@@ -29,11 +29,14 @@ export function usePageMeta({
   title,
   description,
   path,
+  robots,
 }: {
   title: string;
   description: string;
   /** Đường dẫn tuyệt đối của trang, ví dụ "/nen-mong-phap-ly". */
   path: string;
+  /** Ghi đè robots cho trang đặc biệt như 404, rồi khôi phục khi rời route. */
+  robots?: string;
 }) {
   useEffect(() => {
     const previousTitle = document.title;
@@ -47,11 +50,12 @@ export function usePageMeta({
       setMeta('meta[name="twitter:title"]', "content", title),
       setMeta('meta[name="twitter:description"]', "content", description),
       setMeta('link[rel="canonical"]', "href", `${SITE}${path}`),
+      robots ? setMeta('meta[name="robots"]', "content", robots) : undefined,
     ];
 
     return () => {
       document.title = previousTitle;
       restore.forEach((undo) => undo?.());
     };
-  }, [title, description, path]);
+  }, [title, description, path, robots]);
 }

@@ -29,6 +29,7 @@ const AccountDialog = lazy(() =>
  */
 const FoundationPage = lazy(() => import("./pages/FoundationPage"));
 const PracticeMapPage = lazy(() => import("./pages/PracticeMapPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function SecondaryContentFallback() {
   return (
@@ -165,11 +166,14 @@ function Shell() {
               </Suspense>
             }
           />
-          {/*
-            Địa chỉ lạ trả về trang chủ thay vì một trang lỗi: trang này là hồ sơ
-            giới thiệu, để khách rơi vào ngõ cụt thì mất khách chứ không được gì.
-          */}
-          <Route path="*" element={<HomeRoute onOpenDoc={setDoc} />} />
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <NotFoundPage />
+              </Suspense>
+            }
+          />
         </Routes>
       </main>
       <Footer />
@@ -197,7 +201,7 @@ export default function App() {
     <LocaleProvider>
       <AuthProvider>
         <MotionConfig reducedMotion="user">
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Shell />
           </BrowserRouter>
         </MotionConfig>
