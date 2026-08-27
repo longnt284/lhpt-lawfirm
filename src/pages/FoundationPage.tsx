@@ -2,9 +2,9 @@
  * Trang "Nền móng pháp lý".
  *
  * Trang kể một câu chuyện tuyến tính: vòng đời pháp lý của một dự án xây dựng,
- * từ hồ sơ đất đai tới lúc tranh chấp được xử lý xong. Khối kiến trúc 3D ở lớp
- * nền dựng lên đúng theo nhịp người đọc cuộn, nên hình và chữ luôn nói cùng một
- * điều tại mọi thời điểm.
+ * từ hồ sơ đất đai tới lúc tranh chấp được xử lý xong. Khối hồ sơ 3D ở lớp nền
+ * ghép lại đúng theo nhịp người đọc cuộn — mỗi giai đoạn là một đợt mảnh bay về
+ * đúng ô của nó — nên hình và chữ luôn nói cùng một điều tại mọi thời điểm.
  *
  * Phần chữ là nội dung thật trong DOM chứ không vẽ vào canvas: công cụ tìm kiếm
  * đọc được, trình đọc màn hình đọc được, và trang vẫn dùng được nguyên vẹn nếu
@@ -39,8 +39,8 @@ export default function FoundationPage() {
       ? "Legal Foundations — LHPT Law Firm"
       : "Nền móng pháp lý — LHPT Law Firm",
     description: isEnglish
-      ? "The legal life cycle of a construction and real estate project, from land file to dispute resolution, laid out layer by layer."
-      : "Vòng đời pháp lý của một dự án xây dựng và bất động sản, từ hồ sơ đất đai tới xử lý tranh chấp, dựng lên từng tầng một.",
+      ? "The legal life cycle of a construction and real estate project, from land file to dispute resolution, assembled one layer at a time."
+      : "Vòng đời pháp lý của một dự án xây dựng và bất động sản, từ hồ sơ đất đai tới xử lý tranh chấp, ghép lại từng lớp một.",
     path: "/nen-mong-phap-ly",
   });
 
@@ -77,15 +77,15 @@ export default function FoundationPage() {
               className="mt-7 max-w-2xl text-[15.5px] leading-[1.8] text-fog-400"
             >
               {isEnglish
-                ? "So does a project's legal position. Below is the same structure we build for every construction and real estate client — five layers, each one carrying the weight of the layers above it. Scroll, and watch it go up."
-                : "Vị thế pháp lý của một dự án cũng vậy. Dưới đây là đúng bộ kết cấu mà chúng tôi dựng cho mọi khách hàng xây dựng và bất động sản — năm tầng, tầng dưới đỡ toàn bộ sức nặng của các tầng trên. Cuộn xuống để xem nó mọc lên."}
+                ? "So does a project's legal position. Below is the same file we build for every construction and real estate client — five layers of it, and the block stays open until the last piece lands. Scroll, and watch the pieces find their place."
+                : "Vị thế pháp lý của một dự án cũng vậy. Dưới đây là đúng bộ hồ sơ mà chúng tôi dựng cho mọi khách hàng xây dựng và bất động sản — năm lớp, thiếu một lớp thì cả khối vẫn còn hở. Cuộn xuống để xem từng mảnh về đúng chỗ."}
             </motion.p>
             <motion.p
               variants={fadeUpSmall}
               className="label mt-9 flex items-center gap-3 text-[10px] text-fog-500"
             >
               <GoldRule className="w-8 shrink-0" />
-              {isEnglish ? "Scroll to build" : "Cuộn để dựng công trình"}
+              {isEnglish ? "Scroll to assemble" : "Cuộn để ghép khối"}
             </motion.p>
           </motion.div>
         </div>
@@ -212,15 +212,15 @@ export default function FoundationPage() {
               >
                 {isEnglish ? (
                   <>
-                    Most clients reach us at layer four.
+                    Most clients reach us at the fourth layer.
                     <br />
-                    <span className="gilded italic">The good ones call at layer one.</span>
+                    <span className="gilded italic">The good ones call at the first.</span>
                   </>
                 ) : (
                   <>
-                    Phần lớn khách hàng tìm tới ở tầng bốn.
+                    Phần lớn khách hàng tìm tới ở lớp thứ tư.
                     <br />
-                    <span className="gilded italic">Người khôn ngoan gọi từ tầng một.</span>
+                    <span className="gilded italic">Người khôn ngoan gọi từ lớp đầu tiên.</span>
                   </>
                 )}
               </motion.h2>
@@ -229,8 +229,8 @@ export default function FoundationPage() {
                 className="mt-6 max-w-xl text-[15px] leading-[1.8] text-fog-400"
               >
                 {isEnglish
-                  ? "Wherever your project stands today, the first conversation is about the same thing: which layers are already solid, and which ones need reinforcing before they carry any more weight."
-                  : "Dự án đang ở tầng nào cũng được. Buổi trao đổi đầu tiên luôn xoay quanh đúng một câu hỏi: tầng nào đã chắc, và tầng nào cần gia cố trước khi phải gánh thêm sức nặng."}
+                  ? "Wherever your project stands today, the first conversation is about the same thing: which layers are already in place, and which ones are still missing pieces."
+                  : "Dự án đang ở lớp nào cũng được. Buổi trao đổi đầu tiên luôn xoay quanh đúng một câu hỏi: lớp nào đã kín, và lớp nào còn thiếu mảnh."}
               </motion.p>
             </div>
             <motion.div variants={fadeUp} className="flex flex-wrap gap-4 lg:col-span-5 lg:justify-end">
@@ -261,7 +261,7 @@ export default function FoundationPage() {
 }
 
 /*
- * Thước đo tiến độ ở mép phải: cho người đọc biết đang ở tầng mấy trên năm, và
+ * Thước đo tiến độ ở mép phải: cho người đọc biết đang ở lớp mấy trên năm, và
  * còn bao nhiêu nữa. Không có nó, một khối cuộn dài năm màn hình dễ khiến người
  * đọc mất phương hướng.
  */
@@ -269,7 +269,7 @@ function StageIndicator({ active, isEnglish }: { active: number; isEnglish: bool
   return (
     <div className="pointer-events-none absolute right-5 bottom-8 z-10 hidden sm:block lg:right-10 lg:bottom-12">
       <p className="label mb-3 text-right text-[9px] text-fog-500">
-        {isEnglish ? "Layer" : "Tầng"} {String(active + 1).padStart(2, "0")} / 05
+        {isEnglish ? "Layer" : "Lớp"} {String(active + 1).padStart(2, "0")} / 05
       </p>
       <div className="flex flex-col items-end gap-2">
         {FOUNDATION_STAGES.map((stage, index) => (

@@ -308,8 +308,8 @@ const THREE_D_PAGES: { to: string; vi: string; en: string; hintVi: string; hintE
     to: "/nen-mong-phap-ly",
     vi: "Nền móng pháp lý",
     en: "Legal foundations",
-    hintVi: "Cuộn để dựng công trình",
-    hintEn: "Scroll to build",
+    hintVi: "Cuộn để ghép khối",
+    hintEn: "Scroll to assemble",
   },
   {
     to: "/ban-do-nang-luc",

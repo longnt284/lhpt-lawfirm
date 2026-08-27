@@ -23,7 +23,7 @@ export const pickList = (value: BilingualList, isEnglish: boolean) =>
 
 export type FoundationStage = {
   id: string;
-  /** Tầng kiến trúc tương ứng trong cảnh 3D. */
+  /** Đợt mảnh tương ứng trong khối rubik ở cảnh 3D. */
   layer: Bilingual;
   title: Bilingual;
   lead: Bilingual;
@@ -172,7 +172,7 @@ export const FOUNDATION_STAGES: FoundationStage[] = [
   },
   {
     id: "tranh-chap",
-    layer: { vi: "Hệ chống sét", en: "Lightning protection" },
+    layer: { vi: "Mảnh khoá", en: "Keystone" },
     title: {
       vi: "Khi mọi thứ vẫn đi chệch",
       en: "When it goes wrong anyway",

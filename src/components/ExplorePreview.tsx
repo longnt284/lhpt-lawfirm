@@ -25,6 +25,7 @@
  */
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import { cancelIdle, shouldRunWebGL, whenIdle, type IdleHandle } from "../lib/lazyWebgl";
+import { RubikArt } from "./RubikArt";
 
 export type PreviewVariant = "foundation" | "practice";
 
@@ -153,48 +154,13 @@ function PreviewPoster({ variant, live }: { variant: PreviewVariant; live: boole
   );
 }
 
+/*
+ * Nền tĩnh của thẻ "vòng đời dự án" dùng chung bản vẽ với bản dự phòng của trang
+ * chi tiết (`RubikArt`). Cùng một lý do với phần 3D: hai nơi nói về một khối thì
+ * phải vẽ ra một khối, kể cả ở lớp hình tĩnh mà người dùng máy yếu nhìn thấy.
+ */
 function FoundationArt() {
-  return (
-    /*
-     * Thu nhỏ quanh tâm khung: bản vẽ này cao gần kín viewBox, nên ở tỉ lệ 1 thì
-     * vòng chống sét chạm mép trên còn đầu cọc chạm mép dưới. Phép biến đổi ba
-     * bước (dời tâm về gốc, co, dời trả lại) chạy đúng ở mọi trình duyệt, khác
-     * với transform-origin vốn không phải trình duyệt nào cũng hiểu trong SVG.
-     */
-    <g strokeWidth="1" transform="translate(100,66) scale(0.93) translate(-100,-66)">
-      {/* nền và cọc */}
-      <g className="text-fog-500" stroke="currentColor" opacity="0.42">
-        <path d="M22 110h156" />
-        <path d="M34 110 48 101M74 110 88 101M126 110 140 101M166 110 180 101" opacity="0.55" />
-        <path d="M48 101h132" opacity="0.5" />
-        <path d="M46 110v9M78 110v9M122 110v9M154 110v9" />
-      </g>
-      {/* vành móng */}
-      <g className="text-brass-500" stroke="currentColor" opacity="0.75">
-        <path d="M32 108h136" />
-      </g>
-      {/* cột */}
-      <g className="text-brass-500" stroke="currentColor" opacity="0.62">
-        <path d="M46 108V58M78 108V58M122 108V58M154 108V58" />
-      </g>
-      {/* sàn và dầm */}
-      <g className="text-fog-400" stroke="currentColor" opacity="0.44">
-        <path d="M46 84h108M46 58h108M100 84V58" />
-      </g>
-      {/* mái */}
-      <g className="text-brass-400" stroke="currentColor" opacity="0.8">
-        <path d="M38 58 100 30l62 28" />
-        <path d="M100 30v28" opacity="0.4" />
-      </g>
-      {/* cột thu lôi và vùng bảo vệ */}
-      <g className="text-jade-400" stroke="currentColor">
-        <path d="M100 30V12" opacity="0.85" />
-        <ellipse cx="100" cy="12" rx="26" ry="5.5" opacity="0.34" />
-        <ellipse cx="100" cy="15" rx="18" ry="3.8" opacity="0.26" />
-        <ellipse cx="100" cy="18" rx="10" ry="2.2" opacity="0.2" />
-      </g>
-    </g>
-  );
+  return <RubikArt />;
 }
 
 function PracticeArt() {
