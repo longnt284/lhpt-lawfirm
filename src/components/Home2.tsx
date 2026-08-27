@@ -63,7 +63,17 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
   const onMove = useSpotlight<HTMLButtonElement>();
   if (!featured) return null;
   return (
-    <section id="tin-tuc" className="relative z-10 scroll-mt-24 bg-mist-100 py-24 text-ink-900">
+    /*
+      `data-chain-occluder` đánh dấu khối có nền đục che kín lớp nền 3D phía sau
+      (xem ChainBackdrop). Nhờ nó lớp nền tự tắt đúng những đoạn không ai nhìn
+      thấy nó, thay vì vẽ tiếp sau lưng một lớp sơn. Đổi khối này sang nền trong
+      suốt thì nhớ bỏ thuộc tính đi.
+    */
+    <section
+      id="tin-tuc"
+      data-chain-occluder
+      className="relative z-10 scroll-mt-24 bg-mist-100 py-24 text-ink-900"
+    >
       <div className="bg-grid-light absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6">
@@ -211,7 +221,11 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
   const visible = list.slice(0, shown);
 
   return (
-    <section id="bai-viet" className="relative z-10 scroll-mt-24 bg-mist-50 py-24 text-ink-900">
+    <section
+      id="bai-viet"
+      data-chain-occluder
+      className="relative z-10 scroll-mt-24 bg-mist-50 py-24 text-ink-900"
+    >
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
           tone="light"
@@ -789,7 +803,11 @@ export function Policies() {
   const servicePolicies = POLICIES_SERVICE.map((item) => localizePolicy(item, locale));
   const privacyPolicies = POLICIES_PRIVACY.map((item) => localizePolicy(item, locale));
   return (
-    <section id="chinh-sach" className="relative z-10 scroll-mt-24 bg-mist-100 py-24 text-ink-900">
+    <section
+      id="chinh-sach"
+      data-chain-occluder
+      className="relative z-10 scroll-mt-24 bg-mist-100 py-24 text-ink-900"
+    >
       <div className="bg-grid-light absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead

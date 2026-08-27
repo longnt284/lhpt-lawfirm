@@ -391,6 +391,38 @@
   );
 }
 
+/* ---------- mặt nạ hai mép cho chuỗi khối ---------- */
+/*
+ * Chuỗi khối là một dòng chảy không có điểm đầu và điểm cuối, nên nó không được
+ * phép *bị cắt* ở mép trên và mép dưới màn hình — phải tan dần vào nền.
+ *
+ * Làm bằng mặt nạ CSS chứ không bằng sương mù của three.js: sương mù pha về một
+ * màu đặc, mà canvas ở đây trong suốt và phía sau nó còn ba quầng sáng nền đang
+ * chuyển động, nên pha màu đặc sẽ thành hai vệt tối đè lên chúng. Mặt nạ thì do
+ * compositor lo, không tốn khung hình nào của luồng chính.
+ *
+ * Mép trên dày hơn mép dưới: phần trên khung nhìn là chỗ thanh điều hướng dính
+ * ở lại, nên hình nền cần nhạt hơn hẳn ở đó để chữ trên thanh vẫn đọc rõ.
+ */
+.chain-mask {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 14%,
+    #000 30%,
+    #000 84%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 14%,
+    #000 30%,
+    #000 84%,
+    transparent 100%
+  );
+}
+
 /* ---------- gạch chân chạy từ trái ---------- */
 .link-underline {
   position: relative;
