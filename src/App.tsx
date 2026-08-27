@@ -7,6 +7,7 @@ import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } fro
 import { Explore, OpeningStage, Pricing, Services } from "./components/Home1";
 import type { DocItem } from "./content/types";
 import { LocaleProvider } from "./i18n";
+import { runWithInstantScroll } from "./lib/instantScroll";
 
 const SecondaryContent = lazy(() =>
   import("./components/Home2").then(({ SecondaryContent: Content }) => ({ default: Content }))
@@ -60,7 +61,9 @@ function ScrollManager() {
 
   useEffect(() => {
     if (!hash) {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      runWithInstantScroll(document.documentElement, requestAnimationFrame, () => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      });
       return;
     }
 
@@ -73,7 +76,9 @@ function ScrollManager() {
       if (target) {
         // Nhảy thẳng chứ không cuộn mượt: đây là lần đầu trang hiện ra, cuộn mượt
         // qua cả chục màn hình chỉ khiến người dùng phải ngồi chờ.
-        target.scrollIntoView({ block: "start", behavior: "auto" });
+        runWithInstantScroll(document.documentElement, requestAnimationFrame, () => {
+          target.scrollIntoView({ block: "start", behavior: "auto" });
+        });
         return;
       }
       if (performance.now() < deadline) frame = requestAnimationFrame(tryScroll);
