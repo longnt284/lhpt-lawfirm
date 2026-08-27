@@ -50,6 +50,7 @@ import {
   type StageHandle,
   type StageInit,
 } from "../../lib/threeStage";
+import { clamp01, layerOpacity, smoothstep } from "../../lib/sceneMotion";
 
 /* Màu lấy đúng từ bảng thương hiệu trong index.css. */
 const BRASS = new THREE.Color(0xc9a44c);
@@ -102,14 +103,6 @@ const LAYER_RAMP = 0.16;
 /* Chu kỳ và độ dài một cú sét, tính bằng giây. */
 const STRIKE_PERIOD = 9;
 const STRIKE_SPAN = 2.2;
-
-const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
-
-/** Chuyển tiếp mềm hai đầu, tránh cảm giác phần tử "bật" ra đột ngột. */
-function smoothstep(edge0: number, edge1: number, x: number) {
-  const t = clamp01((x - edge0) / (edge1 - edge0));
-  return t * t * (3 - 2 * t);
-}
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -205,10 +198,16 @@ class Batch {
  * đọc ra được là công trường đang làm gì.
  */
 type Part = {
-  object: THREE.LineSegments;
-  material: THREE.LineBasicMaterial;
+  object: THREE.Object3D;
+  material: THREE.Material & { opacity: number };
   start: number;
   rise: number;
+  peak: number;
+};
+
+type FillBox = {
+  position: Vec3;
+  size: Vec3;
 };
 
 function createFoundationScene(
@@ -241,11 +240,53 @@ function createFoundationScene(
       vertexColors: true,
       transparent: true,
       depthWrite: false,
-      opacity: peak,
+      opacity: 0,
     });
     const object = new THREE.LineSegments(batch.build(), material);
     root.add(object);
-    const part: Part = { object, material, start, rise };
+    const part: Part = { object, material, start, rise, peak };
+    parts.push(part);
+    return part;
+  };
+
+  /**
+   * Nhiều khối hộp dùng chung một geometry/material và được vẽ bằng instancing.
+   * Lớp fill chỉ là một vệt mực loãng dưới bộ khung dây: đủ để mắt đọc thể tích,
+   * nhưng không được nặng hơn đường cấu trúc hoặc đòi hỏi hệ đèn riêng.
+   */
+  const addFillBoxes = (
+    boxes: FillBox[],
+    color: THREE.Color,
+    peak: number,
+    start: number,
+    rise: number
+  ) => {
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    const instances = new THREE.InstancedMesh(geometry, material, boxes.length);
+    const matrix = new THREE.Matrix4();
+    const position = new THREE.Vector3();
+    const scale = new THREE.Vector3();
+    const rotation = new THREE.Quaternion();
+    boxes.forEach((box, index) => {
+      position.set(...box.position);
+      scale.set(...box.size);
+      matrix.compose(position, rotation, scale);
+      instances.setMatrixAt(index, matrix);
+    });
+    instances.instanceMatrix.needsUpdate = true;
+
+    const holder = new THREE.Group();
+    holder.add(instances);
+    root.add(holder);
+    const part: Part = { object: holder, material, start, rise, peak };
     parts.push(part);
     return part;
   };
@@ -267,6 +308,29 @@ function createFoundationScene(
   foundation.ring(HALF + 0.4, GROUND + 0.01, BRASS, 0.8);
   foundation.ring(HALF + 0.52, GROUND + 0.01, BRASS, 0.26);
   const groundGrid = addPart(foundation, LAYER_STARTS[0], 0.35);
+  addFillBoxes(
+    [{ position: [0, GROUND - CAP / 2, 0], size: [HALF * 2 + 0.5, CAP, HALF * 2 + 0.5] }],
+    BRASS,
+    0.075,
+    LAYER_STARTS[0],
+    0.35
+  );
+
+  // Một dải quét ngắn làm rõ khoảnh khắc mặt bằng được "đọc" lần đầu. Nó đi
+  // đúng một lần theo tiến trình cuộn, không lặp tự thân và biến mất hoàn toàn
+  // ở chế độ giảm chuyển động.
+  const scanGeometry = new THREE.BoxGeometry(extent * 2, 0.025, 0.12);
+  const scanMaterial = new THREE.MeshBasicMaterial({
+    color: JADE_SOFT,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    toneMapped: false,
+  });
+  const scanBand = new THREE.Mesh(scanGeometry, scanMaterial);
+  scanBand.position.set(0, GROUND + 0.025, -extent);
+  scanBand.visible = false;
+  root.add(scanBand);
 
   // Đài cọc và cọc: phần chìm dưới đất, mọc *xuống* nên nó vào chỗ sau mặt lưới.
   const piles = new Batch();
@@ -275,6 +339,22 @@ function createFoundationScene(
     piles.post(x, z, 0.13, pileBottom, GROUND - CAP, FOG, 0.22);
   });
   addPart(piles, LAYER_STARTS[0] + 0.05, 0.7);
+  addFillBoxes(
+    CORNERS.flatMap(([x, z]) => [
+      {
+        position: [x, GROUND - CAP / 2, z] as Vec3,
+        size: [0.6, CAP, 0.6] as Vec3,
+      },
+      {
+        position: [x, (pileBottom + GROUND - CAP) / 2, z] as Vec3,
+        size: [0.24, GROUND - CAP - pileBottom, 0.24] as Vec3,
+      },
+    ]),
+    FOG,
+    0.055,
+    LAYER_STARTS[0] + 0.05,
+    0.7
+  );
 
   /* ================= tầng 2 — cột trụ ================= */
   /*
@@ -292,6 +372,16 @@ function createFoundationScene(
     else columns.add([x, GROUND, z], [x, roofY, z], FOG, 0.16);
   });
   addPart(columns, LAYER_STARTS[1], 1);
+  addFillBoxes(
+    CORNERS.map(([x, z]) => ({
+      position: [x, (GROUND + roofY) / 2, z],
+      size: [COLUMN_T * 2, roofY - GROUND, COLUMN_T * 2],
+    })),
+    BRASS,
+    0.06,
+    LAYER_STARTS[1],
+    1
+  );
 
   /* ================= tầng 3 — sàn và dầm ================= */
   /*
@@ -302,6 +392,7 @@ function createFoundationScene(
   const plateGap = 0.055;
   for (let s = 1; s <= storeys; s++) {
     const y = GROUND + s * STOREY;
+    const start = LAYER_STARTS[2] + (s - 1) * plateGap;
     const plate = new Batch();
     plate.ring(HALF, y, FOG, 0.44);
     // Diềm sàn: một vành thứ hai thấp hơn vài phần trăm, cho mép sàn có bề dày.
@@ -316,7 +407,14 @@ function createFoundationScene(
       plate.add([-HALF, y, q], [HALF, y, q], FOG, 0.1);
     }
     // rise âm: tấm sàn được hạ từ trên xuống, không mọc lên từ dưới.
-    addPart(plate, LAYER_STARTS[2] + (s - 1) * plateGap, -1.5);
+    addPart(plate, start, -1.5);
+    addFillBoxes(
+      [{ position: [0, y - 0.045, 0], size: [HALF * 2, 0.09, HALF * 2] }],
+      FOG,
+      0.045,
+      start,
+      -1.5
+    );
   }
 
   /* ================= tầng 4 — mái và mặt đứng ================= */
@@ -346,11 +444,28 @@ function createFoundationScene(
   });
   crown.post(0, 0, HALF * 0.4, roofY, crownY, BRASS_SOFT, 0.4);
   addPart(crown, LAYER_STARTS[3], -1.2);
+  addFillBoxes(
+    [
+      { position: [0, roofY + 0.055, 0], size: [HALF * 2, 0.11, HALF * 2] },
+      { position: [0, (roofY + crownY) / 2, 0], size: [HALF * 0.8, crownY - roofY, HALF * 0.8] },
+    ],
+    BRASS_SOFT,
+    0.065,
+    LAYER_STARTS[3],
+    -1.2
+  );
 
   /* ================= tầng 5 — hệ chống sét ================= */
   const mast = new Batch();
   mast.post(0, 0, 0.045, crownY, mastTop, JADE, 0.72);
   addPart(mast, LAYER_STARTS[4], -0.9);
+  addFillBoxes(
+    [{ position: [0, (crownY + mastTop) / 2, 0], size: [0.09, mastTop - crownY, 0.09] }],
+    JADE,
+    0.085,
+    LAYER_STARTS[4],
+    -0.9
+  );
 
   const ringsBatch = new Batch();
   [0.6, 1.05, 1.55].forEach((radius, index) => {
@@ -480,6 +595,7 @@ function createFoundationScene(
   let distance = 15;
   let focusOffsetX = 0;
   let focusOffsetY = 0;
+  let wideLayout = true;
   let currentLayer = -1;
 
   /*
@@ -494,6 +610,7 @@ function createFoundationScene(
   const towerHeight = mastTop - pileBottom;
   const reframe = () => {
     const wide = camera.aspect > 1.15;
+    wideLayout = wide;
     /*
      * `fill` chỉ có tác dụng trên màn rộng, và biết điều đó thì đỡ mất công chỉnh
      * nhầm chỗ: `fitDistance` lấy con số *lớn hơn* giữa ràng buộc theo chiều cao
@@ -502,7 +619,7 @@ function createFoundationScene(
      * thắng, và lúc đó cần gạt duy nhất còn tác dụng là nửa bề ngang mong muốn
      * cùng với độ dạt đứng bên dưới.
      */
-    const fill = 0.8;
+    const fill = wide ? 0.86 : 0.8;
     distance = fitDistance(camera, wide ? 3.9 : 4.1, towerHeight / 2 / fill, 1);
     /*
      * Màn rộng: chữ chiếm nửa trái, nên công trình dạt sang phải.
@@ -528,10 +645,21 @@ function createFoundationScene(
       for (const part of parts) {
         const appear = smoothstep(part.start, part.start + LAYER_RAMP, progress);
         part.object.position.y = (1 - appear) * -part.rise;
-        part.material.opacity = appear;
+        part.material.opacity = layerOpacity(
+          progress,
+          part.start,
+          part.start + LAYER_RAMP,
+          part.peak
+        );
         // Bỏ hẳn lệnh vẽ khi bộ phận còn vô hình, thay vì vẽ một vật trong suốt.
         part.object.visible = appear > 0.01;
       }
+
+      const scan = smoothstep(LAYER_STARTS[0], LAYER_STARTS[0] + LAYER_RAMP, progress);
+      const scanGlow = Math.sin(scan * Math.PI);
+      scanBand.position.z = lerp(-extent, extent, scan);
+      scanMaterial.opacity = reduced ? 0 : scanGlow * 0.2;
+      scanBand.visible = !reduced && scanGlow > 0.02;
 
       /*
        * Khối đung đưa rất chậm quanh trục đứng thay vì quay tròn liên tục: người
@@ -600,7 +728,7 @@ function createFoundationScene(
        */
       groundGrid.material.opacity = Math.min(
         1,
-        smoothstep(LAYER_STARTS[0], LAYER_STARTS[0] + LAYER_RAMP, progress) * (1 + flare * 1.5)
+        smoothstep(LAYER_STARTS[0], LAYER_STARTS[0] + LAYER_RAMP, progress) * (1 + flare * 0.75)
       );
 
       if (!reduced) {
@@ -630,7 +758,11 @@ function createFoundationScene(
        */
       const lift = lerp(3.4, 1.2, progress);
       camera.position.set(pointerX * 0.4, focusY + lift, distance - progress * distance * 0.08);
-      target.set(focusOffsetX, focusY + focusOffsetY, 0);
+      // Ở stage đầu trên mobile, nền móng là một mặt phẳng thấp và dễ nằm sau
+      // thẻ chữ. Hạ điểm ngắm (tức nâng vật thể trong khung) rồi trả dần về tâm
+      // khi tháp mọc cao để luôn có hình trong dải trống phía trên thẻ.
+      const compactIntroLift = wideLayout ? 0 : lerp(-1.55, 0, progress);
+      target.set(focusOffsetX, focusY + focusOffsetY + compactIntroLift, 0);
       camera.lookAt(target);
 
       /*

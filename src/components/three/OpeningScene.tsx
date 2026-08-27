@@ -43,6 +43,7 @@ import {
   type StageHandle,
   type StageInit,
 } from "../../lib/threeStage";
+import { clamp01, smoothstep } from "../../lib/sceneMotion";
 
 /* Màu lấy đúng từ bảng thương hiệu trong index.css. */
 const BRASS = new THREE.Color(0xc9a44c);
@@ -78,13 +79,6 @@ const COLUMNS_COMPACT = [-3.5, -1.35, 1.35, 3.5];
 
 /* Mặt sau mờ hơn mặt trước — chênh lệch này chính là thứ cho khối một bề dày. */
 const backFade = 0.34;
-
-const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
-
-function smoothstep(edge0: number, edge1: number, x: number) {
-  const t = clamp01((x - edge0) / (edge1 - edge0));
-  return t * t * (3 - 2 * t);
-}
 
 type Vec = [number, number, number];
 
@@ -152,12 +146,43 @@ function lineLayer(batch: LineBatch, opacity: number) {
   return { object: new THREE.LineSegments(batch.build(), material), material };
 }
 
+type FillBox = {
+  position: Vec;
+  size: Vec;
+};
+
+function fillLayer(boxes: FillBox[], color: THREE.Color, peak: number) {
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshBasicMaterial({
+    color,
+    transparent: true,
+    opacity: peak,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  });
+  const object = new THREE.InstancedMesh(geometry, material, boxes.length);
+  const matrix = new THREE.Matrix4();
+  const position = new THREE.Vector3();
+  const scale = new THREE.Vector3();
+  const rotation = new THREE.Quaternion();
+  boxes.forEach((box, index) => {
+    position.set(...box.position);
+    scale.set(...box.size);
+    matrix.compose(position, rotation, scale);
+    object.setMatrixAt(index, matrix);
+  });
+  object.instanceMatrix.needsUpdate = true;
+  return { object, material, peak };
+}
+
 function createOpeningScene({ scene, camera, compact, reduced }: StageInit): StageHandle {
   const root = new THREE.Group();
   scene.add(root);
 
   const columns = compact ? COLUMNS_COMPACT : COLUMNS;
   const span = columns[columns.length - 1] + 1.15;
+  const pointerScale = window.matchMedia?.("(pointer: coarse)").matches ? 0 : 1;
 
   /* ================= tầng trên mặt đất ================= */
   const above = new LineBatch();
@@ -337,8 +362,95 @@ function createOpeningScene({ scene, camera, compact, reduced }: StageInit): Sta
   const aboveLayer = lineLayer(above, 1);
   const groundLayer = lineLayer(ground, 1);
   const belowLayer = lineLayer(below, 0);
-  root.add(aboveLayer.object, groundLayer.object, belowLayer.object);
+  const aboveBrassFill = fillLayer(
+    [
+      {
+        position: [0, (CAP_TOP + ARCHITRAVE_TOP) / 2, 0],
+        size: [span * 2, ARCHITRAVE_TOP - CAP_TOP, (DEPTH + 0.2) * 2],
+      },
+      ...columns.flatMap((x) => [
+        {
+          position: [x, (SHAFT_TOP + CAP_TOP) / 2, 0] as Vec,
+          size: [0.92, CAP_TOP - SHAFT_TOP, (DEPTH + 0.12) * 2] as Vec,
+        },
+        {
+          position: [x, SHAFT_BOTTOM - 0.15, 0] as Vec,
+          size: [0.92, 0.3, (DEPTH + 0.12) * 2] as Vec,
+        },
+      ]),
+    ],
+    BRASS,
+    0.065
+  );
+
+  const aboveStepFill = fillLayer(
+    Array.from({ length: STEP_COUNT }, (_, index) => {
+      const y1 = STEP_TOP - index * STEP_RISE;
+      const y0 = y1 - STEP_RISE;
+      const width = span + 0.36 + index * 0.46;
+      const depth = DEPTH + 0.3 + index * 0.26;
+      return {
+        position: [0, (y0 + y1) / 2, 0] as Vec,
+        size: [width * 2, STEP_RISE, depth * 2] as Vec,
+      };
+    }),
+    FOG,
+    0.032
+  );
+
+  const belowBrassFill = fillLayer(
+    [
+      ...columns.map((x) => ({
+        position: [x, GROUND_Y - 0.31, 0] as Vec,
+        size: [0.92, 0.5, (PILE_DEPTH + 0.2) * 2] as Vec,
+      })),
+      {
+        position: [0, RAFT_Y - 0.25, 0],
+        size: [raftHalf * 2, 0.5, raftDepth * 2],
+      },
+    ],
+    BRASS,
+    0.075
+  );
+
+  const belowPileFill = fillLayer(
+    columns.map((x) => ({
+      position: [x, (PILE_BOTTOM + GROUND_Y - 0.56) / 2, 0],
+      size: [PILE_HALF * 2, GROUND_Y - 0.56 - PILE_BOTTOM, PILE_DEPTH * 2],
+    })),
+    FOG,
+    0.036
+  );
+
+  const washMaterial = new THREE.MeshBasicMaterial({
+    color: 0x41627b,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  });
+  const washHeight = GROUND_Y - (RAFT_Y - 3.8);
+  const subsurfaceWash = new THREE.Mesh(
+    new THREE.PlaneGeometry(strataReach * 2, washHeight),
+    washMaterial
+  );
+  subsurfaceWash.position.set(0, GROUND_Y - washHeight / 2, -4.1);
+  subsurfaceWash.visible = false;
+
+  root.add(
+    aboveBrassFill.object,
+    aboveStepFill.object,
+    aboveLayer.object,
+    groundLayer.object,
+    subsurfaceWash,
+    belowBrassFill.object,
+    belowPileFill.object,
+    belowLayer.object
+  );
   belowLayer.object.visible = false;
+  belowBrassFill.object.visible = false;
+  belowPileFill.object.visible = false;
 
   /* ================= bụi vàng ================= */
   /*
@@ -437,8 +549,17 @@ function createOpeningScene({ scene, camera, compact, reduced }: StageInit): Sta
       const reveal = smoothstep(0.16, 0.62, progress);
 
       aboveLayer.material.opacity = 1 - descent * 0.76;
+      const aboveOpacity = 1 - descent * 0.76;
+      aboveBrassFill.material.opacity = aboveBrassFill.peak * aboveOpacity;
+      aboveStepFill.material.opacity = aboveStepFill.peak * aboveOpacity;
       belowLayer.material.opacity = reveal;
       belowLayer.object.visible = reveal > 0.01;
+      belowBrassFill.material.opacity = belowBrassFill.peak * reveal;
+      belowPileFill.material.opacity = belowPileFill.peak * reveal;
+      belowBrassFill.object.visible = reveal > 0.01;
+      belowPileFill.object.visible = reveal > 0.01;
+      washMaterial.opacity = reveal * 0.028;
+      subsurfaceWash.visible = reveal > 0.01;
       // Vạch nền đậm dần lúc tới gần rồi nhạt đi khi đã ở hẳn bên dưới.
       groundLayer.material.opacity = 0.45 + Math.sin(clamp01(progress * 1.4) * Math.PI) * 0.55;
 
@@ -468,8 +589,10 @@ function createOpeningScene({ scene, camera, compact, reduced }: StageInit): Sta
        * theo phương đứng, thêm một cú lắc ngang mạnh chỉ làm nhoè nó.
        */
       const swayScale = reduced ? 0 : 1 - descent * 0.55;
-      const swayX = (Math.sin(elapsed * 0.075) * 0.75 + pointerX * 0.9) * swayScale;
-      const swayY = (Math.sin(elapsed * 0.055) * 0.16 - pointerY * 0.28) * swayScale;
+      const swayX =
+        (Math.sin(elapsed * 0.075) * 0.75 + pointerX * 0.9 * pointerScale) * swayScale;
+      const swayY =
+        (Math.sin(elapsed * 0.055) * 0.16 - pointerY * 0.28 * pointerScale) * swayScale;
 
       const camY = stand.aboveY + (stand.belowY - stand.aboveY) * descent;
       const camZ = stand.aboveZ + (stand.belowZ - stand.aboveZ) * descent;

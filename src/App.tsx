@@ -7,6 +7,7 @@ import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } fro
 import { Explore, OpeningStage, Pricing, Services } from "./components/Home1";
 import type { DocItem } from "./content/types";
 import { LocaleProvider } from "./i18n";
+import { runWithInstantScroll } from "./lib/instantScroll";
 
 const SecondaryContent = lazy(() =>
   import("./components/Home2").then(({ SecondaryContent: Content }) => ({ default: Content }))
@@ -28,6 +29,7 @@ const AccountDialog = lazy(() =>
  */
 const FoundationPage = lazy(() => import("./pages/FoundationPage"));
 const PracticeMapPage = lazy(() => import("./pages/PracticeMapPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function SecondaryContentFallback() {
   return (
@@ -60,7 +62,9 @@ function ScrollManager() {
 
   useEffect(() => {
     if (!hash) {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      runWithInstantScroll(document.documentElement, requestAnimationFrame, () => {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      });
       return;
     }
 
@@ -73,7 +77,9 @@ function ScrollManager() {
       if (target) {
         // Nhảy thẳng chứ không cuộn mượt: đây là lần đầu trang hiện ra, cuộn mượt
         // qua cả chục màn hình chỉ khiến người dùng phải ngồi chờ.
-        target.scrollIntoView({ block: "start", behavior: "auto" });
+        runWithInstantScroll(document.documentElement, requestAnimationFrame, () => {
+          target.scrollIntoView({ block: "start", behavior: "auto" });
+        });
         return;
       }
       if (performance.now() < deadline) frame = requestAnimationFrame(tryScroll);
@@ -160,11 +166,14 @@ function Shell() {
               </Suspense>
             }
           />
-          {/*
-            Địa chỉ lạ trả về trang chủ thay vì một trang lỗi: trang này là hồ sơ
-            giới thiệu, để khách rơi vào ngõ cụt thì mất khách chứ không được gì.
-          */}
-          <Route path="*" element={<HomeRoute onOpenDoc={setDoc} />} />
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <NotFoundPage />
+              </Suspense>
+            }
+          />
         </Routes>
       </main>
       <Footer />
@@ -192,7 +201,7 @@ export default function App() {
     <LocaleProvider>
       <AuthProvider>
         <MotionConfig reducedMotion="user">
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <Shell />
           </BrowserRouter>
         </MotionConfig>

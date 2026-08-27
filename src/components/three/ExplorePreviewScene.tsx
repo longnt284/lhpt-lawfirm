@@ -132,6 +132,37 @@ function createFoundationPreview(
     pieces.push({ object: holder, material: part.material, peak, at, rise });
   };
 
+  const addFillBoxes = (
+    boxes: Array<{ position: [number, number, number]; size: [number, number, number] }>,
+    color: number,
+    peak: number,
+    at: number,
+    rise: number
+  ) => {
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    const instances = new THREE.InstancedMesh(geometry, material, boxes.length);
+    const matrix = new THREE.Matrix4();
+    const position = new THREE.Vector3();
+    const scale = new THREE.Vector3();
+    const rotation = new THREE.Quaternion();
+    boxes.forEach((box, index) => {
+      position.set(...box.position);
+      scale.set(...box.size);
+      matrix.compose(position, rotation, scale);
+      instances.setMatrixAt(index, matrix);
+    });
+    instances.instanceMatrix.needsUpdate = true;
+    add({ object: instances, material }, peak, at, rise);
+  };
+
   /* ---------- móng ---------- */
   /*
    * Lưới nền thưa hơn cảnh thật khá nhiều. Ở khung rộng chừng 400px, các đường
@@ -154,12 +185,37 @@ function createFoundationPreview(
   add(lineSegments(grid, FOG, 0.26), 0.26, 0, 0.3);
   add(lineSegments(piles, FOG, 0.42), 0.42, 0.1, 0.3);
   add(lineSegments(rectPoints(HALF + 0.22, GROUND + 0.01), BRASS, 0.66), 0.66, 0.18, 0.3);
+  addFillBoxes(
+    [
+      { position: [0, GROUND - 0.1, 0], size: [HALF * 2 + 0.44, 0.2, HALF * 2 + 0.44] },
+      ...([-1, 1] as const).flatMap((sx) =>
+        ([-1, 1] as const).map((sz) => ({
+          position: [sx * HALF, GROUND - 0.48, sz * HALF] as [number, number, number],
+          size: [0.24, 0.76, 0.24] as [number, number, number],
+        }))
+      ),
+    ],
+    BRASS,
+    0.07,
+    0.18,
+    0.3
+  );
 
   /* ---------- cột ---------- */
   const columns: number[] = [];
   ([[-HALF, -HALF], [HALF, -HALF], [HALF, HALF], [-HALF, HALF], [0, -HALF], [0, HALF], [-HALF, 0], [HALF, 0]] as const)
     .forEach(([x, z]) => columns.push(x, GROUND, z, x, COLUMN_TOP, z));
   add(lineSegments(columns, BRASS, 0.6), 0.6, 0.62, 0.5);
+  addFillBoxes(
+    ([[-HALF, -HALF], [HALF, -HALF], [HALF, HALF], [-HALF, HALF]] as const).map(([x, z]) => ({
+      position: [x, (GROUND + COLUMN_TOP) / 2, z],
+      size: [0.18, COLUMN_TOP - GROUND, 0.18],
+    })),
+    BRASS,
+    0.065,
+    0.62,
+    0.5
+  );
 
   /* ---------- sàn và dầm ---------- */
   const slabs: number[] = [];
@@ -169,6 +225,16 @@ function createFoundationPreview(
     slabs.push(0, y, -HALF, 0, y, HALF);
   });
   add(lineSegments(slabs, FOG, 0.44), 0.44, 1.05, 0.45);
+  addFillBoxes(
+    [-1.2, COLUMN_TOP].map((y) => ({
+      position: [0, y - 0.045, 0] as [number, number, number],
+      size: [HALF * 2, 0.09, HALF * 2] as [number, number, number],
+    })),
+    FOG,
+    0.045,
+    1.05,
+    0.45
+  );
 
   /* ---------- mái ---------- */
   const roof: number[] = [];
@@ -180,9 +246,52 @@ function createFoundationPreview(
   roof.push(-HALF, COLUMN_TOP, -HALF, -HALF, COLUMN_TOP, HALF);
   roof.push(HALF, COLUMN_TOP, -HALF, HALF, COLUMN_TOP, HALF);
   add(lineSegments(roof, BRASS_SOFT, 0.7), 0.7, 1.5, 0.4);
+  const roofFillGeometry = new THREE.BufferGeometry();
+  roofFillGeometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(
+      [
+        -HALF, COLUMN_TOP, -HALF,
+        0, RIDGE, -HALF,
+        0, RIDGE, HALF,
+        -HALF, COLUMN_TOP, -HALF,
+        0, RIDGE, HALF,
+        -HALF, COLUMN_TOP, HALF,
+        0, RIDGE, -HALF,
+        HALF, COLUMN_TOP, -HALF,
+        HALF, COLUMN_TOP, HALF,
+        0, RIDGE, -HALF,
+        HALF, COLUMN_TOP, HALF,
+        0, RIDGE, HALF,
+      ],
+      3
+    )
+  );
+  roofFillGeometry.computeVertexNormals();
+  const roofFillMaterial = new THREE.MeshBasicMaterial({
+    color: BRASS_SOFT,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  });
+  add(
+    { object: new THREE.Mesh(roofFillGeometry, roofFillMaterial), material: roofFillMaterial },
+    0.055,
+    1.5,
+    0.4
+  );
 
   /* ---------- hệ chống sét ---------- */
   add(lineSegments([0, RIDGE, 0, 0, MAST, 0], JADE, 0.72), 0.72, 1.95, 0.3);
+  addFillBoxes(
+    [{ position: [0, (RIDGE + MAST) / 2, 0], size: [0.08, MAST - RIDGE, 0.08] }],
+    JADE,
+    0.08,
+    1.95,
+    0.3
+  );
   const rings: { material: THREE.LineBasicMaterial; object: THREE.Object3D }[] = [];
   [0.5, 0.92, 1.34].forEach((radius, index) => {
     const part = lineSegments(
@@ -271,7 +380,7 @@ function createFoundationPreview(
        * chữ bên cạnh, nhưng vẫn đủ để mắt bắt được rằng đây là một khối ba
        * chiều chứ không phải hình vẽ phẳng. Rê chuột thì nhanh lên chừng 60%.
        */
-      root.rotation.y = -0.42 + elapsed * (0.155 + hover * 0.09);
+      root.rotation.y = -0.42 + elapsed * 0.155 + hover * 0.08;
       root.rotation.x = Math.sin(elapsed * 0.24) * 0.05 - 0.04;
       dust.rotation.y = elapsed * -0.05;
 
