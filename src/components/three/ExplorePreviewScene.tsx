@@ -530,9 +530,12 @@ function createPracticePreview(
 export default function ExplorePreviewScene({
   variant,
   hovered,
+  onReady,
 }: {
   variant: PreviewVariant;
   hovered: boolean;
+  /** Gọi khi cảnh đã vẽ xong khung hình đầu, hoặc khi nó mất khả năng vẽ. */
+  onReady?: (ready: boolean) => void;
 }) {
   const hoverRef = useRef(hovered);
   useEffect(() => {
@@ -560,7 +563,16 @@ export default function ExplorePreviewScene({
     () => ({ fov: 40, cameraZ: 9, maxPixelRatio: 1.5, maxFps: 30 }),
     []
   );
-  const { containerRef, supported, requestFrame } = useThreeStage(setup, options);
+  const { containerRef, ready, requestFrame } = useThreeStage(setup, options);
+
+  /*
+   * Bản hình tĩnh nằm dưới canvas chỉ được phép mờ đi khi cảnh đã thực sự vẽ.
+   * Trên máy không dựng nổi WebGL, `ready` không bao giờ bật, nên bản tĩnh ở
+   * lại — thay vì thẻ trở thành một ô đen như bản trước.
+   */
+  useEffect(() => {
+    onReady?.(ready);
+  }, [ready, onReady]);
 
   /*
    * Khi người dùng bật "giảm chuyển động", cảnh đứng yên và chỉ vẽ theo yêu cầu.
@@ -576,7 +588,7 @@ export default function ExplorePreviewScene({
       ref={containerRef}
       aria-hidden="true"
       className={`pointer-events-none absolute inset-0 transition-opacity duration-700 ${
-        supported ? "opacity-100" : "opacity-0"
+        ready ? "opacity-100" : "opacity-0"
       }`}
     />
   );

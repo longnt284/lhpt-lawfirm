@@ -16,12 +16,20 @@
  */
 export function shouldRunWebGL(): boolean {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+
   /*
-   * Người dùng đã nói rõ là muốn ít chuyển động. Với một lớp trang trí thuần
-   * tuý thì câu trả lời đúng là không chạy gì cả — vừa tôn trọng lựa chọn của
-   * họ, vừa khỏi tải về một thư viện đồ hoạ mà họ không cần tới.
+   * Cố tình *không* loại người bật "giảm chuyển động".
+   *
+   * Bản trước loại hẳn, và hậu quả là trang chủ trắng trơn phần 3D trong khi hai
+   * trang chuyên đề vẫn hiện mô hình ở trạng thái đứng yên — cùng một website,
+   * hai cách hành xử trái ngược, và người dùng chỉ thấy "máy tôi không hiện mô
+   * hình nào cả".
+   *
+   * Cách đúng là thứ `useThreeStage` vốn đã làm cho hai trang kia: vẫn dựng
+   * cảnh, nhưng chuyển sang chế độ vẽ theo yêu cầu — không vòng lặp tự chạy,
+   * chỉ vẽ lại đúng lúc người dùng cuộn. Người dùng tắt *chuyển động*, không
+   * phải tắt *hình*.
    */
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
 
   const nav = navigator as Navigator & {
     connection?: { saveData?: boolean; effectiveType?: string };

@@ -15,7 +15,7 @@
  * vẫn đúng như trước khi có tính năng này: không khoảng trống, không chỗ giữ
  * chỗ, không thiếu gì cả.
  */
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState, type ComponentType, type RefObject } from "react";
 import { afterPageLoad, shouldRunWebGL } from "../lib/lazyWebgl";
 
@@ -32,7 +32,6 @@ function loadScene() {
 }
 
 export function OpeningBackdrop({ stageRef }: { stageRef: RefObject<HTMLElement | null> }) {
-  const reduced = useReducedMotion();
   const [Scene, setScene] = useState<SceneComponent | null>(null);
 
   /*
@@ -96,7 +95,13 @@ export function OpeningBackdrop({ stageRef }: { stageRef: RefObject<HTMLElement 
   return (
     <motion.div
       aria-hidden="true"
-      style={reduced ? undefined : { opacity }}
+      /*
+       * Độ mờ được áp cả khi người dùng bật "giảm chuyển động". Đó là chủ ý và
+       * thống nhất với `MotionConfig reducedMotion="user"` đặt ở App: chế độ đó
+       * bỏ mọi phép biến hình, nhưng giữ lại đổi màu và đổi độ mờ. Bỏ luôn cả
+       * phần này thì cảnh biến mất đột ngột ở cuối sân khấu thay vì tắt dần.
+       */
+      style={{ opacity }}
       className={`pointer-events-none absolute inset-0 ${dimmed ? "hidden" : ""}`}
     >
       {/*

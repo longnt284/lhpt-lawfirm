@@ -455,6 +455,68 @@ export default function PracticeMapScene({
       aria-hidden="true"
       className="absolute inset-0"
       data-webgl={supported ? "on" : "off"}
-    />
+    >
+      {!supported && <StaticFallback />}
+    </div>
+  );
+}
+
+/*
+ * Bản tĩnh cho máy không cấp được ngữ cảnh WebGL: máy cũ, trình duyệt tắt tăng
+ * tốc phần cứng, hoặc trình điều khiển đồ hoạ nằm trong danh sách bị chặn.
+ *
+ * Trang "Nền móng pháp lý" đã có sẵn một bản như thế này từ đầu; trang này thì
+ * không, nên trên đúng những máy đó nửa phải của trang là một mảng trống hoàn
+ * toàn — không hình, không chữ, không dấu hiệu nào cho biết đáng lẽ phải có gì.
+ * Đây là chỗ bịt lại khe hở đó.
+ *
+ * Toạ độ lấy từ chính PRACTICE_NODES, chiếu phẳng theo trục x và y, nên hình ở
+ * đây là đúng chòm sao mà cảnh 3D dựng lên, chỉ mất chiều sâu.
+ */
+function StaticFallback() {
+  const project = (node: (typeof PRACTICE_NODES)[number]) => ({
+    x: 120 + node.position[0] * 26,
+    y: 120 - node.position[1] * 26,
+    accent: node.accent,
+  });
+  const points = new Map(PRACTICE_NODES.map((node) => [node.id, project(node)]));
+
+  return (
+    /*
+      Khung chứa cảnh cao gần bằng cả trang, nên để svg trải kín inset-0 thì nó
+      phóng theo chiều cao và chòm sao nở to gấp mấy lần bản 3D thật. Chốt cạnh
+      theo cạnh ngắn hơn của khung nhìn rồi canh giữa thì giữ được đúng tỉ lệ mà
+      mắt đã quen từ cảnh có WebGL.
+    */
+    <svg
+      viewBox="0 0 240 240"
+      className="absolute top-1/2 left-1/2 h-[min(66vh,66vw)] w-[min(66vh,66vw)] -translate-x-1/2 -translate-y-1/2 opacity-50"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
+      strokeLinejoin="round"
+    >
+      <g className="text-fog-500" opacity="0.4">
+        {PRACTICE_LINKS.map((link) => {
+          const from = points.get(link.from);
+          const to = points.get(link.to);
+          if (!from || !to) return null;
+          return (
+            <line key={`${link.from}-${link.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />
+          );
+        })}
+      </g>
+      {PRACTICE_NODES.map((node) => {
+        const p = points.get(node.id);
+        if (!p) return null;
+        const r = 9;
+        return (
+          <g key={node.id} className={node.accent === "jade" ? "text-jade-400" : "text-brass-400"}>
+            <path d={`M${p.x} ${p.y - r} L${p.x + r} ${p.y} L${p.x} ${p.y + r} L${p.x - r} ${p.y}Z`} />
+            <circle cx={p.x} cy={p.y} r="1.8" fill="currentColor" stroke="none" />
+          </g>
+        );
+      })}
+    </svg>
   );
 }
