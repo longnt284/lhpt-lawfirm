@@ -92,11 +92,16 @@ function CountUp({
  */
 export function OpeningStage() {
   const stageRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: stageRef,
+    offset: ["start start", "end end"],
+  });
+  const backdropOpacity = useTransform(scrollYProgress, [0, 0.86, 1], [1, 1, 0]);
 
   return (
     <section ref={stageRef} className="relative z-10">
       <div className="pointer-events-none sticky top-0 h-[100svh] w-full overflow-hidden">
-        <OpeningBackdrop stageRef={stageRef} />
+        <OpeningBackdrop stageRef={stageRef} opacity={backdropOpacity} />
       </div>
       <div className="relative -mt-[100svh]">
         <Hero />

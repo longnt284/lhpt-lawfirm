@@ -15,7 +15,7 @@
  * vẫn đúng như trước khi có tính năng này: không khoảng trống, không chỗ giữ
  * chỗ, không thiếu gì cả.
  */
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, type MotionValue } from "framer-motion";
 import { useEffect, useState, type ComponentType, type RefObject } from "react";
 import { afterPageLoad, shouldRunWebGL } from "../lib/lazyWebgl";
 
@@ -31,7 +31,13 @@ function loadScene() {
   return scenePromise;
 }
 
-export function OpeningBackdrop({ stageRef }: { stageRef: RefObject<HTMLElement | null> }) {
+export function OpeningBackdrop({
+  stageRef,
+  opacity,
+}: {
+  stageRef: RefObject<HTMLElement | null>;
+  opacity: MotionValue<number>;
+}) {
   const [Scene, setScene] = useState<SceneComponent | null>(null);
 
   /*
@@ -41,12 +47,6 @@ export function OpeningBackdrop({ stageRef }: { stageRef: RefObject<HTMLElement 
    * phép biến đổi độ mờ — compositor lo trọn vẹn, không tốn khung hình nào của
    * luồng chính.
    */
-  const { scrollYProgress } = useScroll({
-    target: stageRef,
-    offset: ["start start", "end end"],
-  });
-  const opacity = useTransform(scrollYProgress, [0, 0.86, 1], [1, 1, 0]);
-
   /*
    * Khi đã mờ hẳn thì gỡ luôn khỏi bố cục bằng `display:none`.
    *

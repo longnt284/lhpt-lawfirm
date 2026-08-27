@@ -43,6 +43,7 @@ import {
   type StageHandle,
   type StageInit,
 } from "../../lib/threeStage";
+import { clamp01, smoothstep } from "../../lib/sceneMotion";
 
 /* Màu lấy đúng từ bảng thương hiệu trong index.css. */
 const BRASS = new THREE.Color(0xc9a44c);
@@ -78,13 +79,6 @@ const COLUMNS_COMPACT = [-3.5, -1.35, 1.35, 3.5];
 
 /* Mặt sau mờ hơn mặt trước — chênh lệch này chính là thứ cho khối một bề dày. */
 const backFade = 0.34;
-
-const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
-
-function smoothstep(edge0: number, edge1: number, x: number) {
-  const t = clamp01((x - edge0) / (edge1 - edge0));
-  return t * t * (3 - 2 * t);
-}
 
 type Vec = [number, number, number];
 

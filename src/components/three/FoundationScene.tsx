@@ -50,6 +50,7 @@ import {
   type StageHandle,
   type StageInit,
 } from "../../lib/threeStage";
+import { clamp01, smoothstep } from "../../lib/sceneMotion";
 
 /* Màu lấy đúng từ bảng thương hiệu trong index.css. */
 const BRASS = new THREE.Color(0xc9a44c);
@@ -102,14 +103,6 @@ const LAYER_RAMP = 0.16;
 /* Chu kỳ và độ dài một cú sét, tính bằng giây. */
 const STRIKE_PERIOD = 9;
 const STRIKE_SPAN = 2.2;
-
-const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
-
-/** Chuyển tiếp mềm hai đầu, tránh cảm giác phần tử "bật" ra đột ngột. */
-function smoothstep(edge0: number, edge1: number, x: number) {
-  const t = clamp01((x - edge0) / (edge1 - edge0));
-  return t * t * (3 - 2 * t);
-}
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
