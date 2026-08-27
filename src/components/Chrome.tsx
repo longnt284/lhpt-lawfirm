@@ -986,7 +986,7 @@ export function Footer() {
     ? ["Service policy", "Privacy policy", "Privacy & cookies", "Conflicts of interest"]
     : FOOTER_POLICY;
   return (
-    <footer className="relative z-10 border-t border-snow/10 bg-ink-950">
+    <footer data-chain-occluder className="relative z-10 border-t border-snow/10 bg-ink-950">
       <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">

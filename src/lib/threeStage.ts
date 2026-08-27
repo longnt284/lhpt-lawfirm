@@ -43,6 +43,17 @@ export type StageHandle = {
   resize?: (width: number, height: number) => void;
   /** Giải phóng mọi geometry/material/texture do cảnh tự tạo. */
   dispose?: () => void;
+  /**
+   * Bộ theo dõi nhịp khung hình đã hạ mức chất lượng xuống `tier`.
+   *
+   * 0 là mức đầy đủ, và các mức sau đó là lời đề nghị cảnh tự bớt việc: ẩn lớp
+   * phụ, giảm mật độ hình học, bỏ chi tiết nhỏ. Mức 3 nghĩa là sân khấu sắp
+   * dừng hẳn — cảnh không cần làm gì thêm.
+   *
+   * Chỉ được gọi khi `adaptive` bật, và chỉ theo một chiều: đã hạ thì không
+   * nâng lại. Xem chú thích ở phần bộ theo dõi bên dưới để biết vì sao.
+   */
+  quality?: (tier: number) => void;
 };
 
 export type StageInit = {
@@ -96,6 +107,20 @@ export type StageOptions = {
    * Bỏ trống thì cảnh chạy theo đúng nhịp màn hình.
    */
   maxFps?: number;
+  /**
+   * Bật bộ theo dõi nhịp khung hình: máy nào không theo kịp thì tự hạ chất
+   * lượng, thay vì bắt mọi máy chạy chung một cấu hình.
+   *
+   * Cần thiết đúng một chỗ: cảnh nền trải kín màn hình và sống suốt cả trang.
+   * Những cảnh chỉ hiện trong một khối rồi trôi qua thì không đáng — người dùng
+   * đã cuộn khỏi chúng trước khi bộ theo dõi kịp kết luận.
+   *
+   * Cách chọn máy yếu bằng cấu hình khai báo sẵn (`deviceMemory`,
+   * `hardwareConcurrency`) đã được thử và đã sai một lần — xem chú thích trong
+   * `lazyWebgl.ts`. Đo nhịp khung hình *thật* của chính cảnh này thì không đoán
+   * nhầm: máy nào tụt là máy đó tụt, bất kể nó khai báo gì.
+   */
+  adaptive?: boolean;
 };
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -118,6 +143,7 @@ export function useThreeStage(
     cameraZ = 9,
     maxPixelRatio,
     maxFps,
+    adaptive = false,
   }: StageOptions = {}
 ) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -173,7 +199,9 @@ export function useThreeStage(
      * mức 2, còn GPU thì thấy rõ.
      */
     const pixelCap = Math.min(maxPixelRatio ?? Infinity, compact ? 1.5 : 2);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, pixelCap));
+    const basePixelRatio = Math.min(window.devicePixelRatio || 1, pixelCap);
+    let pixelRatio = basePixelRatio;
+    renderer.setPixelRatio(pixelRatio);
     renderer.setClearAlpha(0);
     container.appendChild(renderer.domElement);
 
@@ -280,7 +308,89 @@ export function useThreeStage(
      * khung hình tới sớm hơn ngưỡng đúng vài phần nghìn giây sẽ bị bỏ, và nhịp
      * thực tế tụt xuống còn một nửa trần mong muốn thay vì đúng bằng nó.
      */
-    const minFrameGap = maxFps ? 1000 / maxFps - 8 : 0;
+    let targetFps = maxFps ?? 60;
+    let minFrameGap = maxFps ? 1000 / maxFps - 8 : 0;
+
+    /* ---------- bộ theo dõi nhịp khung hình ---------- */
+    /*
+     * Ý tưởng: đo khoảng cách giữa những khung hình *đã vẽ* rồi so với nhịp mà
+     * cảnh nhắm tới. Máy chạy thoải mái thì hai con số gần bằng nhau; máy đuối
+     * thì khoảng cách giãn ra, và giãn đều chứ không phải một hai lần.
+     *
+     * Ba chi tiết giữ cho nó không kết luận bừa:
+     *
+     * 1. Bỏ qua quãng khởi động. Khung hình đầu tiên còn gánh việc biên dịch
+     *    shader và tải nốt phần còn lại của trang, nên chúng luôn chậm — kết
+     *    luận ở đó thì máy nào cũng bị coi là yếu.
+     *
+     * 2. Xét theo *tỉ lệ* khung hình trễ trong một cửa sổ dài vài giây, không
+     *    xét từng khung. Một cú giật lẻ do trình duyệt thu gom rác không phải
+     *    là máy yếu; một phần ba số khung hình trễ liên tục thì mới là.
+     *
+     * 3. Chỉ hạ, không nâng lại. Nâng lại nghe hợp lý nhưng tạo ra vòng dao
+     *    động: hạ xong máy chạy đủ nhanh → nâng lên → lại tụt → lại hạ, và
+     *    người dùng thấy chất lượng hình nhấp nháy. Thà giữ mức thấp.
+     */
+    let tier = 0;
+    let sampleCount = 0;
+    let lateCount = 0;
+    let watchdogArmedAt = 0;
+
+    const resetWatchdog = () => {
+      sampleCount = 0;
+      lateCount = 0;
+      // Quãng khởi động được cấp lại sau mỗi lần vòng lặp chạy tiếp: khung hình
+      // đầu tiên sau khi quay lại tab luôn chậm vì GPU vừa bị đánh thức.
+      watchdogArmedAt = performance.now() + 1500;
+    };
+
+    const stepDownQuality = () => {
+      tier += 1;
+      // Báo cho cảnh *trước* khi sân khấu ra tay. Ở mức 3 thứ tự này quyết định:
+      // cảnh kịp bỏ bớt lớp, khung hình cuối cùng vẽ ra đã là bản gọn nhẹ, rồi
+      // vòng lặp mới dừng lại trên đúng khung hình đó.
+      handle.quality?.(tier);
+      switch (tier) {
+        case 1:
+          /*
+           * Hạ độ phân giải trước tiên. Với một canvas trong suốt trải kín màn
+           * hình, phần lớn chi phí nằm ở số điểm ảnh phải xoá rồi ghép lại chứ
+           * không ở hình học — nên đây là cần gạt hiệu quả nhất, và cũng là cần
+           * gạt ít bị để ý nhất khi hình chỉ gồm đường mảnh trên nền tối.
+           */
+          pixelRatio = Math.max(0.6, basePixelRatio * 0.7);
+          renderer.setPixelRatio(pixelRatio);
+          renderer.setSize(width, height);
+          break;
+        case 2:
+          // Vẫn không đủ: bớt số khung hình, và nhờ cảnh bỏ những lớp phụ.
+          targetFps = 20;
+          minFrameGap = 1000 / targetFps - 8;
+          break;
+        default:
+          /*
+           * Ba lần hạ mà vẫn không theo kịp thì cảnh này không dành cho máy
+           * đang chạy. Dừng hẳn còn tử tế hơn là để trang cuộn giật suốt phiên
+           * — phần 3D vốn chỉ là lớp trang trí, mất nó không mất gì của nội
+           * dung.
+           */
+          renderer.render(scene, camera);
+          stopLoop();
+          break;
+      }
+    };
+
+    const sampleFrame = (gap: number, now: number) => {
+      if (tier >= 3 || now < watchdogArmedAt) return;
+      sampleCount += 1;
+      // 1,45 lần nhịp mục tiêu: đủ rộng để không bắt nhầm sai số làm tròn của
+      // requestAnimationFrame, đủ hẹp để nhận ra nhịp đã tụt còn hai phần ba.
+      if (gap > (1000 / targetFps) * 1.45) lateCount += 1;
+      if (sampleCount < 120) return;
+      const late = lateCount / sampleCount;
+      resetWatchdog();
+      if (late > 0.35) stepDownQuality();
+    };
 
     const loop = (now: number) => {
       // Xin khung tiếp theo trước khi làm gì khác, để một khung bị bỏ qua vì
@@ -288,8 +398,10 @@ export function useThreeStage(
       rafId = requestAnimationFrame(loop);
       if (minFrameGap && now - lastFrame < minFrameGap) return;
 
-      const delta = Math.min(0.05, (now - lastFrame) / 1000);
+      const gap = now - lastFrame;
+      const delta = Math.min(0.05, gap / 1000);
       lastFrame = now;
+      if (adaptive) sampleFrame(gap, now);
       /*
        * Hệ số làm mượt tính theo thời gian thực chứ không theo số khung hình,
        * để cảnh chạy giống nhau trên màn 60Hz và 120Hz.
@@ -302,9 +414,12 @@ export function useThreeStage(
     };
 
     const startLoop = () => {
-      if (looping) return;
+      // Mức 3 là lời từ chối dứt khoát của bộ theo dõi: cuộn qua cuộn lại không
+      // được phép làm cảnh sống dậy.
+      if (looping || tier >= 3) return;
       looping = true;
       lastFrame = performance.now();
+      resetWatchdog();
       rafId = requestAnimationFrame(loop);
     };
     const stopLoop = () => {
@@ -447,7 +562,7 @@ export function useThreeStage(
       }
       requestFrameRef.current = () => {};
     };
-  }, [scrollRef, trackPointer, fov, cameraZ, maxPixelRatio, maxFps]);
+  }, [scrollRef, trackPointer, fov, cameraZ, maxPixelRatio, maxFps, adaptive]);
 
   // Bọc qua ref để danh tính hàm không đổi giữa các lần render, nhờ vậy component
   // gọi dùng được nó trong deps của useEffect mà không tạo vòng lặp cập nhật.

@@ -1,7 +1,8 @@
 import { MotionConfig } from "framer-motion";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AuthProvider } from "./auth";
+import { ChainBackdrop } from "./components/ChainBackdrop";
 import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } from "./components/Chrome";
 import { Explore, OpeningStage, Pricing, Services } from "./components/Home1";
 import type { DocItem } from "./content/types";
@@ -86,6 +87,15 @@ function ScrollManager() {
 }
 
 function HomeRoute({ onOpenDoc }: { onOpenDoc: (doc: DocItem | null) => void }) {
+  /*
+   * Mốc bàn giao của lớp nền chuỗi khối: nó phải là phần tử thật trên trang chứ
+   * không phải một con số phần trăm. Trang chủ cao hơn mười ba nghìn điểm ảnh và
+   * còn cao thêm khi khối nội dung nạp muộn hạ xuống, nên mọi ngưỡng đóng cứng
+   * theo tiến trình cuộn sẽ trôi khỏi chỗ của nó ngay lần đầu ai đó thêm một
+   * khối vào giữa trang.
+   */
+  const openingRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <>
       {/*
@@ -93,8 +103,23 @@ function HomeRoute({ onOpenDoc }: { onOpenDoc: (doc: DocItem | null) => void }) 
         trình đứng trên mặt đất, rồi máy quay hạ xuống dưới nền móng. Vì hai màn
         dùng chung một canvas dính, chúng phải nằm chung một component thay vì
         đứng cạnh nhau ở đây.
+
+        Lớp bọc quanh nó không có kiểu dáng nào — nó chỉ tồn tại để lớp nền chuỗi
+        khối đo được đáy của sân khấu và biết lúc nào tới lượt mình.
       */}
-      <OpeningStage />
+      <div ref={openingRef}>
+        <OpeningStage />
+      </div>
+      {/*
+        Chuỗi khối chảy phía sau mọi khối nền tối, từ đây tới chân trang. Vị trí
+        của nó trong DOM không quyết định thứ tự vẽ — nó là lớp `fixed` ở z-0,
+        còn mọi khối nội dung đều ở z-10 — nhưng đặt nó ngay chỗ nó bắt đầu hiện
+        ra thì người đọc file này không phải đi tìm.
+
+        Nó tự tắt sau các khối nền đục; khối nào che thì tự khai báo bằng thuộc
+        tính `data-chain-occluder` trên chính nó, chứ không liệt kê ở đây.
+      */}
+      <ChainBackdrop fromRef={openingRef} />
       <Services />
       <Explore />
       <Pricing />
