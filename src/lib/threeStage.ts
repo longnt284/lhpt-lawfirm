@@ -129,10 +129,20 @@ export function useThreeStage(
   const requestFrameRef = useRef<() => void>(() => {});
   /*
    * `supported` chỉ chuyển thành false khi trình duyệt từ chối cấp ngữ cảnh
-   * WebGL. Trang phải tự bày sẵn một bản tĩnh cho trường hợp đó thay vì để lại
-   * một khoảng trống.
+   * WebGL, hoặc khi ngữ cảnh đang chạy bị thu hồi giữa chừng. Trang phải tự bày
+   * sẵn một bản tĩnh cho trường hợp đó thay vì để lại một khoảng trống.
    */
   const [supported, setSupported] = useState(true);
+  /*
+   * `ready` chỉ bật lên sau khi cảnh *thực sự vẽ xong khung hình đầu tiên*.
+   *
+   * Khác biệt với `supported` nhỏ mà quan trọng: mã cảnh tải xong không có
+   * nghĩa là cảnh hiện ra được. Nơi nào có sẵn một bản hình tĩnh đặt dưới canvas
+   * thì phải chờ đúng mốc này mới cho bản tĩnh mờ đi — chờ theo mốc "mô-đun đã
+   * tải" thì trên máy không dựng nổi WebGL, bản tĩnh biến mất mà canvas thì
+   * không bao giờ hiện, và người dùng nhìn thấy một ô đen.
+   */
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -151,7 +161,9 @@ export function useThreeStage(
         powerPreference: "high-performance",
       });
     } catch {
+      // three.js ném lỗi ngay trong hàm dựng khi không xin được ngữ cảnh WebGL.
       setSupported(false);
+      setReady(false);
       return;
     }
 
@@ -227,6 +239,9 @@ export function useThreeStage(
     let onScreen = true;
     let tabHidden = document.visibilityState === "hidden";
 
+    let firstFrameDrawn = false;
+    let disposed = false;
+
     const drawFrame = (delta: number, now: number) => {
       handle.update?.({
         delta,
@@ -236,6 +251,10 @@ export function useThreeStage(
         pointerY,
       });
       renderer.render(scene, camera);
+      if (!firstFrameDrawn && !disposed) {
+        firstFrameDrawn = true;
+        setReady(true);
+      }
     };
 
     /*
@@ -355,6 +374,27 @@ export function useThreeStage(
     };
     document.addEventListener("visibilitychange", onVisibility);
 
+    /*
+     * Ngữ cảnh WebGL có thể bị thu hồi giữa chừng: trình điều khiển đồ hoạ khởi
+     * động lại, máy chuyển sang GPU tiết kiệm điện, hoặc trình duyệt lấy lại ngữ
+     * cảnh cũ nhất khi đã cấp quá nhiều. Lúc đó canvas biến thành một ô trống mà
+     * không có lỗi nào được ném ra — nếu không bắt sự kiện này thì trang lặng lẽ
+     * mất hình và không ai biết vì sao.
+     *
+     * Không gọi preventDefault: nói với trình duyệt rằng ta *không* định khôi
+     * phục, và lùi hẳn về bản hình tĩnh. Khôi phục đúng cách đòi hỏi nạp lại
+     * toàn bộ tài nguyên GPU của cảnh, mà với một lớp trang trí thì cái giá đó
+     * không đáng.
+     */
+    const onContextLost = () => {
+      stopLoop();
+      if (disposed) return;
+      firstFrameDrawn = false;
+      setReady(false);
+      setSupported(false);
+    };
+    renderer.domElement.addEventListener("webglcontextlost", onContextLost);
+
     /* ---------- cuộn và con trỏ ---------- */
     const onScroll = () => {
       targetProgress = readProgress();
@@ -383,7 +423,9 @@ export function useThreeStage(
 
     /* ---------- dọn dẹp ---------- */
     return () => {
+      disposed = true;
       stopLoop();
+      renderer.domElement.removeEventListener("webglcontextlost", onContextLost);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
@@ -411,7 +453,7 @@ export function useThreeStage(
   // gọi dùng được nó trong deps của useEffect mà không tạo vòng lặp cập nhật.
   const requestFrame = useCallback(() => requestFrameRef.current(), []);
 
-  return { containerRef, supported, requestFrame };
+  return { containerRef, supported, ready, requestFrame };
 }
 
 /**

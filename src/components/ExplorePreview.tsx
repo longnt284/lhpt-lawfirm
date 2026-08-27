@@ -28,7 +28,11 @@ import { cancelIdle, shouldRunWebGL, whenIdle, type IdleHandle } from "../lib/la
 
 export type PreviewVariant = "foundation" | "practice";
 
-type SceneComponent = ComponentType<{ variant: PreviewVariant; hovered: boolean }>;
+type SceneComponent = ComponentType<{
+  variant: PreviewVariant;
+  hovered: boolean;
+  onReady?: (ready: boolean) => void;
+}>;
 
 /*
  * Mô-đun cảnh được chia sẻ giữa hai thẻ: cả hai gọi cùng một `import()`, trình
@@ -54,6 +58,16 @@ export function ExplorePreview({
 }) {
   const holderRef = useRef<HTMLDivElement | null>(null);
   const [Scene, setScene] = useState<SceneComponent | null>(null);
+  /*
+   * Mốc để bản hình tĩnh nhường chỗ là "cảnh đã vẽ xong khung đầu", không phải
+   * "mã cảnh đã tải xong".
+   *
+   * Bản trước dùng mốc thứ hai, và nó sai ở đúng trường hợp tệ nhất: máy không
+   * dựng nổi ngữ cảnh WebGL vẫn tải mã bình thường, nên bản tĩnh mờ đi trong
+   * khi canvas không bao giờ hiện — thẻ dẫn đường trở thành một ô đen. Tái hiện
+   * được bằng cách chặn getContext("webgl") trong trình duyệt.
+   */
+  const [live, setLive] = useState(false);
 
   useEffect(() => {
     const el = holderRef.current;
@@ -108,8 +122,8 @@ export function ExplorePreview({
 
   return (
     <div ref={holderRef} className="absolute inset-0">
-      <PreviewPoster variant={variant} live={Scene !== null} />
-      {Scene && <Scene variant={variant} hovered={hovered} />}
+      <PreviewPoster variant={variant} live={live} />
+      {Scene && <Scene variant={variant} hovered={hovered} onReady={setLive} />}
     </div>
   );
 }
@@ -120,6 +134,7 @@ export function ExplorePreview({
  * chuyển động.
  */
 function PreviewPoster({ variant, live }: { variant: PreviewVariant; live: boolean }) {
+  /* `live` = cảnh 3D đang thực sự vẽ. Xem giải thích ở `ExplorePreview`. */
   return (
     <svg
       viewBox="0 0 200 132"
