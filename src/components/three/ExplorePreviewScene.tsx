@@ -1,19 +1,24 @@
 /*
  * Hai cảnh 3D thu nhỏ dùng cho khối "Trải nghiệm 3D" ở trang chủ.
  *
- * Đây là bản rút gọn của hai cảnh thật trong `FoundationScene` và
- * `PracticeMapScene`. Mục đích khác hẳn: cảnh thật là nội dung của trang, còn
- * cảnh ở đây chỉ có đúng một việc — cho người lướt qua trang chủ thấy ngay rằng
+ * Cảnh ở đây chỉ có đúng một việc — cho người lướt qua trang chủ thấy ngay rằng
  * phía sau tấm thẻ là một trang dựng bằng đồ hoạ ba chiều, chứ không phải thêm
  * một khối chữ nữa. Một hình động nhỏ nói được điều đó trong nửa giây, một dòng
  * mô tả thì không.
  *
- * Vì vậy mọi thứ ở đây bị cắt tới mức tối thiểu:
+ * Hai cảnh giữ quan hệ khác nhau với trang đích của chúng, và đó là chủ ý:
  *
- *  - chỉ đường và điểm, không mặt, không đèn, không đổ bóng, không hậu kỳ;
- *  - mật độ hình học thấp hơn cảnh thật (lưới thưa hơn, ít hạt hơn), vì khung
- *    hiển thị chỉ rộng khoảng 400px — thêm chi tiết vào đó thì mắt không thấy
- *    mà GPU vẫn phải vẽ;
+ *  - Khối rubik hồ sơ là *đúng* model của trang "Nền móng pháp lý", gọi chung
+ *    hàm `createRubik` trong `rubikModel.ts`. Trước đây mỗi nơi một hình, và
+ *    người dùng bấm vào thẻ vì thấy hình A rồi mở ra hình B — thẻ xem trước mà
+ *    hứa sai thì không còn là thẻ xem trước nữa.
+ *  - Chòm sao lĩnh vực thì vẫn là bản rút gọn của `PracticeMapScene`: trang thật
+ *    có phần chọn lĩnh vực và bảng chữ đi kèm, những thứ không thu nhỏ được vào
+ *    một khung rộng 400px mà vẫn đọc ra.
+ *
+ * Ngoài ra mọi thứ ở đây bị cắt tới mức tối thiểu:
+ *
+ *  - chỉ đường và điểm, không đèn, không đổ bóng, không hậu kỳ;
  *  - không raycast, không bắt sự kiện chuột trên canvas. Cả tấm thẻ là một liên
  *    kết, nên canvas phải để con trỏ đi xuyên qua thay vì tranh mất cú bấm.
  *
@@ -31,10 +36,14 @@ import {
   type StageHandle,
   type StageInit,
 } from "../../lib/threeStage";
+import { BRASS_SOFT, createRubik } from "./rubikModel";
 
-/* Màu lấy đúng từ bảng thương hiệu trong index.css. */
+/*
+ * Màu lấy đúng từ bảng thương hiệu trong index.css. Cảnh chòm sao dùng dạng số
+ * hex vì nó truyền thẳng vào `color` của vật liệu; khối rubik dùng dạng
+ * `THREE.Color` của `rubikModel` vì nó phải trộn màu từng khung hình.
+ */
 const BRASS = 0xc9a44c;
-const BRASS_SOFT = 0xdfc27d;
 const FOG = 0x9db0c4;
 const JADE = 0x22c49c;
 
@@ -52,60 +61,27 @@ type Channel = {
   hoverRef: RefObject<boolean>;
 };
 
+/* ================= cảnh 1: khối rubik hồ sơ ================= */
 /*
- * Một nhóm hình học xuất hiện cùng nhau trong lúc cảnh tự dựng.
+ * Đúng khối của trang "Nền móng pháp lý", dựng bằng cùng một hàm
+ * `createRubik` — không phải một bản vẽ lại cho giống. Đó là toàn bộ điểm của
+ * lần sửa này: thẻ hứa hình gì thì bấm vào phải ra đúng hình đó.
  *
- * `peak` phải giữ riêng vì độ mờ của vật liệu bị ghi đè ở mỗi khung hình: nhân
- * thẳng vào `material.opacity` thì sau vài khung hình giá trị tụt về 0 và cả
- * nhóm biến mất.
+ * Khác biệt duy nhất nằm ở *cái gì điều khiển tiến trình ghép*. Trang kia lấy
+ * tiến trình cuộn, vì ở đó người đọc đi qua năm màn hình chữ. Trang chủ không có
+ * năm màn hình để tiêu, nên ở đây là một vòng lặp: các mảnh bay về ghép thành
+ * khối, khối xoay một tầng, rồi vỡ tung ra và ghép lại từ đầu. Người lướt qua
+ * bắt được vòng lặp ở bất kỳ đoạn nào cũng đọc ra ngay là "một khối tự ghép".
  */
-type Piece = {
-  object: THREE.Object3D;
-  material: THREE.Material & { opacity: number };
-  peak: number;
-  /** Giây thứ mấy kể từ lúc cảnh hiện ra thì nhóm này bắt đầu nổi lên. */
-  at: number;
-  /** Độ cao nhóm trồi lên trong lúc xuất hiện, tạo cảm giác được đặt vào chỗ. */
-  rise: number;
-};
+const CYCLE = 13;
+const ASSEMBLE_AT = 0.3;
+const WAVE_GAP = 0.55;
+const WAVE_RAMP = 1.1;
+const BURST_AT = 9.5;
+const BURST_SPAN = 0.9;
 
-function lineSegments(points: number[], color: number, opacity: number) {
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
-  const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
-  return { object: new THREE.LineSegments(geometry, material), material };
-}
+const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
 
-function rectPoints(half: number, y: number) {
-  return [
-    -half, y, -half, half, y, -half,
-    half, y, -half, half, y, half,
-    half, y, half, -half, y, half,
-    -half, y, half, -half, y, -half,
-  ];
-}
-
-function ringPoints(radius: number, y: number, sides: number) {
-  const points: number[] = [];
-  for (let i = 0; i < sides; i++) {
-    const a = (i / sides) * Math.PI * 2;
-    const b = ((i + 1) / sides) * Math.PI * 2;
-    points.push(
-      Math.cos(a) * radius, y, Math.sin(a) * radius,
-      Math.cos(b) * radius, y, Math.sin(b) * radius
-    );
-  }
-  return points;
-}
-
-/* ================= cảnh 1: công trình tự dựng ================= */
-/*
- * Cùng bộ kết cấu với trang "Nền móng pháp lý" — móng, cột, sàn, mái, hệ chống
- * sét — nhưng dựng theo *thời gian* thay vì theo tiến trình cuộn. Trang chủ
- * không có chỗ cho năm màn hình cuộn, mà đúng cái người lướt qua cần thấy lại là
- * chuyển động dựng lên đó. Nó chạy đúng một lần, ngay lúc thẻ vào khung nhìn,
- * rồi công trình đứng yên và chỉ còn xoay rất chậm.
- */
 function createFoundationPreview(
   { scene, camera, compact, reduced }: StageInit,
   { hoverRef }: Channel
@@ -113,205 +89,28 @@ function createFoundationPreview(
   const root = new THREE.Group();
   scene.add(root);
 
-  const HALF = 2.0;
-  const GROUND = -2.6;
-  const COLUMN_TOP = 0.3;
-  const RIDGE = 1.8;
-  const MAST = 3.0;
-
-  const pieces: Piece[] = [];
-  const add = (
-    part: { object: THREE.Object3D; material: THREE.Material & { opacity: number } },
-    peak: number,
-    at: number,
-    rise: number
-  ) => {
-    const holder = new THREE.Group();
-    holder.add(part.object);
-    root.add(holder);
-    pieces.push({ object: holder, material: part.material, peak, at, rise });
-  };
-
-  const addFillBoxes = (
-    boxes: Array<{ position: [number, number, number]; size: [number, number, number] }>,
-    color: number,
-    peak: number,
-    at: number,
-    rise: number
-  ) => {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-      toneMapped: false,
-    });
-    const instances = new THREE.InstancedMesh(geometry, material, boxes.length);
-    const matrix = new THREE.Matrix4();
-    const position = new THREE.Vector3();
-    const scale = new THREE.Vector3();
-    const rotation = new THREE.Quaternion();
-    boxes.forEach((box, index) => {
-      position.set(...box.position);
-      scale.set(...box.size);
-      matrix.compose(position, rotation, scale);
-      instances.setMatrixAt(index, matrix);
-    });
-    instances.instanceMatrix.needsUpdate = true;
-    add({ object: instances, material }, peak, at, rise);
-  };
-
-  /* ---------- móng ---------- */
   /*
-   * Lưới nền thưa hơn cảnh thật khá nhiều. Ở khung rộng chừng 400px, các đường
-   * cách nhau dưới ~1 đơn vị dồn lại thành một mảng xám nhoè: tốn đúng chi phí
-   * vẽ của một lưới dày mà thị giác lại nhận về ít hơn một lưới thưa.
+   * Số mảnh giữ nguyên trên mọi khổ màn hình — giảm mật độ ở đây là đổi luôn cái
+   * hình mà thẻ đang hứa. Thứ co lại là kích thước ô và tầm văng của mảnh vỡ, để
+   * cả trường mảnh vẫn nằm gọn trong khung rộng chừng bốn trăm điểm ảnh.
    */
-  const step = compact ? 1.34 : 1.0;
-  const reach = HALF + 0.7;
-  const grid: number[] = [];
-  for (let v = -reach; v <= reach + 0.001; v += step) {
-    grid.push(-reach, GROUND, v, reach, GROUND, v);
-    grid.push(v, GROUND, -reach, v, GROUND, reach);
-  }
-  const piles: number[] = [];
-  for (const sx of [-1, 1]) {
-    for (const sz of [-1, 1]) {
-      piles.push(sx * HALF, GROUND, sz * HALF, sx * HALF, GROUND - 0.8, sz * HALF);
-    }
-  }
-  add(lineSegments(grid, FOG, 0.26), 0.26, 0, 0.3);
-  add(lineSegments(piles, FOG, 0.42), 0.42, 0.1, 0.3);
-  add(lineSegments(rectPoints(HALF + 0.22, GROUND + 0.01), BRASS, 0.66), 0.66, 0.18, 0.3);
-  addFillBoxes(
-    [
-      { position: [0, GROUND - 0.1, 0], size: [HALF * 2 + 0.44, 0.2, HALF * 2 + 0.44] },
-      ...([-1, 1] as const).flatMap((sx) =>
-        ([-1, 1] as const).map((sz) => ({
-          position: [sx * HALF, GROUND - 0.48, sz * HALF] as [number, number, number],
-          size: [0.24, 0.76, 0.24] as [number, number, number],
-        }))
-      ),
-    ],
-    BRASS,
-    0.07,
-    0.18,
-    0.3
-  );
-
-  /* ---------- cột ---------- */
-  const columns: number[] = [];
-  ([[-HALF, -HALF], [HALF, -HALF], [HALF, HALF], [-HALF, HALF], [0, -HALF], [0, HALF], [-HALF, 0], [HALF, 0]] as const)
-    .forEach(([x, z]) => columns.push(x, GROUND, z, x, COLUMN_TOP, z));
-  add(lineSegments(columns, BRASS, 0.6), 0.6, 0.62, 0.5);
-  addFillBoxes(
-    ([[-HALF, -HALF], [HALF, -HALF], [HALF, HALF], [-HALF, HALF]] as const).map(([x, z]) => ({
-      position: [x, (GROUND + COLUMN_TOP) / 2, z],
-      size: [0.18, COLUMN_TOP - GROUND, 0.18],
-    })),
-    BRASS,
-    0.065,
-    0.62,
-    0.5
-  );
-
-  /* ---------- sàn và dầm ---------- */
-  const slabs: number[] = [];
-  [-1.2, COLUMN_TOP].forEach((y) => {
-    slabs.push(...rectPoints(HALF, y));
-    slabs.push(-HALF, y, 0, HALF, y, 0);
-    slabs.push(0, y, -HALF, 0, y, HALF);
+  const model = createRubik({
+    cell: compact ? 0.92 : 1.0,
+    burst: compact ? 1.7 : 1.95,
+    twistEvery: 5.5,
   });
-  add(lineSegments(slabs, FOG, 0.44), 0.44, 1.05, 0.45);
-  addFillBoxes(
-    [-1.2, COLUMN_TOP].map((y) => ({
-      position: [0, y - 0.045, 0] as [number, number, number],
-      size: [HALF * 2, 0.09, HALF * 2] as [number, number, number],
-    })),
-    FOG,
-    0.045,
-    1.05,
-    0.45
-  );
-
-  /* ---------- mái ---------- */
-  const roof: number[] = [];
-  for (const sz of [-1, 1]) {
-    roof.push(-HALF, COLUMN_TOP, sz * HALF, 0, RIDGE, sz * HALF);
-    roof.push(HALF, COLUMN_TOP, sz * HALF, 0, RIDGE, sz * HALF);
-  }
-  roof.push(0, RIDGE, -HALF, 0, RIDGE, HALF);
-  roof.push(-HALF, COLUMN_TOP, -HALF, -HALF, COLUMN_TOP, HALF);
-  roof.push(HALF, COLUMN_TOP, -HALF, HALF, COLUMN_TOP, HALF);
-  add(lineSegments(roof, BRASS_SOFT, 0.7), 0.7, 1.5, 0.4);
-  const roofFillGeometry = new THREE.BufferGeometry();
-  roofFillGeometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(
-      [
-        -HALF, COLUMN_TOP, -HALF,
-        0, RIDGE, -HALF,
-        0, RIDGE, HALF,
-        -HALF, COLUMN_TOP, -HALF,
-        0, RIDGE, HALF,
-        -HALF, COLUMN_TOP, HALF,
-        0, RIDGE, -HALF,
-        HALF, COLUMN_TOP, -HALF,
-        HALF, COLUMN_TOP, HALF,
-        0, RIDGE, -HALF,
-        HALF, COLUMN_TOP, HALF,
-        0, RIDGE, HALF,
-      ],
-      3
-    )
-  );
-  roofFillGeometry.computeVertexNormals();
-  const roofFillMaterial = new THREE.MeshBasicMaterial({
-    color: BRASS_SOFT,
-    transparent: true,
-    opacity: 0,
-    depthWrite: false,
-    side: THREE.DoubleSide,
-    toneMapped: false,
-  });
-  add(
-    { object: new THREE.Mesh(roofFillGeometry, roofFillMaterial), material: roofFillMaterial },
-    0.055,
-    1.5,
-    0.4
-  );
-
-  /* ---------- hệ chống sét ---------- */
-  add(lineSegments([0, RIDGE, 0, 0, MAST, 0], JADE, 0.72), 0.72, 1.95, 0.3);
-  addFillBoxes(
-    [{ position: [0, (RIDGE + MAST) / 2, 0], size: [0.08, MAST - RIDGE, 0.08] }],
-    JADE,
-    0.08,
-    1.95,
-    0.3
-  );
-  const rings: { material: THREE.LineBasicMaterial; object: THREE.Object3D }[] = [];
-  [0.5, 0.92, 1.34].forEach((radius, index) => {
-    const part = lineSegments(
-      ringPoints(radius, MAST - index * 0.13, compact ? 16 : 26),
-      JADE,
-      0.36 - index * 0.08
-    );
-    add(part, 0.36 - index * 0.08, 2.1 + index * 0.12, 0.24);
-    rings.push({ material: part.material as THREE.LineBasicMaterial, object: part.object });
-  });
+  root.add(model.group);
 
   /* ---------- bụi vàng ---------- */
   const dustCount = compact ? 40 : 70;
   const dustPositions = new Float32Array(dustCount * 3);
   for (let i = 0; i < dustCount; i++) {
-    const radius = 2.9 + Math.random() * 2.6;
-    const angle = Math.random() * Math.PI * 2;
-    dustPositions[i * 3] = Math.cos(angle) * radius;
-    dustPositions[i * 3 + 1] = GROUND - 0.4 + Math.random() * 6.6;
-    dustPositions[i * 3 + 2] = Math.sin(angle) * radius;
+    const radius = model.half * 1.5 + Math.random() * model.half * 2.4;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    dustPositions[i * 3] = Math.sin(phi) * Math.cos(theta) * radius;
+    dustPositions[i * 3 + 1] = Math.cos(phi) * radius * 0.8;
+    dustPositions[i * 3 + 2] = Math.sin(phi) * Math.sin(theta) * radius;
   }
   const dustGeometry = new THREE.BufferGeometry();
   dustGeometry.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
@@ -319,7 +118,7 @@ function createFoundationPreview(
     color: BRASS_SOFT,
     size: 0.036,
     transparent: true,
-    opacity: 0.32,
+    opacity: 0.3,
     sizeAttenuation: true,
     depthWrite: false,
   });
@@ -327,68 +126,86 @@ function createFoundationPreview(
   root.add(dust);
 
   /*
-   * Công trình cao khoảng 6,4 đơn vị (từ đáy cọc tới đỉnh cột thu lôi) và rộng
-   * 5,4. Tâm hình học nằm dưới gốc toạ độ nên phải nâng cả khối lên, nếu không
-   * máy quay ngắm vào giữa sẽ thấy công trình tụt xuống đáy khung.
-   */
-  root.position.y = 0.35;
-
-  /*
-   * Lề 1,12 chứ không phải khít khung: khối này xoay liên tục, nên đường chéo
-   * của nó quét rộng hơn hình chiếu ở góc nhìn chính diện. Canh vừa đúng khung
-   * ở một góc thì nửa vòng sau lưới nền bị cắt mất hai mép.
+   * Lề rộng hơn khối kha khá: khối vừa xoay liên tục vừa có lúc vỡ tung, nên
+   * canh khít khung ở trạng thái liền thì lúc vỡ các mảnh bị cắt cụt ở mép thẻ.
+   * Đổi lại, lúc liền khối trông hơi nhỏ trong khung — đó là cái giá đúng để
+   * trả, vì màn vỡ ra mới là thứ giữ mắt người lướt.
    */
   const reframe = () => {
-    camera.position.set(0, 0, fitDistance(camera, 3.1, 3.6, 1.12));
+    const span = model.half * 2.05;
+    camera.position.set(0, 0, fitDistance(camera, span, span * 0.94, 1.06));
     camera.lookAt(0, 0, 0);
   };
   reframe();
 
   let hover = 0;
+  /*
+   * Đồng hồ riêng chứ không dùng thẳng `elapsed`: rê chuột lên thẻ thì vòng lặp
+   * chạy nhanh thêm một chút, và cách duy nhất để tăng tốc mà không làm cả cảnh
+   * nhảy một nhịp là cộng dồn delta đã nhân hệ số.
+   */
+  let clock = 0;
 
   return {
     resize() {
       reframe();
     },
 
-    update({ elapsed, delta }) {
+    update({ delta }) {
       const ease = reduced ? 1 : 1 - Math.exp(-7 * Math.max(delta, 1 / 120));
       hover += ((hoverRef.current ? 1 : 0) - hover) * ease;
-
-      pieces.forEach((piece) => {
-        /*
-         * Ở chế độ giảm chuyển động, cảnh chỉ được vẽ đúng một khung hình mỗi
-         * lần có thay đổi, nên màn dựng lên không thể chạy. Nhảy thẳng tới trạng
-         * thái hoàn chỉnh là đúng ý người dùng: họ tắt chuyển động, không tắt
-         * hình.
-         */
-        const appear = reduced ? 1 : smoothstep(piece.at, piece.at + 0.85, elapsed);
-        piece.object.position.y = (1 - appear) * -piece.rise;
-        // Rê chuột lên thẻ thì cả khối sáng thêm một chút — phản hồi đủ để người
-        // dùng hiểu đây là thứ bấm được, không phải một tấm ảnh.
-        piece.material.opacity = piece.peak * appear * (1 + hover * 0.35);
-        piece.material.visible = appear > 0.01;
-      });
+      const glow = 1 + hover * 0.32;
 
       if (reduced) {
-        root.rotation.y = -0.42;
+        /*
+         * Người dùng đã tắt chuyển động: khối đứng nguyên ở trạng thái liền. Nhảy
+         * thẳng tới đó là đúng ý họ — họ tắt chuyển động, không tắt hình.
+         */
+        model.update({
+          waveProgress: () => 1,
+          elapsed: 0,
+          delta: 0,
+          glow,
+          allowTwist: false,
+          reduced: true,
+        });
+        root.rotation.set(0.16, -0.5, 0);
         return;
       }
 
+      clock += delta * (1 + hover * 0.3);
+      const phase = clock % CYCLE;
       /*
-       * Vòng quay khoảng 40 giây. Chậm tới mức không giành sự chú ý với phần
-       * chữ bên cạnh, nhưng vẫn đủ để mắt bắt được rằng đây là một khối ba
-       * chiều chứ không phải hình vẽ phẳng. Rê chuột thì nhanh lên chừng 60%.
+       * Màn vỡ dùng đường cong dốc ở đầu, ngược hẳn với màn ghép. Chạy ngược
+       * đúng đường cong của màn ghép thì mảnh rời chỗ rất chậm rồi mới nhanh
+       * dần — đọc ra là "tan ra", không phải "nổ tung".
        */
-      root.rotation.y = -0.42 + elapsed * 0.155 + hover * 0.08;
-      root.rotation.x = Math.sin(elapsed * 0.24) * 0.05 - 0.04;
-      dust.rotation.y = elapsed * -0.05;
+      const burst = 1 - easeOutQuart(clamp01((phase - BURST_AT) / BURST_SPAN));
 
-      const pulse = 1 + Math.sin(elapsed * 0.9) * 0.07;
-      rings.forEach((ring, index) => ring.object.scale.setScalar(pulse - index * 0.012));
+      const flare = model.update({
+        waveProgress: (wave) => {
+          const at = ASSEMBLE_AT + wave * WAVE_GAP;
+          return Math.min(smoothstep(at, at + WAVE_RAMP, phase), burst);
+        },
+        elapsed: clock,
+        delta,
+        glow,
+        allowTwist: true,
+      });
+
+      /*
+       * Vòng quay khoảng 40 giây. Chậm tới mức không giành sự chú ý với phần chữ
+       * bên cạnh, nhưng vẫn đủ để mắt bắt được rằng đây là một khối ba chiều chứ
+       * không phải hình vẽ phẳng. Rê chuột thì nhanh lên chừng 30%.
+       */
+      root.rotation.y = -0.5 + clock * 0.155;
+      root.rotation.x = 0.2 + Math.sin(clock * 0.24) * 0.05;
+      dust.rotation.y = clock * -0.05;
+      dustMaterial.opacity = 0.3 * glow * (1 + flare * 0.5);
     },
 
     dispose() {
+      model.dispose();
       disposeObject(root);
       scene.remove(root);
     },

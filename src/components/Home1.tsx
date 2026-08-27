@@ -563,7 +563,7 @@ export function Services() {
 /* ================= TRẢI NGHIỆM 3D — HAI TRANG CHUYÊN ĐỀ ================= */
 /*
  * Hai trang này giải thích cách hãng làm việc bằng hình thay vì bằng đoạn văn:
- * một trang dựng công trình theo nhịp cuộn, một trang bày ra bản đồ các lĩnh
+ * một trang ghép khối hồ sơ theo nhịp cuộn, một trang bày ra bản đồ các lĩnh
  * vực và các điểm giao giữa chúng.
  *
  * Bản trước đại diện cho mỗi trang bằng một hình vẽ nét mảnh rộng 96px nằm nép
@@ -572,7 +572,7 @@ export function Services() {
  * tiếp, và hai trang công phu nhất của website gần như không ai mở.
  *
  * Bản này đổi cách nói. Mỗi thẻ mở đầu bằng chính cảnh 3D của trang đó, thu nhỏ
- * và tự chạy: công trình tự dựng lên từng tầng, chòm sao lĩnh vực xoay chậm với
+ * và tự chạy: khối hồ sơ vỡ ra rồi tự ghép lại, chòm sao lĩnh vực xoay chậm với
  * những chấm hồ sơ chạy dọc các đường nối. Một khối đang chuyển động trong
  * không gian nói ngay được điều mà dòng chữ "trang tương tác" phải mất vài giây
  * mới nói xong — và nó nói đúng vào lúc mắt quét qua.
@@ -589,12 +589,12 @@ const EXPLORE_PAGES = [
     kicker: { vi: "Vòng đời dự án", en: "Project life cycle" },
     title: { vi: "Nền móng pháp lý", en: "Legal foundations" },
     body: {
-      vi: "Năm tầng hồ sơ của một dự án xây dựng, từ đất đai tới tranh chấp. Cuộn tới đâu, công trình dựng lên tới đó.",
-      en: "The five layers of a construction project's legal file, from land to dispute. The building goes up as you scroll.",
+      vi: "Năm lớp hồ sơ của một dự án xây dựng, từ đất đai tới tranh chấp. Cuộn tới đâu, các mảnh về đúng chỗ tới đó.",
+      en: "The five layers of a construction project's legal file, from land to dispute. The pieces lock into place as you scroll.",
     },
     /* Nói thẳng người dùng phải làm gì ở trang kia — ý định bấm đến từ đây. */
-    hint: { vi: "Cuộn để dựng công trình", en: "Scroll to build" },
-    meta: { vi: "5 tầng hồ sơ", en: "5 layers" },
+    hint: { vi: "Cuộn để ghép khối", en: "Scroll to assemble" },
+    meta: { vi: "5 lớp hồ sơ", en: "5 layers" },
     accent: "brass" as const,
   },
   {
