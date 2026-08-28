@@ -74,14 +74,12 @@ export type BloomPipeline = {
 };
 
 /*
- * Trọng số cảm nhận sáng của mắt người. Dùng chung cho bước tách vùng sáng và
- * bước ghép, để một màu vàng đồng và một màu xanh ngọc cùng độ sáng vật lý toả
- * quầng như nhau.
- */
-/*
  * Đoạn GLSL dùng chung cho pass tách vùng sáng và pass ghép: đưa một điểm ảnh
  * của render target về đúng giá trị mà canvas sẽ hiển thị. Xem phần "KHÔNG GIAN
  * MÀU VÀ ALPHA" ở đầu file để biết vì sao phải chia rồi nhân lại alpha.
+ *
+ * `LUMA` là trọng số cảm nhận sáng của mắt người, để một màu vàng đồng và một
+ * màu xanh ngọc cùng độ sáng vật lý toả quầng như nhau.
  */
 const SCREEN_VALUE = /* glsl */ `
 const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
@@ -119,15 +117,7 @@ void main() {
 }
 `;
 
-/*
- * Tách vùng sáng.
- *
- * Chia lại cho alpha trước khi đo độ sáng: render target giữ màu đã nhân alpha,
- * nên một đường vàng mảnh vẽ ở độ mờ 0,25 sẽ đo ra chỉ bằng một phần tư độ sáng
- * thật của nó và rơi xuống dưới ngưỡng. Không chia thì mọi chi tiết mờ đều bị
- * loại khỏi quầng sáng, và bloom chỉ còn bám vào vài nét đậm nhất — đúng thứ
- * làm cảnh trông rẻ tiền.
- */
+/* Tách ra những điểm ảnh đủ sáng để toả quầng, và chỉ giữ lại phần đó. */
 const BRIGHT_FRAG = /* glsl */ `
 uniform sampler2D tDiffuse;
 uniform float uThreshold;
