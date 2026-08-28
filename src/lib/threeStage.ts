@@ -24,6 +24,7 @@
  */
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
+import { createBloom, type BloomOptions, type BloomPipeline } from "./bloom";
 
 export type StageFrame = {
   /** Số giây trôi qua kể từ khung hình trước, đã chặn trần để không nhảy vọt. */
@@ -121,6 +122,19 @@ export type StageOptions = {
    * nhầm: máy nào tụt là máy đó tụt, bất kể nó khai báo gì.
    */
   adaptive?: boolean;
+  /*
+   * Bật quầng sáng hậu kỳ cho cảnh này.
+   *
+   * Tắt mặc định vì nó không miễn phí: cảnh phải vẽ vào một render target rồi
+   * đi qua bốn pass toàn màn hình. Chỉ đáng bật ở những cảnh mà quầng sáng là
+   * một phần của ý đồ hình ảnh — đường vàng đồng trên nền mực, chứ không phải
+   * mọi canvas có mặt trên trang.
+   *
+   * Tự tắt trên màn hình hẹp, và là nấc đầu tiên bị bỏ khi bộ theo dõi nhịp
+   * khung hình hạ chất lượng. Xem `bloom.ts` để biết vì sao đây là bản viết
+   * riêng chứ không phải UnrealBloomPass.
+   */
+  bloom?: BloomOptions | boolean;
 };
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
@@ -144,9 +158,22 @@ export function useThreeStage(
     maxPixelRatio,
     maxFps,
     adaptive = false,
+    bloom,
   }: StageOptions = {}
 ) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  /*
+   * `bloom` là một object, nên đưa thẳng vào deps sẽ dựng lại toàn bộ cảnh sau
+   * *mỗi* lần component cha render: người gọi viết `bloom={{ strength: 0.9 }}`
+   * ngay tại chỗ, và một object literal thì không bao giờ bằng chính nó ở lần
+   * render trước. Hậu quả là ngữ cảnh WebGL bị huỷ rồi dựng lại liên tục —
+   * đúng loại lỗi mà cả phần còn lại của hook này được viết ra để tránh.
+   *
+   * Rút về một chuỗi khoá thì deps chỉ đổi khi *giá trị* cấu hình đổi thật.
+   */
+  const bloomKey = bloom ? JSON.stringify(bloom === true ? {} : bloom) : "";
+  const bloomRef = useRef(bloom);
+  bloomRef.current = bloom;
   const setupRef = useRef(setup);
   /*
    * Cầu nối ra ngoài cho lệnh vẽ lại: hàm thật chỉ tồn tại bên trong effect, còn
@@ -216,6 +243,26 @@ export function useThreeStage(
     renderer.setSize(width, height);
 
     /*
+     * Quầng sáng hậu kỳ. Bỏ hẳn trên màn hình hẹp: chi phí của nó tính theo số
+     * điểm ảnh phải xử lý bốn lượt, và đúng nhóm máy có màn hình hẹp là nhóm ít
+     * chịu nổi phần đó nhất.
+     */
+    const bloomOption = bloomRef.current;
+    let bloomPipeline: BloomPipeline | null = null;
+    if (bloomOption && !compact) {
+      bloomPipeline = createBloom(renderer, width, height, pixelRatio, {
+        /*
+         * Khử răng cưa của render target phải theo đúng renderer: `antialias`
+         * ở trên bật theo `!compact`, và tới nhánh này thì `compact` chắc chắn
+         * là false — nhưng viết ra thành một biểu thức chứ không đóng cứng số
+         * 4, để hai chỗ không lệch nhau khi ai đó đổi điều kiện ở trên.
+         */
+        samples: compact ? 0 : 4,
+        ...(bloomOption === true ? {} : bloomOption),
+      });
+    }
+
+    /*
      * Cảnh cần cầm được lệnh vẽ lại ngay lúc dựng, nhưng bộ máy vòng lặp lại phải
      * dựng sau vì nó gọi ngược vào chính cảnh. Một biến trung gian gỡ được nút
      * thắt đó: cảnh giữ hàm bọc ngoài, phần ruột được nối vào bên dưới.
@@ -278,7 +325,8 @@ export function useThreeStage(
         pointerX,
         pointerY,
       });
-      renderer.render(scene, camera);
+      if (bloomPipeline) bloomPipeline.render(scene, camera);
+      else renderer.render(scene, camera);
       if (!firstFrameDrawn && !disposed) {
         firstFrameDrawn = true;
         setReady(true);
@@ -345,11 +393,33 @@ export function useThreeStage(
     };
 
     const stepDownQuality = () => {
+      /*
+       * Quầng sáng đi trước tiên, và cố ý *không* tính vào bậc `tier`.
+       *
+       * Nó là thứ đắt nhất mà cảnh đang gánh — bốn pass toàn màn hình so với
+       * vài lệnh vẽ hình học — nên bỏ nó lấy lại nhiều khung hình hơn hẳn việc
+       * hạ độ phân giải, mà mất ít hơn: cảnh còn nguyên hình, chỉ bớt sáng.
+       *
+       * Không tăng `tier` ở nhánh này vì bậc thang bên dưới phải giữ nguyên số
+       * nấc của nó. Bản đầu gộp chung, và hậu quả là nấc 1 — hạ độ phân giải,
+       * cần gạt hiệu quả nhất trong cả bậc thang — bị quầng sáng chiếm chỗ rồi
+       * không bao giờ chạy: máy yếu nhảy thẳng từ "bỏ bloom" sang "hạ còn 20
+       * khung hình mỗi giây".
+       */
+      if (bloomPipeline) {
+        bloomPipeline.dispose();
+        bloomPipeline = null;
+        renderer.setRenderTarget(null);
+        renderer.setSize(width, height);
+        return;
+      }
+
       tier += 1;
       // Báo cho cảnh *trước* khi sân khấu ra tay. Ở mức 3 thứ tự này quyết định:
       // cảnh kịp bỏ bớt lớp, khung hình cuối cùng vẽ ra đã là bản gọn nhẹ, rồi
       // vòng lặp mới dừng lại trên đúng khung hình đó.
       handle.quality?.(tier);
+
       switch (tier) {
         case 1:
           /*
@@ -361,6 +431,8 @@ export function useThreeStage(
           pixelRatio = Math.max(0.6, basePixelRatio * 0.7);
           renderer.setPixelRatio(pixelRatio);
           renderer.setSize(width, height);
+          // Không cần báo kích thước mới cho quầng sáng: tới được nhánh này thì
+          // nó đã bị bỏ ở lần hạ trước — TypeScript cũng thu hẹp được điều đó.
           break;
         case 2:
           // Vẫn không đủ: bớt số khung hình, và nhờ cảnh bỏ những lớp phụ.
@@ -374,6 +446,7 @@ export function useThreeStage(
            * — phần 3D vốn chỉ là lớp trang trí, mất nó không mất gì của nội
            * dung.
            */
+          renderer.setRenderTarget(null);
           renderer.render(scene, camera);
           stopLoop();
           break;
@@ -461,6 +534,7 @@ export function useThreeStage(
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
+      bloomPipeline?.setSize(width, height, pixelRatio);
       handle.resize?.(width, height);
       measureScroll();
       targetProgress = readProgress();
@@ -549,6 +623,7 @@ export function useThreeStage(
       if (trackPointer && !reduced) window.removeEventListener("pointermove", onPointerMove);
 
       handle.dispose?.();
+      bloomPipeline?.dispose();
       /*
        * forceContextLoss trả ngữ cảnh WebGL về cho trình duyệt ngay lập tức.
        * Trình duyệt chỉ giữ được khoảng 8–16 ngữ cảnh cùng lúc, nên nếu chỉ
@@ -562,7 +637,7 @@ export function useThreeStage(
       }
       requestFrameRef.current = () => {};
     };
-  }, [scrollRef, trackPointer, fov, cameraZ, maxPixelRatio, maxFps, adaptive]);
+  }, [scrollRef, trackPointer, fov, cameraZ, maxPixelRatio, maxFps, adaptive, bloomKey]);
 
   // Bọc qua ref để danh tính hàm không đổi giữa các lần render, nhờ vậy component
   // gọi dùng được nó trong deps của useEffect mà không tạo vòng lặp cập nhật.

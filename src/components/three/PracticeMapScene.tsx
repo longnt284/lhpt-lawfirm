@@ -438,7 +438,20 @@ export default function PracticeMapScene({
     (init: StageInit) => createPracticeScene(init, { activeRef, handlersRef }),
     []
   );
-  const options = useMemo(() => ({ trackPointer: true, fov: 46, cameraZ: 11.5 }), []);
+  const options = useMemo(
+    () => ({
+      trackPointer: true,
+      fov: 46,
+      cameraZ: 11.5,
+      /*
+       * Cảnh này mạnh tay nhất: nó là chủ thể của cả trang chứ không phải lớp
+       * nền, và các nút bát diện phát sáng chính là thứ nói lên "mỗi đường nối
+       * là một vụ việc đã đi qua hãng".
+       */
+      bloom: { threshold: 0.5, strength: 1.0, radius: 1.8 },
+    }),
+    []
+  );
   const { containerRef, supported, requestFrame } = useThreeStage(setup, options);
 
   /*

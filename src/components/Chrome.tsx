@@ -32,6 +32,7 @@ import {
 } from "./Icons";
 import { GoldRule, Magnetic, Reveal } from "./Motion";
 import { Comments } from "./Comments";
+import { scrollToSmooth, useScrollLock } from "../lib/smoothScroll";
 
 export { Reveal, RevealGroup, RevealItem } from "./Motion";
 
@@ -318,15 +319,10 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
 
   useEffect(() => scrollY.on("change", (v) => setScrolled(v > 24)), [scrollY]);
 
-  // Khoá cuộn nền khi menu di động đang mở.
-  useEffect(() => {
-    if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+  // Khoá cuộn nền khi menu di động đang mở. Phải đi qua useScrollLock chứ không
+  // tự đặt body.overflow: một mình thuộc tính đó không chặn được Lenis, vốn bắt
+  // sự kiện wheel ở tầng của nó và vẫn cuộn trang qua lớp phủ.
+  useScrollLock(open);
 
   return (
     <motion.header
@@ -663,7 +659,11 @@ export function ScrollTop() {
           exit={{ opacity: 0, y: 20, scale: 0.85 }}
           transition={{ duration: 0.4, ease: EASE_LUXE }}
           whileHover={{ y: -3 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={() => {
+            // Lenis giữ vị trí cuộn riêng: gọi thẳng window.scrollTo thì nó kéo
+            // trang ngược lại ngay khung hình sau.
+            if (!scrollToSmooth(0)) window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           aria-label={t("backTop")}
           className="group fixed right-5 bottom-5 z-[60] hidden h-12 w-12 items-center justify-center border border-snow/15 bg-ink-900/85 backdrop-blur-md sm:flex"
         >
@@ -723,17 +723,16 @@ export function ArticleModal({
   }, [item, readProgressRaw]);
 
   /*
-   * Trả lại đúng giá trị cũ chứ không đặt về chuỗi rỗng: menu di động cũng khoá
-   * cuộn theo cách này, nên nếu modal xoá trắng thuộc tính thì khoá của menu bị
-   * gỡ mất khi đóng bài đọc.
+   * Khoá cuộn nền đi qua bộ đếm dùng chung trong `smoothScroll.tsx`: menu di
+   * động và cổng khách hàng cũng khoá theo đường đó, nên hai lớp phủ chồng nhau
+   * không còn cảnh lớp đóng trước gỡ mất khoá của lớp còn đang mở.
    */
+  useScrollLock(Boolean(item));
+
   useEffect(() => {
     if (!item) return;
-    const previous = document.body.style.overflow;
     const opener = document.activeElement as HTMLElement | null;
-    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = previous;
       // Trả tiêu điểm về đúng thẻ bài vừa bấm, nếu không người dùng bàn phím bị
       // đẩy về đầu trang mỗi lần đóng bài đọc.
       opener?.focus?.({ preventScroll: true });

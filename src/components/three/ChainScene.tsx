@@ -492,6 +492,13 @@ export default function ChainScene() {
       maxPixelRatio: 1,
       maxFps: 30,
       adaptive: true,
+      /*
+       * Nhẹ tay hơn cảnh mở đầu: lớp này chạy phía sau *toàn bộ* phần chữ còn
+       * lại của trang chủ, nên quầng sáng ở đây là thứ người đọc phải nhìn
+       * xuyên qua suốt mười ba nghìn điểm ảnh. Đủ để chuỗi khối có chiều sâu,
+       * chưa tới mức cạnh tranh độ tương phản với dòng chữ nằm trên nó.
+       */
+      bloom: { threshold: 0.6, strength: 0.5, radius: 1.3 },
     }),
     [pageRef]
   );
