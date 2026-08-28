@@ -155,19 +155,13 @@ export function Ambient() {
 /* ---------- nhãn nhỏ dùng chung ---------- */
 export function Kicker({
   children,
-  tone = "dark",
   rule = true,
 }: {
   children: ReactNode;
-  tone?: "dark" | "light";
   rule?: boolean;
 }) {
   return (
-    <p
-      className={`label flex items-center gap-3 text-[11px] ${
-        tone === "light" ? "text-brass-700" : "text-brass-400"
-      }`}
-    >
+    <p className="label flex items-center gap-3 text-[11px] text-brass-400">
       {rule && <GoldRule className="w-8 shrink-0" />}
       {children}
     </p>
@@ -179,16 +173,13 @@ export function SectionHead({
   kicker,
   title,
   sub,
-  tone = "dark",
   align = "left",
 }: {
   kicker: string;
   title: ReactNode;
   sub?: string;
-  tone?: "dark" | "light";
   align?: "left" | "center";
 }) {
-  const light = tone === "light";
   return (
     <motion.div
       variants={stagger(0.09)}
@@ -198,7 +189,7 @@ export function SectionHead({
       className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}
     >
       <motion.div variants={fadeUpSmall} className={align === "center" ? "flex justify-center" : ""}>
-        <Kicker tone={tone} rule={align !== "center"}>
+        <Kicker rule={align !== "center"}>
           {kicker}
         </Kicker>
       </motion.div>
@@ -208,18 +199,14 @@ export function SectionHead({
       */}
       <motion.h2
         variants={fadeUp}
-        className={`font-display mt-4 text-[clamp(1.8rem,3.7vw,3rem)] leading-[1.18] font-semibold tracking-[-0.005em] ${
-          light ? "text-ink-900" : "text-snow"
-        }`}
+        className="font-display mt-4 text-[clamp(1.8rem,3.7vw,3rem)] leading-[1.18] font-semibold tracking-[-0.005em] text-snow"
       >
         {title}
       </motion.h2>
       {sub && (
         <motion.p
           variants={fadeUp}
-          className={`mt-5 text-[15.5px] leading-[1.75] ${
-            light ? "text-ink-900/70" : "text-fog-400"
-          }`}
+          className="mt-5 text-[15.5px] leading-[1.75] text-fog-400"
         >
           {sub}
         </motion.p>
@@ -784,7 +771,7 @@ export function ArticleModal({
             aria-modal="true"
             aria-label={item.title}
             tabIndex={-1}
-            className="relative max-h-[88vh] w-full max-w-2xl overflow-y-auto border border-mist-300 bg-paper text-ink-900 shadow-[0_50px_120px_-30px_rgba(0,0,0,0.75)] outline-none"
+            className="relative max-h-[88vh] w-full max-w-2xl overflow-y-auto border border-snow/12 bg-ink-900/95 text-snow shadow-[0_50px_120px_-30px_rgba(0,0,0,0.85)] backdrop-blur-xl outline-none"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Thanh tiến trình đọc bám theo phần đã cuộn trong chính modal. */}
@@ -794,15 +781,15 @@ export function ArticleModal({
             />
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-30 border border-ink-900/15 bg-mist-50 p-2 text-ink-900 transition-colors hover:border-brass-500 hover:text-brass-600"
+              className="absolute top-4 right-4 z-30 border border-snow/15 bg-ink-850 p-2 text-fog-300 transition-colors hover:border-brass-500 hover:text-brass-300"
               aria-label={t("close")}
             >
               <IconClose className="h-4 w-4" />
             </button>
-            <div className="border-b border-ink-900/10 bg-mist-100 px-7 py-4 sm:px-10">
-              <div className="label text-[10px] text-ink-900/55">
+            <div className="border-b border-snow/10 bg-ink-950/70 px-7 py-4 sm:px-10">
+              <div className="label text-[10px] text-fog-400">
                 {item.kind === "news" ? t("news") : t("deepArticle")} ·{" "}
-                <span className="text-brass-700">{item.category}</span>
+                <span className="text-brass-400">{item.category}</span>
               </div>
             </div>
             <motion.div
@@ -817,13 +804,13 @@ export function ArticleModal({
               >
                 {item.title}
               </motion.h3>
-              <motion.p variants={fadeUpSmall} className="label mt-4 text-[10.5px] text-ink-900/50">
+              <motion.p variants={fadeUpSmall} className="label mt-4 text-[10.5px] text-fog-500">
                 {item.date} · {t("read")} {formatReadingTime(item.readMinutes, locale)}
                 {item.author ? ` · ${item.author}` : ""}
               </motion.p>
               <motion.p
                 variants={fadeUpSmall}
-                className="mt-6 border-l-2 border-brass-500 pl-4 text-[15px] leading-[1.7] font-medium text-ink-900/85"
+                className="mt-6 border-l-2 border-brass-500 pl-4 text-[15px] leading-[1.7] font-medium text-snow/90"
               >
                 {item.excerpt}
               </motion.p>
@@ -832,7 +819,7 @@ export function ArticleModal({
                   <motion.p
                     key={i}
                     variants={fadeUpSmall}
-                    className="text-[15px] leading-[1.8] text-ink-900/78"
+                    className="text-[15px] leading-[1.8] text-fog-300"
                   >
                     {p}
                   </motion.p>
@@ -840,15 +827,15 @@ export function ArticleModal({
               </div>
 
               {item.basis.length > 0 && (
-                <motion.div variants={fadeUpSmall} className="mt-9 border-t border-ink-900/10 pt-6">
-                  <p className="label text-[10px] text-ink-900/50">{t("legalBasis")}</p>
+                <motion.div variants={fadeUpSmall} className="mt-9 border-t border-snow/10 pt-6">
+                  <p className="label text-[10px] text-fog-500">{t("legalBasis")}</p>
                   <ul className="mt-3 space-y-1.5">
                     {item.basis.map((b) => (
                       <li
                         key={b}
-                        className="flex gap-2.5 text-[12.5px] leading-[1.65] text-ink-900/70"
+                        className="flex gap-2.5 text-[12.5px] leading-[1.65] text-fog-300"
                       >
-                        <span className="text-brass-600">§</span>
+                        <span className="text-brass-400">§</span>
                         {b}
                       </li>
                     ))}
@@ -858,16 +845,16 @@ export function ArticleModal({
 
               <motion.div
                 variants={fadeUpSmall}
-                className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-ink-900/10 pt-6"
+                className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-snow/10 pt-6"
               >
-                  <p className="label max-w-xs text-[9.5px] text-ink-900/45">
+                  <p className="label max-w-xs text-[9.5px] text-fog-500">
                   {t("legalInfo")}
                 </p>
                 <Magnetic>
                   <a
                     href="#lien-he"
                     onClick={onClose}
-                    className="sheen group inline-flex items-center gap-2 bg-ink-900 px-4 py-2.5 text-[13px] font-semibold text-snow transition-colors hover:bg-brass-600"
+                    className="sheen group inline-flex items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950 transition-colors hover:bg-brass-400"
                   >
                     {t("askLawyer")}
                     <IconArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -985,8 +972,15 @@ export function Footer() {
   const footerPolicy = isEnglish
     ? ["Service policy", "Privacy policy", "Privacy & cookies", "Conflicts of interest"]
     : FOOTER_POLICY;
+  /*
+   * Chân trang là *đoạn cuối* của chuỗi khối, không phải điểm cắt nó. Nền để
+   * trong mờ kèm backdrop-blur nên chuỗi vẫn trôi phía sau tới tận dòng bản
+   * quyền, còn phần chữ thì đọc trên một mặt phẳng đủ đục. Vì vậy ở đây không
+   * có `data-chain-occluder`: khai báo nó sẽ tắt lớp nền đúng lúc nó nên chạy
+   * hết quãng đường của mình.
+   */
   return (
-    <footer data-chain-occluder className="relative z-10 border-t border-snow/10 bg-ink-950">
+    <footer className="relative z-10 border-t border-snow/10 bg-ink-950/85 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">

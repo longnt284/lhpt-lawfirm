@@ -33,9 +33,9 @@ const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 function SecondaryContentFallback() {
   return (
-    <section className="min-h-[32rem] bg-mist-100 px-5 py-24 text-ink-900 lg:px-8" aria-label="Nội dung đang tải">
+    <section className="min-h-[32rem] bg-ink-900/45 px-5 py-24 text-snow lg:px-8" aria-label="Nội dung đang tải">
       <div className="mx-auto max-w-7xl">
-        <p className="label text-[10px] text-brass-700">Kiến thức & liên hệ</p>
+        <p className="label text-[10px] text-brass-400">Kiến thức &amp; liên hệ</p>
         <h2 className="font-display mt-4 max-w-xl text-[clamp(1.8rem,3.7vw,3rem)] leading-[1.18] font-semibold">
           Pháp lý vững cho mọi quyết định.
         </h2>
@@ -117,13 +117,17 @@ function HomeRoute({ onOpenDoc }: { onOpenDoc: (doc: DocItem | null) => void }) 
         <OpeningStage />
       </div>
       {/*
-        Chuỗi khối chảy phía sau mọi khối nền tối, từ đây tới chân trang. Vị trí
-        của nó trong DOM không quyết định thứ tự vẽ — nó là lớp `fixed` ở z-0,
-        còn mọi khối nội dung đều ở z-10 — nhưng đặt nó ngay chỗ nó bắt đầu hiện
-        ra thì người đọc file này không phải đi tìm.
+        Chuỗi khối chảy phía sau *mọi* khối còn lại của trang chủ, từ đây tới
+        dòng bản quyền ở chân trang. Vị trí của nó trong DOM không quyết định
+        thứ tự vẽ — nó là lớp `fixed` ở z-0, còn mọi khối nội dung đều ở z-10 —
+        nhưng đặt nó ngay chỗ nó bắt đầu hiện ra thì người đọc file này không
+        phải đi tìm.
 
-        Nó tự tắt sau các khối nền đục; khối nào che thì tự khai báo bằng thuộc
-        tính `data-chain-occluder` trên chính nó, chứ không liệt kê ở đây.
+        Từ lúc toàn trang về một tông tối, không còn khối nào che nó nữa: nền
+        của các khối là mực loãng (`bg-ink-900/45`) chứ không phải sơn đục, nên
+        chuỗi đọc được xuyên suốt. Cơ chế tắt theo khối che vẫn còn trong
+        ChainBackdrop cho khối nền đục thêm về sau — khối nào che thì tự khai
+        báo `data-chain-occluder` trên chính nó, chứ không liệt kê ở đây.
       */}
       <ChainBackdrop fromRef={openingRef} />
       <Services />

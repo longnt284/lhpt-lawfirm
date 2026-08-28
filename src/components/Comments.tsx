@@ -171,22 +171,22 @@ export function Comments({
   const childrenOf = (id: string) => (entries ?? []).filter((c) => c.parent_id === id);
 
   return (
-    <div className="mt-10 border-t border-ink-900/10 pt-7">
+    <div className="mt-10 border-t border-snow/10 pt-7">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <p className="label text-[10px] text-ink-900/50">
+        <p className="label text-[10px] text-fog-500">
           {t("comments")}
           {entries && entries.length > 0 ? ` · ${entries.length}` : ""}
         </p>
       </div>
 
-      <p className="mt-3 text-[11.5px] leading-[1.65] text-ink-900/45">{t("commentRules")}</p>
+      <p className="mt-3 text-[11.5px] leading-[1.65] text-fog-500">{t("commentRules")}</p>
 
       {/* ---- danh sách ---- */}
       <div className="mt-6 space-y-5">
         {entries === null ? (
-          <p className="text-[12.5px] text-ink-900/45">{t("loading")}</p>
+          <p className="text-[12.5px] text-fog-500">{t("loading")}</p>
         ) : roots.length === 0 ? (
-          <p className="text-[12.5px] text-ink-900/45">{t("commentEmpty")}</p>
+          <p className="text-[12.5px] text-fog-500">{t("commentEmpty")}</p>
         ) : (
           roots.map((c) => (
             <CommentItem
@@ -213,7 +213,7 @@ export function Comments({
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.28, ease: EASE_LUXE }}
-                className="label overflow-hidden text-[9.5px] text-brass-700"
+                className="label overflow-hidden text-[9.5px] text-brass-400"
               >
                 {t("commentReply")} ·{" "}
                 <button
@@ -236,27 +236,27 @@ export function Comments({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder={t("commentPlaceholder")}
-            className="mt-2 w-full resize-none border border-ink-900/15 bg-paper px-3.5 py-3 text-[13.5px] text-ink-900 placeholder-ink-900/35 outline-none transition-colors focus:border-brass-500"
+            className="mt-2 w-full resize-none border border-snow/12 bg-ink-850 px-3.5 py-3 text-[13.5px] text-snow placeholder-fog-500 outline-none transition-colors focus:border-brass-500"
           />
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-            <span className="code text-[10.5px] text-ink-900/35">
+            <span className="code text-[10.5px] text-fog-500">
               {body.length}/{MAX_LENGTH}
             </span>
             <button
               type="submit"
               disabled={busy || body.trim().length < 2}
-              className="sheen inline-flex items-center gap-2 bg-ink-900 px-4 py-2.5 text-[13px] font-semibold text-snow transition-colors hover:bg-brass-600 disabled:cursor-not-allowed disabled:opacity-45"
+              className="sheen inline-flex items-center gap-2 bg-brass-500 px-4 py-2.5 text-[13px] font-semibold text-ink-950 transition-colors hover:bg-brass-400 disabled:cursor-not-allowed disabled:opacity-45"
             >
               {busy ? t("loading") : t("commentSubmit")}
             </button>
           </div>
           {error && (
-            <p role="alert" className="mt-3 text-[12.5px] leading-[1.6] text-[#a03535]">
+            <p role="alert" className="mt-3 text-[12.5px] leading-[1.6] text-[#ff8f8f]">
               {error}
             </p>
           )}
           {ok && (
-            <p role="status" className="mt-3 text-[12.5px] leading-[1.6] text-jade-600">
+            <p role="status" className="mt-3 text-[12.5px] leading-[1.6] text-jade-300">
               {ok}
             </p>
           )}
@@ -265,7 +265,7 @@ export function Comments({
         <button
           type="button"
           onClick={onRequireAccount}
-          className="mt-7 inline-flex items-center gap-2 border border-ink-900/20 px-4 py-2.5 text-[13px] font-semibold text-ink-900 transition-colors hover:border-brass-600 hover:text-brass-700"
+          className="mt-7 inline-flex items-center gap-2 border border-snow/20 px-4 py-2.5 text-[13px] font-semibold text-snow transition-colors hover:border-brass-500 hover:text-brass-300"
         >
           {t("commentSignInFirst")}
         </button>
@@ -299,26 +299,26 @@ function CommentItem({
       <article className="flex gap-3.5">
         <span
           aria-hidden="true"
-          className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-ink-900/12 bg-mist-100 text-[11px] font-semibold text-ink-900/60"
+          className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-snow/12 bg-ink-850 text-[11px] font-semibold text-fog-300"
         >
           {initials(entry.author_name)}
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <span className="text-[13px] font-semibold text-ink-900">{entry.author_name}</span>
-            <span className="code text-[10.5px] text-ink-900/40">
+            <span className="text-[13px] font-semibold text-snow">{entry.author_name}</span>
+            <span className="code text-[10.5px] text-fog-500">
               {formatDateTime(entry.created_at, locale)}
             </span>
             {entry.is_edited && (
-              <span className="text-[10.5px] text-ink-900/35">({t("commentEdited")})</span>
+              <span className="text-[10.5px] text-fog-500">({t("commentEdited")})</span>
             )}
             {entry.pending && (
-              <span className="label border border-brass-600/40 px-2 py-0.5 text-[8.5px] text-brass-700">
+              <span className="label border border-brass-500/45 px-2 py-0.5 text-[8.5px] text-brass-300">
                 {t("yourPending")}
               </span>
             )}
           </div>
-          <p className="mt-2 text-[13.5px] leading-[1.75] whitespace-pre-wrap text-ink-900/78">
+          <p className="mt-2 text-[13.5px] leading-[1.75] whitespace-pre-wrap text-fog-300">
             {entry.body}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-4 text-[11.5px]">
@@ -326,7 +326,7 @@ function CommentItem({
               <button
                 type="button"
                 onClick={() => onReply(entry.id)}
-                className="text-ink-900/45 transition-colors hover:text-brass-700"
+                className="text-fog-500 transition-colors hover:text-brass-300"
               >
                 {t("commentReply")}
               </button>
@@ -335,7 +335,7 @@ function CommentItem({
               <button
                 type="button"
                 onClick={() => void onDelete(entry.id)}
-                className="text-ink-900/45 transition-colors hover:text-[#a03535]"
+                className="text-fog-500 transition-colors hover:text-[#ff8f8f]"
               >
                 {t("commentDelete")}
               </button>
@@ -345,7 +345,7 @@ function CommentItem({
                   type="button"
                   disabled={reported.has(entry.id)}
                   onClick={() => void onReport(entry.id)}
-                  className="text-ink-900/45 transition-colors hover:text-[#a03535] disabled:text-jade-600"
+                  className="text-fog-500 transition-colors hover:text-[#ff8f8f] disabled:text-jade-400"
                 >
                   {reported.has(entry.id) ? t("commentReported") : t("commentReport")}
                 </button>
@@ -356,7 +356,7 @@ function CommentItem({
       </article>
 
       {replies.length > 0 && (
-        <div className="mt-4 space-y-4 border-l border-ink-900/10 pl-5 sm:ml-[3.1rem]">
+        <div className="mt-4 space-y-4 border-l border-snow/10 pl-5 sm:ml-[3.1rem]">
           {replies.map((r) => (
             <CommentItem
               key={r.id}

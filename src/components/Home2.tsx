@@ -64,34 +64,33 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
   if (!featured) return null;
   return (
     /*
-      `data-chain-occluder` đánh dấu khối có nền đục che kín lớp nền 3D phía sau
-      (xem ChainBackdrop). Nhờ nó lớp nền tự tắt đúng những đoạn không ai nhìn
-      thấy nó, thay vì vẽ tiếp sau lưng một lớp sơn. Đổi khối này sang nền trong
-      suốt thì nhớ bỏ thuộc tính đi.
+      Nền trong mờ, không đục. Chuỗi khối 3D chạy phía sau phải đọc được liên
+      tục từ đầu tới cuối trang, nên khối này chỉ phủ một lớp mực loãng lên nó
+      thay vì che hẳn. Khối nào sau này quay lại nền đục thì phải tự khai báo
+      `data-chain-occluder` để lớp nền tắt đúng đoạn không ai nhìn thấy nó
+      (xem ChainBackdrop).
     */
     <section
       id="tin-tuc"
-      data-chain-occluder
-      className="relative z-10 scroll-mt-24 bg-mist-100 py-24 text-ink-900"
+      className="relative z-10 scroll-mt-24 bg-ink-900/45 py-24 text-snow"
     >
-      <div className="bg-grid-light absolute inset-0" aria-hidden="true" />
+      <div className="bg-grid absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHead
-            tone="light"
             kicker={t("newsKicker")}
             title={
               <>
                 {isEnglish ? (
-                  <>Policy moves,<br /><span className="gilded-ink italic">before you have to ask.</span></>
+                  <>Policy moves,<br /><span className="gilded italic">before you have to ask.</span></>
                 ) : (
-                  <>Chuyển động chính sách,<br /><span className="gilded-ink italic">cập nhật trước khi bạn hỏi.</span></>
+                  <>Chuyển động chính sách,<br /><span className="gilded italic">cập nhật trước khi bạn hỏi.</span></>
                 )}
               </>
             }
           />
           <Reveal delay={150}>
-            <p className="label text-[10px] text-ink-900/50">{NEWS.length} {isEnglish ? "published updates" : "tin đã đăng"}</p>
+            <p className="label text-[10px] text-fog-500">{NEWS.length} {isEnglish ? "published updates" : "tin đã đăng"}</p>
           </Reveal>
         </div>
 
@@ -102,7 +101,7 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
               onPointerMove={onMove}
               whileHover="hover"
               whileTap={{ scale: 0.995 }}
-              className="spotlight group relative flex h-full w-full flex-col overflow-hidden bg-ink-900 p-8 text-left text-snow transition-shadow duration-500 hover:shadow-[0_45px_90px_-35px_rgba(10,20,32,0.75)] sm:p-10"
+              className="spotlight group relative flex h-full w-full flex-col overflow-hidden border border-snow/10 bg-ink-900/80 p-8 text-left text-snow transition-[border-color,box-shadow] duration-500 hover:border-brass-500/45 hover:shadow-[0_45px_90px_-35px_rgba(201,164,76,0.4)] sm:p-10"
             >
               <motion.span
                 variants={{ hover: { y: -6, scale: 1.02 } }}
@@ -151,17 +150,17 @@ export function News({ onOpen }: { onOpen: (d: DocItem) => void }) {
                 onClick={() => onOpen(n)}
                 whileHover={{ x: 6 }}
                 transition={{ type: "spring", ...SOFT }}
-                className="group flex w-full items-start justify-between gap-5 border-b border-ink-900/10 py-5 text-left transition-colors first:border-t"
+                className="group flex w-full items-start justify-between gap-5 border-b border-snow/10 py-5 text-left transition-colors first:border-t"
               >
                 <div>
-                  <p className="label text-[9.5px] text-brass-700">
+                  <p className="label text-[9.5px] text-brass-400">
                     {n.date} · {localizeCategory(n.category, locale)} · {formatReadingTime(n.readMinutes, locale)}
                   </p>
-                  <h4 className="mt-2 text-[14.5px] leading-[1.55] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
+                  <h4 className="mt-2 text-[14.5px] leading-[1.55] font-semibold text-snow transition-colors duration-300 group-hover:text-brass-300">
                     {n.title}
                   </h4>
                 </div>
-                <IconArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-ink-900/30 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass-600" />
+                <IconArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-fog-500 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass-300" />
               </motion.button>
             ))}
           </motion.div>
@@ -223,19 +222,17 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
   return (
     <section
       id="bai-viet"
-      data-chain-occluder
-      className="relative z-10 scroll-mt-24 bg-mist-50 py-24 text-ink-900"
+      className="relative z-10 scroll-mt-24 py-24 text-snow"
     >
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
-          tone="light"
           kicker={t("articlesKicker")}
           title={
             <>
               {isEnglish ? (
-                <>Short analysis,<br /><span className="gilded-ink italic">faster decisions.</span></>
+                <>Short analysis,<br /><span className="gilded italic">faster decisions.</span></>
               ) : (
-                <>Phân tích ngắn,<br /><span className="gilded-ink italic">quyết định nhanh.</span></>
+                <>Phân tích ngắn,<br /><span className="gilded italic">quyết định nhanh.</span></>
               )}
             </>
           }
@@ -246,12 +243,12 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
           <div className="mt-10 flex flex-col gap-4 lg:flex-row lg:items-center">
             <label className="relative lg:w-80">
               <span className="sr-only">{t("searchArticles")}</span>
-              <IconSearch className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-ink-900/40" />
+              <IconSearch className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-fog-500" />
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
                 placeholder={t("searchArticlesPlaceholder")}
-                className="w-full border border-ink-900/15 bg-paper py-3 pr-4 pl-11 text-[13.5px] text-ink-900 placeholder-ink-900/40 transition-colors outline-none focus:border-brass-500"
+                className="w-full border border-snow/12 bg-ink-850 py-3 pr-4 pl-11 text-[13.5px] text-snow placeholder-fog-500 transition-colors outline-none focus:border-brass-500"
               />
             </label>
             <div className="flex flex-wrap items-center gap-2">
@@ -262,15 +259,15 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                   aria-pressed={cat === c}
                   className={`label relative px-3.5 py-2 text-[10px] transition-colors duration-300 ${
                     cat === c
-                      ? "text-snow"
-                      : "border border-ink-900/15 text-ink-900/60 hover:border-brass-500 hover:text-brass-700"
+                      ? "text-ink-950"
+                      : "border border-snow/15 text-fog-400 hover:border-brass-500/60 hover:text-brass-300"
                   }`}
                 >
                   {/* Khối nền trượt sang mục vừa chọn thay vì nhảy cóc. */}
                   {cat === c && (
                     <motion.span
                       layoutId="article-chip"
-                      className="absolute inset-0 -z-10 bg-ink-900 shadow-[0_10px_30px_-12px_rgba(10,20,32,0.5)]"
+                      className="absolute inset-0 -z-10 bg-brass-500 shadow-[0_10px_30px_-12px_rgba(201,164,76,0.55)]"
                       transition={{ type: "spring", stiffness: 400, damping: 36 }}
                     />
                   )}
@@ -278,7 +275,7 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                 </button>
               ))}
             </div>
-            <span className="label text-[10px] text-ink-900/45 lg:ml-auto">
+            <span className="label text-[10px] text-fog-500 lg:ml-auto">
               {visible.length}/{list.length} {isEnglish ? "articles" : "bài viết"}
             </span>
           </div>
@@ -288,10 +285,10 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-12 flex flex-col items-center gap-3 border border-ink-900/10 bg-paper px-6 py-16 text-center"
+            className="mt-12 flex flex-col items-center gap-3 border border-snow/10 bg-ink-900/60 px-6 py-16 text-center"
           >
-            <IconDoc className="h-8 w-8 text-ink-900/30" />
-            <p className="text-[14px] text-ink-900/60">
+            <IconDoc className="h-8 w-8 text-fog-500" />
+            <p className="text-[14px] text-fog-400">
               {t("noResults")}
             </p>
           </motion.div>
@@ -309,25 +306,25 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
                   whileHover={{ y: -8 }}
                   onClick={() => onOpen(a)}
                   onPointerMove={onMove}
-                  className="spotlight group flex h-full w-full flex-col border border-mist-300 bg-paper p-6 text-left transition-[border-color,box-shadow] duration-500 hover:border-ink-900/70 hover:shadow-[0_30px_65px_-25px_rgba(10,20,32,0.4)]"
+                  className="spotlight group flex h-full w-full flex-col border border-snow/10 bg-ink-900/60 p-6 text-left transition-[border-color,box-shadow] duration-500 hover:border-brass-500/50 hover:shadow-[0_30px_65px_-25px_rgba(201,164,76,0.4)]"
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <span className="label text-[9px] text-brass-700">{a.category}</span>
-                    <span className="text-[10.5px] text-ink-900/45">
+                    <span className="label text-[9px] text-brass-400">{a.category}</span>
+                    <span className="text-[10.5px] text-fog-500">
                       {formatReadingTime(a.readMinutes, locale)}
                     </span>
                   </div>
-                  <h3 className="font-display mt-4 text-[15.5px] leading-[1.4] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
+                  <h3 className="font-display mt-4 text-[15.5px] leading-[1.4] font-semibold text-snow transition-colors duration-300 group-hover:text-brass-300">
                     {a.title}
                   </h3>
-                  <p className="mt-3 line-clamp-3 text-[13px] leading-[1.65] text-ink-900/60">
+                  <p className="mt-3 line-clamp-3 text-[13px] leading-[1.65] text-fog-400">
                     {a.excerpt}
                   </p>
-                  <div className="mt-auto flex items-center justify-between gap-2 border-t border-ink-900/10 pt-4">
-                    <span className="text-[10.5px] text-ink-900/45">
+                  <div className="mt-auto flex items-center justify-between gap-2 border-t border-snow/10 pt-4">
+                    <span className="text-[10.5px] text-fog-500">
                       {a.date} · {a.author}
                     </span>
-                    <IconArrowUpRight className="h-4 w-4 shrink-0 text-ink-900/25 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass-600" />
+                    <IconArrowUpRight className="h-4 w-4 shrink-0 text-fog-500 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brass-300" />
                   </div>
                 </motion.button>
               ))}
@@ -341,7 +338,7 @@ export function Articles({ onOpen }: { onOpen: (d: DocItem) => void }) {
               <Magnetic>
                 <button
                   onClick={() => setShown((n) => n + PAGE_SIZE)}
-                  className="sheen group inline-flex items-center gap-2.5 border border-ink-900/20 px-7 py-3.5 text-[13.5px] font-semibold text-ink-900 transition-all duration-300 hover:border-brass-600 hover:text-brass-700"
+                  className="sheen group inline-flex items-center gap-2.5 border border-snow/20 px-7 py-3.5 text-[13.5px] font-semibold text-snow transition-all duration-300 hover:border-brass-500 hover:text-brass-300"
                 >
                   {t("loadMoreArticles").replace("{n}", String(Math.min(PAGE_SIZE, list.length - shown)))}
                   <IconChevron className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -654,7 +651,7 @@ export function Team() {
   const onMove = useSpotlight<HTMLElement>();
   const lawyers = LAWYERS.map((lawyer) => localizeLawyer(lawyer, locale));
   return (
-    <section id="doi-ngu" className="relative z-10 scroll-mt-24 bg-ink-900/70 py-24">
+    <section id="doi-ngu" className="relative z-10 scroll-mt-24 bg-ink-900/55 py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
           kicker={t("teamKicker")}
@@ -766,20 +763,20 @@ function Accordion({ items }: { items: PolicyItem[] }) {
   return (
     <div>
       {items.map((it, i) => (
-        <div key={it.q} className="border-b border-ink-900/10">
+        <div key={it.q} className="border-b border-snow/10">
           <button
             onClick={() => setOpen(open === i ? null : i)}
             aria-expanded={open === i}
             className="group flex w-full items-center justify-between gap-4 py-4 text-left"
           >
-            <span className="font-display text-[14.5px] leading-[1.5] font-semibold text-ink-900 transition-colors duration-300 group-hover:text-brass-700">
+            <span className="font-display text-[14.5px] leading-[1.5] font-semibold text-snow transition-colors duration-300 group-hover:text-brass-300">
               {it.q}
             </span>
             <motion.span
               animate={{ rotate: open === i ? 45 : 0 }}
               transition={{ duration: 0.35, ease: EASE_LUXE }}
-              className={`shrink-0 border border-ink-900/20 p-1.5 transition-colors duration-300 ${
-                open === i ? "border-brass-600 text-brass-700" : "text-ink-900/50"
+              className={`shrink-0 border border-snow/20 p-1.5 transition-colors duration-300 ${
+                open === i ? "border-brass-500 text-brass-300" : "text-fog-500"
               }`}
             >
               <IconPlus className="h-3.5 w-3.5" />
@@ -788,7 +785,7 @@ function Accordion({ items }: { items: PolicyItem[] }) {
           <AnimatePresence initial={false}>
             {open === i && (
               <motion.div {...collapse} className="overflow-hidden">
-                <p className="pr-10 pb-5 text-[13.5px] leading-[1.8] text-ink-900/68">{it.a}</p>
+                <p className="pr-10 pb-5 text-[13.5px] leading-[1.8] text-fog-300">{it.a}</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -805,20 +802,18 @@ export function Policies() {
   return (
     <section
       id="chinh-sach"
-      data-chain-occluder
-      className="relative z-10 scroll-mt-24 bg-mist-100 py-24 text-ink-900"
+      className="relative z-10 scroll-mt-24 bg-ink-900/45 py-24 text-snow"
     >
-      <div className="bg-grid-light absolute inset-0" aria-hidden="true" />
+      <div className="bg-grid absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHead
-          tone="light"
           kicker={t("policiesKicker")}
           title={
             <>
               {isEnglish ? (
-                <>Transparent in the way<br /><span className="gilded-ink italic">we structure our fees.</span></>
+                <>Transparent in the way<br /><span className="gilded italic">we structure our fees.</span></>
               ) : (
-                <>Minh bạch như cách<br /><span className="gilded-ink italic">chúng tôi tính phí.</span></>
+                <>Minh bạch như cách<br /><span className="gilded italic">chúng tôi tính phí.</span></>
               )}
             </>
           }
@@ -828,7 +823,7 @@ export function Policies() {
           <Reveal>
             <div className="border-t-2 border-brass-500 pt-6">
               <div className="flex items-center gap-3">
-                <IconDoc className="h-5 w-5 shrink-0 text-brass-700" />
+                <IconDoc className="h-5 w-5 shrink-0 text-brass-400" />
                 <h3 className="font-display text-[1.05rem] font-semibold">{t("servicePolicy")}</h3>
               </div>
               <div className="mt-5">
@@ -839,7 +834,7 @@ export function Policies() {
           <Reveal delay={120}>
             <div className="border-t-2 border-jade-500 pt-6">
               <div className="flex items-center gap-3">
-                <IconShield className="h-5 w-5 shrink-0 text-jade-600" />
+                <IconShield className="h-5 w-5 shrink-0 text-jade-400" />
                 <h3 className="font-display text-[1.05rem] font-semibold">
                   {t("privacyPolicy")}
                 </h3>
@@ -866,7 +861,7 @@ export function Policies() {
               variants={fadeUpSmall}
               whileHover={{ y: -3 }}
               transition={{ type: "spring", ...SOFT }}
-              className="label border border-ink-900/15 px-3.5 py-2 text-[9.5px] text-ink-900/60"
+              className="label border border-snow/15 px-3.5 py-2 text-[9.5px] text-fog-400"
             >
               {t}
             </motion.span>
