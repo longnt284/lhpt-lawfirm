@@ -30,6 +30,7 @@ import {
 } from "../i18n";
 import { EASE_LUXE, SOFT } from "../motion";
 import { IconArrowUpRight, IconClose } from "./Icons";
+import { useScrollLock } from "../lib/smoothScroll";
 
 /* ================= NGUYÊN LIỆU DÙNG CHUNG ================= */
 
@@ -101,17 +102,14 @@ function Shell({
   children: ReactNode;
   wide?: boolean;
 }) {
+  useScrollLock(true);
+
   useEffect(() => {
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = previous;
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
   return (

@@ -160,6 +160,43 @@
     overscroll-behavior-y: none;
   }
 
+  /*
+   * Nhường quyền cuộn mượt cho Lenis khi nó đã gắn.
+   *
+   * Lenis tự đặt class `lenis` lên <html>. Nếu để nguyên `scroll-behavior:
+   * smooth` ở trên thì có hai cơ chế cuộn mượt chạy chồng lên nhau: mọi lệnh
+   * `scrollTo` được nội suy hai lần theo hai nhịp khác nhau, và trang trôi tới
+   * đích rồi bị kéo giật ngược một đoạn ngắn.
+   *
+   * `height: auto` là yêu cầu của Lenis: nó ghi vào `documentElement.scrollTop`
+   * nên vùng cuộn phải cao theo nội dung chứ không bị đóng cứng.
+   */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
+  /*
+   * `lenis-stopped` xuất hiện lúc một lớp phủ khoá cuộn. `overflow: clip` chặn
+   * nốt phần cuộn native mà `body { overflow: hidden }` trong `useScrollLock`
+   * chưa với tới (bàn phím, thanh cuộn, cú vuốt ở mép màn hình).
+   */
+  html.lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  /*
+   * Vùng cuộn riêng bên trong lớp phủ — panel đọc bài, danh sách trong cổng
+   * khách hàng — phải tự cuộn chứ không đẩy tiếp ra trang nền.
+   */
+  .lenis [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
   body {
     background-color: var(--color-ink-950);
     color: var(--color-snow);

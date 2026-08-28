@@ -634,6 +634,13 @@ export default function OpeningScene({ stageRef }: { stageRef: RefObject<HTMLEle
       cameraZ: 12,
       maxPixelRatio: 1,
       maxFps: 30,
+      /*
+       * Quầng sáng cho khung công trình. Ngưỡng đặt cao (0,62) để chỉ những nét
+       * vàng đồng của kết cấu bắt sáng, còn lưới nền mờ và hạt bụi thì không —
+       * cho quầng bám vào tất cả thì cả màn hình sáng đều lên như sương mù, và
+       * kết cấu mất hẳn vai trò chủ thể.
+       */
+      bloom: { threshold: 0.62, strength: 0.75, radius: 1.5 },
     }),
     [stageRef]
   );

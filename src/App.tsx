@@ -8,6 +8,7 @@ import { Explore, OpeningStage, Pricing, Services } from "./components/Home1";
 import type { DocItem } from "./content/types";
 import { LocaleProvider } from "./i18n";
 import { runWithInstantScroll } from "./lib/instantScroll";
+import { SmoothScroll, scrollToInstant } from "./lib/smoothScroll";
 
 const SecondaryContent = lazy(() =>
   import("./components/Home2").then(({ SecondaryContent: Content }) => ({ default: Content }))
@@ -62,6 +63,13 @@ function ScrollManager() {
 
   useEffect(() => {
     if (!hash) {
+      /*
+       * Lenis giữ riêng con số vị trí cuộn của nó. `window.scrollTo` một mình
+       * đưa trang về 0 rồi bị Lenis kéo ngược lại chỗ cũ ở khung hình kế tiếp,
+       * nên phải báo cho nó trước; chỉ khi không có Lenis (giảm chuyển động)
+       * mới rơi về đường cũ.
+       */
+      if (scrollToInstant(0)) return;
       runWithInstantScroll(document.documentElement, requestAnimationFrame, () => {
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       });
@@ -77,6 +85,7 @@ function ScrollManager() {
       if (target) {
         // Nhảy thẳng chứ không cuộn mượt: đây là lần đầu trang hiện ra, cuộn mượt
         // qua cả chục màn hình chỉ khiến người dùng phải ngồi chờ.
+        if (scrollToInstant(target)) return;
         runWithInstantScroll(document.documentElement, requestAnimationFrame, () => {
           target.scrollIntoView({ block: "start", behavior: "auto" });
         });
@@ -148,6 +157,7 @@ function Shell() {
 
   return (
     <div className="noise relative min-h-screen">
+      <SmoothScroll />
       <ScrollManager />
       <Ambient />
       <Header onOpenAccount={openAccount} />
