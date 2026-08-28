@@ -11,10 +11,12 @@
  *    hình — và trên màn hình thì hai lớp hình học chồng nhau thành nhiễu. Chuỗi
  *    chỉ nhận bàn giao đúng lúc cảnh mở đầu tắt dần.
  *
- * 2. **Tắt khi một khối nền đục đang che khung nhìn.** Nửa dưới trang chủ xen
- *    kẽ khối nền sáng và khối nền tối, nên chuỗi chạy suốt từ đầu tới cuối
- *    trang *ở mọi chỗ nó còn nhìn thấy được*, và tắt ở những chỗ nó nằm sau một
- *    lớp sơn đục — nơi vẽ tiếp cũng không ai thấy mà vẫn tốn đúng bằng lúc thấy.
+ * 2. **Tắt khi một khối nền đục đang che khung nhìn.** Hiện tại trang chủ
+ *    không còn khối nào như vậy: toàn trang đã về một tông tối trong mờ để
+ *    chuỗi đọc được liên tục từ đầu tới cuối. Cơ chế vẫn giữ nguyên vì nó là
+ *    thứ duy nhất ngăn cảnh vẽ tiếp sau lưng một lớp sơn đục, và khối nền đục
+ *    thì có thể quay lại bất cứ lúc nào — khối nào che thì tự khai báo
+ *    `data-chain-occluder`, không phải sửa gì ở file này.
  *
  * 3. **Mờ hẳn thì gỡ khỏi bố cục bằng `display:none`.** Không phải để tiết kiệm
  *    vài điểm ảnh: khung chứa lúc đó có kích thước bằng không, nên bộ quan sát
@@ -54,10 +56,12 @@ const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
  * - **Cổng bàn giao**: chuỗi chỉ được phép hiện sau khi sân khấu mở đầu đã tắt.
  * - **Cổng che khuất**: chuỗi tắt khi một khối nền đục đang phủ khung nhìn.
  *
- * Cổng thứ hai là thứ đáng nói. Nửa dưới trang chủ xen kẽ khối nền sáng và khối
- * nền tối, nên không có *một* mốc "từ đây trở xuống thì tắt" nào đúng cả: tắt
- * sớm thì mất chuỗi ở ba khối nền tối phía dưới, để chạy suốt thì phần lớn thời
- * gian là vẽ một thứ nằm sau lớp sơn đục.
+ * Cổng thứ hai là thứ đáng nói. Nửa dưới trang chủ từng xen kẽ khối nền sáng và
+ * khối nền tối, nên không có *một* mốc "từ đây trở xuống thì tắt" nào đúng cả:
+ * tắt sớm thì mất chuỗi ở ba khối nền tối phía dưới, để chạy suốt thì phần lớn
+ * thời gian là vẽ một thứ nằm sau lớp sơn đục. Các khối nền sáng đó nay đã về
+ * cùng tông tối với phần còn lại, nhưng cách giải thì giữ nguyên — nó đúng cho
+ * mọi bố cục chứ không chỉ cho bố cục lúc đó.
  *
  * Cách giải ở đây không dùng ngưỡng nào hết. Mỗi khối nền đục tự khai báo bằng
  * `data-chain-occluder`, và độ mờ của chuỗi đúng bằng phần khung nhìn *chưa* bị
@@ -163,9 +167,9 @@ function useChainOpacity(fromRef: RefObject<HTMLElement | null>) {
     window.addEventListener("resize", remeasure);
     /*
      * Khối nội dung phía dưới nạp muộn và làm trang cao thêm hơn bảy nghìn điểm
-     * ảnh khi nó hạ xuống — và nó mang theo ba trong bốn khối nền đục. Không đo
-     * lại thì danh sách khối che rỗng, và chuỗi sẽ vẽ suốt nửa dưới trang sau
-     * lưng những khối nội dung đục.
+     * ảnh khi nó hạ xuống. Mốc bàn giao đo trước lúc đó là mốc đo trên một trang
+     * chỉ cao bằng một phần ba trang thật, nên phải đo lại khi nó về — và cùng
+     * với nó là danh sách khối che, nếu sau này lại có khối nền đục.
      */
     const observer = new ResizeObserver(remeasure);
     observer.observe(document.body);
