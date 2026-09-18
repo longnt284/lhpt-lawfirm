@@ -11,11 +11,11 @@ import {
 import { useEffect, useRef, useState, type AnchorHTMLAttributes, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../auth";
-import { FIRM, NAV_LINKS } from "../firm";
+import { FIRM, NAV_LINKS, NAV_SECTION_IDS } from "../firm";
 import type { DocItem } from "../content/types";
 import { formatReadingTime, useLocale } from "../i18n";
 import { EASE_LUXE, SCROLL, SOFT, VIEWPORT, fadeUp, fadeUpSmall, stagger } from "../motion";
-import { useSpotlight } from "../hooks";
+import { useActiveSection, useSpotlight } from "../hooks";
 import {
   IconArrowUpRight,
   IconClose,
@@ -316,6 +316,12 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
   const { scrollY, scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, SCROLL);
   const [scrolled, setScrolled] = useState(false);
+  /*
+   * Chỉ theo dõi khi đang ở trang chủ: hai trang chuyên đề không có khối nào
+   * mang các neo này, nên bật ở đó chỉ tốn công dò tìm vô ích.
+   */
+  const { pathname } = useLocation();
+  const activeSection = useActiveSection(NAV_SECTION_IDS, pathname === "/");
 
   useEffect(() => scrollY.on("change", (v) => setScrolled(v > 24)), [scrollY]);
 
@@ -402,12 +408,35 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
           className="hidden items-center gap-0.5 xl:flex"
           onPointerLeave={() => setHovered(null)}
         >
-          {NAV_LINKS.map((l, i) => (
+          {NAV_LINKS.map((l, i) => {
+            /*
+              Mục đang mở. Với mục trỏ tới một trang riêng thì đó là đường dẫn
+              hiện tại; với neo trong trang chủ thì đó là khối đang cắt qua vạch
+              giữa màn hình.
+            */
+            const isActive = l.href.startsWith("/")
+              ? pathname === l.href
+              : pathname === "/" && `#${activeSection}` === l.href;
+
+            return (
             <SectionLink
               key={l.href}
               href={l.href}
               onPointerEnter={() => setHovered(l.href)}
-              className="relative px-2 py-2 text-[13.5px] font-medium whitespace-nowrap text-fog-300 transition-colors duration-300 hover:text-snow"
+              /*
+                aria-current không phải chi tiết trang trí. Người dùng trình đọc
+                màn hình không thấy được vạch đồng vàng bên dưới, nên nếu không
+                có thuộc tính này thì với họ thanh điều hướng vẫn im lặng y như
+                trước. "page" cho một trang riêng, "location" cho một khối bên
+                trong trang đang mở — đúng hai token mà đặc tả dành cho hai
+                trường hợp này.
+              */
+              aria-current={
+                isActive ? (l.href.startsWith("/") ? "page" : "location") : undefined
+              }
+              className={`relative px-2 py-2 text-[13.5px] font-medium whitespace-nowrap transition-colors duration-300 hover:text-snow ${
+                isActive ? "text-snow" : "text-fog-300"
+              }`}
             >
               {/*
                 layoutId cho phép khối nền trượt liền mạch giữa các mục thay vì
@@ -417,6 +446,20 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
                 <motion.span
                   layoutId="nav-pill"
                   className="absolute inset-0 -z-10 border border-brass-500/25 bg-snow/[0.055]"
+                  transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                />
+              )}
+              {/*
+                Vạch đồng vàng dưới mục đang mở. layoutId riêng, không dùng
+                chung với "nav-pill": hai chỉ dấu này trả lời hai câu hỏi khác
+                nhau — con trỏ đang ở đâu, và trang đang ở đâu — nên chúng phải
+                chạy độc lập. Dùng chung một layoutId thì Motion coi là *một*
+                khối và mỗi lần rê chuột sẽ kéo luôn vạch chỉ mục đi theo.
+              */}
+              {isActive && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="absolute inset-x-2 bottom-1 h-px bg-brass-400"
                   transition={{ type: "spring", stiffness: 380, damping: 34 }}
                 />
               )}
@@ -441,7 +484,8 @@ export function Header({ onOpenAccount }: { onOpenAccount?: () => void } = {}) {
                 </span>
               )}
             </SectionLink>
-          ))}
+            );
+          })}
         </nav>
         </div>
         <div className="flex shrink-0 items-center gap-2.5">

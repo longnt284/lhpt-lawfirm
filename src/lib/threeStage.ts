@@ -25,6 +25,15 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import * as THREE from "three";
 import { createBloom, type BloomOptions, type BloomPipeline } from "./bloom";
+import { clampVelocity } from "./sceneMotion";
+
+/*
+ * Tiến trình cuộn đi được mỗi giây thì coi là "hết cỡ" cho `StageFrame.velocity`.
+ * Hai đơn vị mỗi giây tương đương lướt trọn một khối cao ba màn hình trong nửa
+ * giây — nhanh hơn thao tác đọc thông thường khá nhiều, nên phần lớn thời gian
+ * vận tốc nằm ở khoảng giữa chứ không dính trần.
+ */
+const VELOCITY_FULL = 2;
 
 export type StageFrame = {
   /** Số giây trôi qua kể từ khung hình trước, đã chặn trần để không nhảy vọt. */
@@ -36,6 +45,17 @@ export type StageFrame = {
   /** Vị trí con trỏ trong khung nhìn, mỗi trục −1→1, đã làm mượt. */
   pointerX: number;
   pointerY: number;
+  /**
+   * Tốc độ cuộn, −1→1, đã chuẩn hoá và làm mượt. Âm là cuộn ngược lên.
+   *
+   * Dùng để cảnh *phản ứng lại* thao tác của người xem chứ không chỉ chạy theo
+   * vị trí cuộn: cuộn dồn dập thì góc nhìn mở ra và thị sai mạnh lên, buông tay
+   * thì mọi thứ lắng lại. Đây là khác biệt giữa một cảnh bị kéo đi và một cảnh
+   * có quán tính.
+   *
+   * Luôn bằng 0 khi người dùng bật "giảm chuyển động".
+   */
+  velocity: number;
 };
 
 export type StageHandle = {
@@ -307,6 +327,15 @@ export function useThreeStage(
     let pointerX = 0;
     let pointerY = 0;
 
+    /*
+     * Vận tốc đo từ `targetProgress` — vị trí cuộn thật — chứ không từ
+     * `progress` đã làm mượt. Bộ làm mượt có trần tốc độ riêng của nó (hệ số
+     * 8 ở vòng lặp bên dưới), nên lấy đạo hàm của giá trị đã mượt là đo lại
+     * chính bộ làm mượt thay vì đo người dùng.
+     */
+    let lastTarget = targetProgress;
+    let velocity = 0;
+
     const startedAt = performance.now();
     let lastFrame = startedAt;
     let rafId = 0;
@@ -324,6 +353,7 @@ export function useThreeStage(
         progress,
         pointerX,
         pointerY,
+        velocity,
       });
       if (bloomPipeline) bloomPipeline.render(scene, camera);
       else renderer.render(scene, camera);
@@ -347,6 +377,10 @@ export function useThreeStage(
         progress = targetProgress;
         pointerX = targetPointerX;
         pointerY = targetPointerY;
+        // Không có quán tính ở chế độ này: cảnh đứng yên giữa hai lần cuộn thì
+        // một giá trị vận tốc còn sót lại chỉ làm khung hình kế tiếp lệch đi.
+        lastTarget = targetProgress;
+        velocity = 0;
         drawFrame(0, now);
       });
     };
@@ -483,6 +517,26 @@ export function useThreeStage(
       progress += (targetProgress - progress) * ease;
       pointerX += (targetPointerX - pointerX) * ease;
       pointerY += (targetPointerY - pointerY) * ease;
+
+      /*
+       * Kẹp *trước* rồi mới làm mượt, không phải ngược lại.
+       *
+       * Một cú lăn chuột theo nấc lớn, hay thao tác kéo thanh cuộn, có thể đưa
+       * tiến trình đi cả nửa khối trong một khung hình — quy ra là hàng chục
+       * đơn vị mỗi giây. Làm mượt trước thì con số đó chui vào bộ lọc và còn
+       * ảnh hưởng suốt gần một giây sau khi người dùng đã dừng tay; kẹp trước
+       * thì đỉnh nhọn bị cắt ngay tại chỗ và cảnh không bao giờ giật nảy.
+       *
+       * VELOCITY_FULL là mức cuộn coi như "hết cỡ": đi trọn hai lần chiều dài
+       * khối trong một giây. Nhanh hơn nữa cũng không đẩy hiệu ứng đi xa hơn.
+       */
+      const rawVelocity = delta > 0 ? (targetProgress - lastTarget) / delta : 0;
+      lastTarget = targetProgress;
+      const clamped = clampVelocity(rawVelocity, VELOCITY_FULL);
+      // Lắng chậm hơn tiến trình (6 so với 8) để cảnh còn giữ một chút đà sau
+      // khi ngón tay rời bánh xe, thay vì tắt phụt đúng lúc người dùng dừng.
+      velocity += (clamped - velocity) * (1 - Math.exp(-6 * delta));
+
       drawFrame(delta, now);
     };
 

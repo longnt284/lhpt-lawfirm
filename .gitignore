@@ -3,3 +3,21 @@ node_modules/
 dist/
 build/
 *.log
+
+# Ghi đè cấu hình theo máy. KHÔNG BAO GIỜ commit những file này.
+#
+# `.env` thì *có* nằm trong repo, và đó là chủ ý: hai biến trong đó — URL dự án
+# và khoá publishable của Supabase — công khai theo thiết kế, vì chúng đi kèm
+# mọi yêu cầu phát ra từ trình duyệt. Ranh giới dữ liệu do Row Level Security
+# trong supabase/migrations áp, không do việc giấu khoá.
+#
+# Nhưng đó chính là chỗ dễ trượt chân: file kế tiếp ai đó tạo ra để đặt một khoá
+# *thật* — service_role, khoá cổng thanh toán, thông tin SMTP — theo quy ước của
+# Vite sẽ là một trong những tên dưới đây. Chặn sẵn để một biến bí mật không bao
+# giờ đi vào lịch sử git chỉ vì người thêm nó không để ý.
+.env.local
+.env.*.local
+
+# Mã nguồn upstream của các repo tham khảo, nếu clone theo hướng dẫn trong
+# references/README.md. Chỉ manifest khoá commit được commit, không phải mã.
+references/repos/
