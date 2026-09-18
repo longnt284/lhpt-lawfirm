@@ -23,20 +23,6 @@
     <meta name="twitter:description" content="Hãng luật đồng hành cùng doanh nghiệp từ giấy phép đầu tiên đến phiên tòa cuối cùng." />
     <link rel="alternate" hreflang="vi" href="https://lhpt.law/" />
     <link rel="alternate" hreflang="x-default" href="https://lhpt.law/" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-      />
-    </noscript>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -62,9 +48,184 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a1420'/%3E%3Cpath d='M6 12 16 5.5 26 12' fill='none' stroke='%23c9a44c' stroke-width='2'/%3E%3Cpath d='M8.5 15v8M13.5 15v8M18.5 15v8M23.5 15v8' stroke='%23eaf1f8' stroke-width='2'/%3E%3Cpath d='M6.5 26h19' stroke='%23eaf1f8' stroke-width='2'/%3E%3Cpath d='M23 22.5h2.5V25H23z' fill='%2322c49c'/%3E%3C/svg%3E"
     />
+    <!--
+      MÀN MỞ ĐẦU TĨNH — kiểu dáng nội tuyến, cố ý.
+
+      Bản trước dựng màn mở đầu bằng React (src/components/Curtain.tsx). Nó không
+      bao giờ chạy: App.tsx không hề import nó. Và kể cả có import thì vẫn muộn —
+      một component React chỉ vẽ được sau khi chunk JS về, parse xong và mount,
+      tức là sau đúng cái khoảng trắng mà màn mở đầu sinh ra để che.
+
+      Ở đây kiểu dáng nằm thẳng trong <head> và khối markup nằm thẳng trong
+      <body>, nên trình duyệt vẽ nó ngay lúc parse xong HTML — trước chunk JS,
+      trước cả chunk CSS của Tailwind. Nền đặt trên <html> để không có một khung
+      hình trắng nào lọt vào trước khi màn kịp vẽ.
+    -->
+    <style>
+      html {
+        background: #050b13;
+      }
+      body {
+        margin: 0;
+        background: #050b13;
+      }
+      #curtain {
+        position: fixed;
+        inset: 0;
+        z-index: 95;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #050b13;
+        transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      /*
+        Trạng thái "đã sẵn sàng" đặt trên <html> chứ không phải trên chính tấm
+        màn: script nội tuyến bật cờ này được mà không cần tìm phần tử, nên nó
+        chạy đúng cả khi màn đã bị gỡ khỏi cây.
+      */
+      :root[data-ready="1"] #curtain {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #curtain .mark {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: curtain-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      #curtain svg {
+        width: 44px;
+        height: 44px;
+        color: #dfc27d;
+      }
+      #curtain .word {
+        margin-top: 16px;
+        font: 700 15px/1 Georgia, "Times New Roman", serif;
+        letter-spacing: 0.3em;
+        /* Lùi 0.3em để khoảng cách chữ cuối không đẩy khối lệch sang trái. */
+        text-indent: 0.3em;
+        color: #eef4fa;
+      }
+      #curtain .rule {
+        margin-top: 16px;
+        width: 96px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #dfc27d, transparent);
+        transform: scaleX(0);
+        animation: curtain-rule 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      @keyframes curtain-rise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+      }
+      @keyframes curtain-rule {
+        to {
+          transform: scaleX(1);
+        }
+      }
+      /*
+        Giảm chuyển động: màn vẫn còn — nó che khoảng trắng, đó là việc của nó —
+        nhưng bỏ hẳn phần diễn: không nhấc chữ, không kéo đường kẻ, và nhấc màn
+        gần như tức thì thay vì mờ dần.
+      */
+      @media (prefers-reduced-motion: reduce) {
+        #curtain,
+        #curtain .mark,
+        #curtain .rule {
+          animation: none;
+          transition-duration: 0.01s;
+        }
+        #curtain .rule {
+          transform: none;
+        }
+      }
+      noscript .fallback {
+        position: relative;
+        z-index: 96;
+        display: block;
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 6rem 1.5rem;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        color: #eef4fa;
+      }
+      noscript .fallback a {
+        color: #dfc27d;
+      }
+    </style>
+    <script>
+      /*
+        Nhấc màn. Gọi từ src/main.tsx ngay sau khi React vẽ xong khung hình đầu.
+
+        Có đường lui bốn giây vì tấm màn tuyệt đối không được phép thành cái bẫy:
+        chunk JS hỏng, mạng đứt giữa chừng hay một lỗi lúc mount đều không được
+        để khách hàng ngồi trước một màn hình đen vĩnh viễn. Hết bốn giây là nhấc,
+        bất kể React đã tới đâu.
+      */
+      (function () {
+        var root = document.documentElement;
+        var failsafe = window.setTimeout(lift, 4000);
+
+        function lift() {
+          window.clearTimeout(failsafe);
+          if (root.dataset.ready === "1") return;
+          root.dataset.ready = "1";
+          var el = document.getElementById("curtain");
+          if (!el) return;
+          // Gỡ hẳn sau khi mờ xong: một lớp phủ trong suốt còn nằm đó vẫn ăn
+          // mất sự kiện chuột của cả trang.
+          window.setTimeout(function () {
+            el.remove();
+          }, 900);
+        }
+
+        window.__lhptLiftCurtain = lift;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <div id="curtain" aria-hidden="true">
+      <div class="mark">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" />
+          <path d="M5.5 9 12 4.6 18.5 9" fill="none" stroke="#c9a44c" stroke-width="1.5" stroke-linecap="square" />
+          <path d="M6 11.2h12" stroke="currentColor" stroke-width="1" opacity="0.5" />
+          <path
+            d="M7.4 11.2v6.3M10.5 11.2v6.3M13.5 11.2v6.3M16.6 11.2v6.3"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="square"
+          />
+          <path d="M5.5 17.5h13" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" />
+          <rect x="16.8" y="18.6" width="1.7" height="1.7" fill="#22c49c" />
+        </svg>
+        <span class="word">LHPT</span>
+        <span class="rule"></span>
+      </div>
+    </div>
+    <!--
+      Không có JavaScript thì cả trang này là một khối rỗng. Với một hãng luật,
+      thứ khách cần lúc đó không phải lời xin lỗi mà là cách liên lạc.
+    -->
+    <noscript>
+      <div class="fallback">
+        <h1>Công ty Luật TNHH LHPT</h1>
+        <p>
+          Hãng luật tại TP. Hồ Chí Minh, chuyên sâu Xây dựng &middot; Bất động sản, Tố tụng, Điện mặt
+          trời, Doanh nghiệp &middot; Tuân thủ và Bảo vệ dữ liệu cá nhân.
+        </p>
+        <p>
+          Trang này cần JavaScript để hiển thị đầy đủ. Xin liên hệ trực tiếp:<br />
+          Điện thoại <a href="tel:+84941563789">0941 563 789</a><br />
+          Email <a href="mailto:contact@lhpt.law">contact@lhpt.law</a><br />
+          Địa chỉ: Nguyễn Thị Minh Khai, phường Sài Gòn, Quận 1, TP. Hồ Chí Minh.
+        </p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
