@@ -536,7 +536,7 @@ function createOpeningScene({ scene, camera, compact, reduced }: StageInit): Sta
       reframe();
     },
 
-    update({ elapsed, delta, progress, pointerX, pointerY }) {
+    update({ elapsed, delta, progress, pointerX, pointerY, velocity }) {
       /*
        * Nhịp của cả phần mở đầu.
        *
@@ -598,8 +598,27 @@ function createOpeningScene({ scene, camera, compact, reduced }: StageInit): Sta
       const camZ = stand.aboveZ + (stand.belowZ - stand.aboveZ) * descent;
       const targetY = stand.aboveTargetY + (stand.belowTargetY - stand.aboveTargetY) * descent;
 
-      camera.position.set(swayX, camY + swayY, camZ);
-      target.set(0, targetY, 0);
+      /*
+       * Tốc độ cuộn tác động ngược lại khung hình.
+       *
+       * Không cần kiểm tra `reduced` ở đây: sân khấu đã bảo đảm `velocity` luôn
+       * bằng 0 khi người dùng bật giảm chuyển động (xem StageFrame).
+       *
+       * Lùi máy quay lấy trị tuyệt đối vì lướt nhanh xuống hay vuốt ngược lên
+       * đều là cùng một cảm giác — đang đi nhanh — nên khung hình mở ra thêm
+       * bối cảnh theo cả hai chiều.
+       *
+       * Điểm nhìn thì lấy giá trị có dấu: nó chạy *trước* một nhịp về đúng
+       * hướng đang đi, như người ta ngó xuống chân thang trước khi bước. Chính
+       * phần có dấu này làm cú hạ đọc ra là có chủ đích chứ không phải bị kéo.
+       *
+       * Hai biên độ đều nhỏ — lùi khoảng 8% quãng cách, dời điểm nhìn khoảng 3%
+       * chiều cao cảnh. Đủ để cảm thấy, chưa đủ để thành một trò lái máy quay.
+       */
+      const rush = Math.abs(velocity);
+
+      camera.position.set(swayX, camY + swayY, camZ + rush * 1.1);
+      target.set(0, targetY - velocity * 0.5, 0);
       camera.lookAt(target);
     },
 

@@ -156,3 +156,74 @@ export function useSpotlight<T extends HTMLElement>() {
     [reduced]
   );
 }
+
+/**
+ * Mục nào trong danh sách `ids` đang là khối người dùng đọc tới.
+ *
+ * Trang chủ cao hơn mười ba nghìn điểm ảnh và có bảy khối mang neo riêng, nhưng
+ * thanh điều hướng trước đây chỉ sáng lên khi rê chuột. Ai cuộn tới giữa trang
+ * cũng không có cách nào biết mình đang ở đâu trong tài liệu, và cũng không thấy
+ * được còn những gì phía dưới.
+ *
+ * Dùng IntersectionObserver chứ không đo `getBoundingClientRect` theo từng nhịp
+ * cuộn: phép đo kích thước giữa lúc cuộn buộc trình duyệt tính lại bố cục đồng
+ * bộ, đúng nguyên nhân kinh điển làm cuộn bị giật — chính điều mà `threeStage`
+ * đã tránh cho các cảnh 3D. Trình duyệt tự theo dõi giao cắt ngoài luồng chính,
+ * nên đổi bố cục giữa chừng cũng không cần đo lại bằng tay.
+ *
+ * `rootMargin` co khung quan sát thành một vạch ngang mảnh ở giữa màn hình:
+ * khối nào cắt qua vạch đó là khối đang đọc. Nếu để nguyên cả khung nhìn thì ba
+ * bốn khối cùng giao cắt một lúc và mục sáng sẽ nhảy loạn.
+ */
+export function useActiveSection(ids: readonly string[], enabled = true): string | null {
+  const [active, setActive] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!enabled) {
+      setActive(null);
+      return;
+    }
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+      },
+      { rootMargin: "-45% 0px -55% 0px", threshold: 0 }
+    );
+
+    /*
+     * Năm trong bảy khối nằm trong phần nội dung nạp muộn, nên lúc hook này chạy
+     * lần đầu chúng chưa có trong cây DOM. Thử lại theo từng khung hình cho tới
+     * khi đủ mặt, y như cách ScrollManager trong App.tsx xử lý neo trỏ vào một
+     * chunk chưa về. Mốc thời gian chặn trên để không có vòng lặp nào sống mãi
+     * trên một trang không bao giờ có đủ các khối đó.
+     */
+    const attached = new Set<string>();
+    let frame = 0;
+    const deadline = performance.now() + 5000;
+
+    const attach = () => {
+      for (const id of ids) {
+        if (attached.has(id)) continue;
+        const el = document.getElementById(id);
+        if (!el) continue;
+        observer.observe(el);
+        attached.add(id);
+      }
+      if (attached.size < ids.length && performance.now() < deadline) {
+        frame = requestAnimationFrame(attach);
+      }
+    };
+    attach();
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [ids, enabled]);
+
+  return active;
+}

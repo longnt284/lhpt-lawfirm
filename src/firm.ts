@@ -324,3 +324,18 @@ export const NAV_LINKS = [
   { href: "#doi-ngu", label: "Đội ngũ" },
   { href: "#chinh-sach", label: "Chính sách" },
 ];
+
+/*
+ * Các neo trong trang chủ, tách sẵn từ NAV_LINKS cho bộ theo dõi khối đang đọc.
+ *
+ * Đặt ở tầng module chứ không tính lại trong component: mảng này là tham số phụ
+ * thuộc của một useEffect, nên dựng mới mỗi lần render đồng nghĩa với gỡ và gắn
+ * lại IntersectionObserver ở mọi khung hình có state đổi.
+ *
+ * Mục trỏ tới một trang riêng bị loại: nó không phải khối trong trang chủ nên
+ * không bao giờ có phần tử mang id tương ứng, và bộ theo dõi sẽ chờ nó cho tới
+ * hết thời hạn.
+ */
+export const NAV_SECTION_IDS: readonly string[] = NAV_LINKS.filter((l) =>
+  l.href.startsWith("#")
+).map((l) => l.href.slice(1));
