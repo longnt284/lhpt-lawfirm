@@ -14,8 +14,9 @@ npm install
 npm run dev        # máy chủ phát triển, cổng 3000
 npm run build      # bản tĩnh trong dist/
 npm run preview    # xem bản production
-npm test           # 12 test cho phần logic thuần
+npm test           # 23 test cho phần logic thuần
 npm run typecheck
+npm run sync:lex   # tải lại tình trạng hiệu lực từ Lex & Lineage
 ```
 
 Biến môi trường: xem `.env.example`. Thiếu khoá Supabase thì phần còn lại của
@@ -95,6 +96,37 @@ U+1EF2–1EF9 — nên theo quy tắc CSS thì mọi chữ "ỳ", "ỷ", "ỹ" t
 lượt trong `src/`, kéo về một file mà bộ `vietnamese` đã chứa sẵn. Chi tiết trong
 `src/fonts.css`.
 
+## Liên kết với Lex & Lineage
+
+Lex & Lineage (repo `Research-Law-VN`, `https://lexnlineage.vercel.app`) là
+trang tra cứu gia phả văn bản pháp luật của cùng chủ sở hữu; mỗi bản ghi ở đó
+đã đối chiếu với vbpl.vn hoặc Công báo. Hai trang chạy độc lập: trang này không
+gọi sang đó từ trình duyệt của khách, và vẫn build được khi bên kia không trả lời.
+
+- **Tình trạng hiệu lực lấy từ Lex & Lineage.** `prebuild` chạy
+  `scripts/sync-lex-lineage.mjs --soft`: tải `/api/v1/documents.json` (hợp đồng
+  `lex-lineage/documents@1`), kiểm hợp đồng, giữ lại đúng các văn bản của
+  `src/content/legalDocs.ts` cùng văn bản thay thế của chúng, ghi vào
+  `src/content/lexLineage.snapshot.json` (khoảng 4 kB sau nén). Lỗi mạng hay
+  sai hợp đồng thì giữ bản chụp đã commit, build không dừng.
+- **Chỉ bốn trường được thay**: tình trạng, ngày hiệu lực, ngày hết hiệu lực,
+  văn bản thay thế (`src/lib/lexLineage.ts`). Tóm tắt, điểm mới, lĩnh vực là lời
+  của hãng, giữ nguyên. Chỗ Lex & Lineage chưa ghi (văn bản không có trong kho,
+  hoặc có mà chưa ghi văn bản thay thế) thì dữ liệu ghi tay của hãng đứng.
+- **Tính tại hôm nay.** Tình trạng tính từ các đoạn hiệu lực chứ không chỉ đọc
+  nhãn, nên văn bản tới ngày có hiệu lực hay ngày bị thay thế tự đổi nhãn mà
+  không phải chờ lần build sau. Thêm nhãn "Chưa có hiệu lực" cho trường hợp đó.
+- **Dẫn qua lại.** Mỗi văn bản đã khớp có nút "Gia phả & diễn biến hiệu lực" và
+  dòng ghi ngày đối chiếu; văn bản thay thế là liên kết; đầu mục có lối "Tra cứu
+  đầy đủ", chân trang có mục Lex & Lineage. Chân trang Lex & Lineage dẫn ngược
+  về mục liên hệ của hãng.
+- **Giữ dữ liệu ghi tay khớp.** `npm run sync:lex` in ra văn bản nào trong
+  `legalDocs.ts` đang ghi tình trạng khác Lex & Lineage, và văn bản nào chưa có
+  bên đó.
+
+Đổi tên miền Lex & Lineage thì đặt `VITE_LEX_LINEAGE_URL` (xem `.env.example`);
+cả trang lẫn script đồng bộ đọc cùng biến này.
+
 ## Cấu trúc
 
 - `index.html` — thẻ chia sẻ, dữ liệu có cấu trúc, màn mở đầu tĩnh và nội dung
@@ -107,7 +139,10 @@ lượt trong `src/`, kéo về một file mà bộ `vietnamese` đã chứa s�
 - `src/components/three/` — năm cảnh 3D.
 - `src/lib/threeStage.ts` — vòng đời và vòng lặp vẽ dùng chung của mọi cảnh.
 - `src/lib/bloom.ts` — bloom giữ nguyên độ trong suốt.
-- `src/content/` — nội dung: bài viết, tin tức, văn bản pháp luật, bản tiếng Anh.
+- `src/content/` — nội dung: bài viết, tin tức, văn bản pháp luật, bản tiếng Anh,
+  bản chụp Lex & Lineage.
+- `src/lib/lexLineage.ts`, `scripts/sync-lex-lineage.mjs` — đồng bộ tình trạng
+  hiệu lực từ Lex & Lineage.
 - `src/i18n.tsx`, `src/firm.ts` — song ngữ và dữ liệu hãng.
 - `src/fonts.css` — khai báo chữ tự host.
 - `supabase/` — lược đồ cổng khách hàng.

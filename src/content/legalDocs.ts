@@ -1,6 +1,12 @@
 /* ================= VĂN BẢN PHÁP LUẬT ================= */
 
-export type LegalStatus = "Còn hiệu lực" | "Hết hiệu lực một phần" | "Hết hiệu lực";
+/*
+ * Với văn bản có trong kho Lex & Lineage, bốn trường `status`, `effective`,
+ * `expired`, `replacedBy` dưới đây chỉ là dự phòng: lúc hiển thị chúng được thay
+ * bằng dữ liệu đã đối chiếu bên đó (xem `src/lib/lexLineage.ts`). `npm run
+ * sync:lex` in ra văn bản nào đang ghi khác để sửa cho khớp.
+ */
+export type LegalStatus = "Còn hiệu lực" | "Hết hiệu lực một phần" | "Hết hiệu lực" | "Chưa có hiệu lực";
 
 export type LegalDoc = {
   id: string;
@@ -28,7 +34,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Đất đai",
     effective: "01/08/2024",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Khung pháp lý nền về thu hồi, giao và cho thuê đất; bảng giá đất; bồi thường, hỗ trợ, tái định cư và quyền của tổ chức kinh tế nhận chuyển nhượng đất để thực hiện dự án.",
     highlights: [
@@ -63,7 +69,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Nghị định",
     field: "Đất đai",
     effective: "01/08/2024",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Chi tiết về điều tra, đánh giá đất đai; quy hoạch và kế hoạch sử dụng đất; thu hồi, bồi thường, tái định cư và thủ tục giao đất, cho thuê đất.",
     highlights: [
@@ -80,7 +86,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Bất động sản",
     effective: "01/08/2024",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Điều kiện đưa dự án vào kinh doanh; chuyển nhượng dự án; thanh toán trong mua bán nhà ở hình thành trong tương lai và giới hạn phân lô bán nền.",
     highlights: [
@@ -113,7 +119,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Bất động sản",
     effective: "01/08/2024",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Phát triển nhà ở thương mại và nhà ở xã hội; sở hữu nhà ở của tổ chức, cá nhân nước ngoài; quản lý và vận hành nhà chung cư.",
     highlights: [
@@ -129,7 +135,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Nghị định",
     field: "Bất động sản",
     effective: "01/08/2024",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Điều kiện kinh doanh bất động sản; chuyển nhượng toàn bộ hoặc một phần dự án; hợp đồng mẫu trong mua bán và thuê mua nhà ở, công trình xây dựng.",
     highlights: [
@@ -146,7 +152,9 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Xây dựng",
     effective: "01/01/2015",
-    status: "Hết hiệu lực một phần",
+    expired: "01/07/2026",
+    status: "Hết hiệu lực",
+    replacedBy: "Luật Xây dựng số 135/2025/QH15",
     summary:
       "Quy hoạch xây dựng, thẩm định dự án, giấy phép xây dựng, quản lý chất lượng, tiến độ, chi phí và điều kiện năng lực của tổ chức, cá nhân hành nghề.",
     highlights: [
@@ -162,7 +170,9 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Nghị định",
     field: "Xây dựng",
     effective: "30/12/2024",
-    status: "Còn hiệu lực",
+    expired: "01/07/2026",
+    status: "Hết hiệu lực",
+    replacedBy: "Nghị định số 217/2026/NĐ-CP",
     summary:
       "Quy định chi tiết một số điều và biện pháp thi hành Luật Xây dựng về quản lý hoạt động xây dựng, thay thế Nghị định số 15/2021/NĐ-CP.",
     highlights: [
@@ -195,7 +205,9 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Nghị định",
     field: "Xây dựng",
     effective: "26/01/2021",
-    status: "Còn hiệu lực",
+    expired: "01/07/2026",
+    status: "Hết hiệu lực",
+    replacedBy: "Nghị định số 207/2026/NĐ-CP",
     summary:
       "Nghiệm thu công trình, giám sát thi công, bảo hành và bảo trì, trách nhiệm của các chủ thể khi xảy ra sự cố công trình xây dựng.",
     highlights: [
@@ -211,7 +223,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Đấu thầu",
     effective: "01/01/2024",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Lựa chọn nhà thầu cho dự án đầu tư công và dự án có sử dụng đất; đấu thầu qua mạng; xử lý tình huống và kiến nghị trong đấu thầu.",
     highlights: [
@@ -280,7 +292,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Nghị định",
     field: "Năng lượng",
     effective: "03/03/2025",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo và khách hàng sử dụng điện lớn, qua đường dây kết nối riêng và qua lưới điện quốc gia: điều kiện tham gia, hợp đồng kỳ hạn và thanh toán chênh lệch.",
     highlights: [
@@ -315,7 +327,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Nghị định",
     field: "Năng lượng",
     effective: "03/03/2025",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Quy định chi tiết một số điều của Luật Điện lực về phát triển điện năng lượng tái tạo và điện năng lượng mới, trong đó có điện mặt trời mái nhà tự sản xuất, tự tiêu thụ.",
     highlights: [
@@ -435,7 +447,9 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Doanh nghiệp",
     effective: "01/01/2021",
-    status: "Còn hiệu lực",
+    expired: "01/03/2026",
+    status: "Hết hiệu lực",
+    replacedBy: "Luật Đầu tư số 143/2025/QH15",
     summary:
       "Ngành nghề đầu tư kinh doanh có điều kiện; chấp thuận chủ trương đầu tư; ưu đãi, hỗ trợ đầu tư và thủ tục điều chỉnh dự án.",
     highlights: [
@@ -453,7 +467,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Thuế",
     effective: "01/10/2025",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Người nộp thuế, thu nhập chịu thuế và được miễn thuế, căn cứ và phương pháp tính thuế, ưu đãi thuế thu nhập doanh nghiệp.",
     highlights: [
@@ -470,7 +484,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Thuế",
     effective: "01/07/2025",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Đối tượng chịu thuế và không chịu thuế, giá tính thuế, thuế suất, khấu trừ và hoàn thuế giá trị gia tăng. Gồm 4 chương, 18 điều.",
     highlights: [
@@ -504,7 +518,9 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Thuế",
     effective: "01/07/2020",
-    status: "Còn hiệu lực",
+    expired: "01/07/2026",
+    status: "Hết hiệu lực",
+    replacedBy: "Luật Quản lý thuế số 108/2025/QH15",
     summary:
       "Đăng ký thuế, khai và nộp thuế, hoàn thuế, thanh tra và kiểm tra thuế, cưỡng chế thi hành quyết định hành chính về quản lý thuế.",
     highlights: [
@@ -591,7 +607,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Tố tụng",
     effective: "01/01/2011",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Thỏa thuận trọng tài, thủ tục tố tụng trọng tài, hủy và công nhận phán quyết. Nền tảng giải quyết tranh chấp hợp đồng thương mại và EPC.",
     highlights: [
@@ -606,7 +622,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     type: "Luật",
     field: "Tố tụng",
     effective: "01/07/2016",
-    status: "Còn hiệu lực",
+    status: "Hết hiệu lực một phần",
     summary:
       "Thẩm quyền của Tòa án, thủ tục khởi kiện và thụ lý, chứng cứ và chứng minh, xét xử sơ thẩm, phúc thẩm, giám đốc thẩm.",
     highlights: [

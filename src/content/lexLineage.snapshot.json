@@ -1,0 +1,1650 @@
+{
+  "schema": "lex-lineage/documents@1",
+  "verifiedOn": "2026-09-24",
+  "docs": [
+    {
+      "id": "luat-xay-dung-2025",
+      "number": "135/2025/QH15",
+      "status": "active",
+      "title": {
+        "vi": "Luật Xây dựng",
+        "en": "Law on Construction"
+      },
+      "effectiveOn": "2026-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "in-force",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-xay-dung-2025",
+        "en": "/en/van-ban/luat-xay-dung-2025"
+      }
+    },
+    {
+      "id": "luat-xay-dung-2014",
+      "number": "50/2014/QH13",
+      "status": "expired",
+      "title": {
+        "vi": "Luật Xây dựng 2014",
+        "en": "Law on Construction 2014"
+      },
+      "effectiveOn": "2015-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2015-01-01"
+        },
+        {
+          "from": "2015-01-01",
+          "state": "in-force",
+          "since": "2015-01-01"
+        },
+        {
+          "from": "2021-01-01",
+          "state": "in-force",
+          "since": "2021-01-01",
+          "amended": true,
+          "byId": "luat-62-2020",
+          "byNumber": "62/2020/QH14"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "luat-xay-dung-2025",
+          "byNumber": "135/2025/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "luat-xay-dung-2025",
+          "byNumber": "135/2025/QH15"
+        }
+      ],
+      "replacedBy": [
+        {
+          "id": "luat-xay-dung-2025",
+          "number": "135/2025/QH15"
+        }
+      ],
+      "path": {
+        "vi": "/vi/van-ban/luat-xay-dung-2014",
+        "en": "/en/van-ban/luat-xay-dung-2014"
+      }
+    },
+    {
+      "id": "luat-62-2020",
+      "number": "62/2020/QH14",
+      "status": "expired",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Xây dựng",
+        "en": "Law amending and supplementing a number of articles of the Law on Construction"
+      },
+      "effectiveOn": "2021-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2021-01-01"
+        },
+        {
+          "from": "2021-01-01",
+          "state": "in-force",
+          "since": "2021-01-01"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "expired",
+          "since": "2026-07-01",
+          "withParent": true,
+          "byId": "luat-xay-dung-2014",
+          "byNumber": "50/2014/QH13"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-07-01",
+          "withParent": true,
+          "byId": "luat-xay-dung-2014",
+          "byNumber": "50/2014/QH13"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-62-2020",
+        "en": "/en/van-ban/luat-62-2020"
+      }
+    },
+    {
+      "id": "nd-207-2026",
+      "number": "207/2026/NĐ-CP",
+      "status": "active",
+      "title": {
+        "vi": "Nghị định quy định chi tiết về quản lý chất lượng, thi công xây dựng và bảo trì công trình xây dựng",
+        "en": "Decree on quality management, construction execution and maintenance of construction works"
+      },
+      "effectiveOn": "2026-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "cross-check",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "in-force",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-207-2026",
+        "en": "/en/van-ban/nd-207-2026"
+      }
+    },
+    {
+      "id": "nd-217-2026",
+      "number": "217/2026/NĐ-CP",
+      "status": "active",
+      "title": {
+        "vi": "Nghị định quy định chi tiết một số điều của Luật Xây dựng về quản lý hoạt động xây dựng",
+        "en": "Decree detailing certain articles of the Construction Law on management of construction activity"
+      },
+      "effectiveOn": "2026-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "cross-check",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "in-force",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-217-2026",
+        "en": "/en/van-ban/nd-217-2026"
+      }
+    },
+    {
+      "id": "luat-dau-thau-2023",
+      "number": "22/2023/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Đấu thầu",
+        "en": "Law on Bidding"
+      },
+      "effectiveOn": "2024-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-01-01"
+        },
+        {
+          "from": "2024-01-01",
+          "state": "in-force",
+          "since": "2024-01-01"
+        },
+        {
+          "from": "2025-01-15",
+          "state": "in-force",
+          "since": "2025-01-15",
+          "amended": true,
+          "byId": "luat-57-2024",
+          "byNumber": "57/2024/QH15"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-90-2025",
+          "byNumber": "90/2025/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-90-2025",
+          "byNumber": "90/2025/QH15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-dau-thau-2023",
+        "en": "/en/van-ban/luat-dau-thau-2023"
+      }
+    },
+    {
+      "id": "luat-57-2024",
+      "number": "57/2024/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Quy hoạch, Luật Đầu tư, Luật Đầu tư theo phương thức đối tác công tư và Luật Đấu thầu",
+        "en": "Law amending the Planning Law, Investment Law, PPP Law and Bidding Law"
+      },
+      "effectiveOn": "2025-01-15",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-01-15"
+        },
+        {
+          "from": "2025-01-15",
+          "state": "in-force",
+          "since": "2025-01-15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-01-15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-57-2024",
+        "en": "/en/van-ban/luat-57-2024"
+      }
+    },
+    {
+      "id": "luat-90-2025",
+      "number": "90/2025/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Đấu thầu, Luật Đầu tư theo phương thức đối tác công tư, Luật Hải quan, Luật Thuế giá trị gia tăng, Luật Thuế xuất khẩu, thuế nhập khẩu, Luật Đầu tư, Luật Đầu tư công, Luật Quản lý, sử dụng tài sản công",
+        "en": "Law amending the Bidding Law, PPP Law, Customs Law, VAT Law, Import-Export Duty Law, Investment Law, Public Investment Law and Law on Management and Use of Public Assets"
+      },
+      "effectiveOn": "2025-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-90-2025",
+        "en": "/en/van-ban/luat-90-2025"
+      }
+    },
+    {
+      "id": "luat-dien-luc-2024",
+      "number": "61/2024/QH15",
+      "status": "active",
+      "title": {
+        "vi": "Luật Điện lực",
+        "en": "Electricity Law"
+      },
+      "effectiveOn": "2025-02-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-02-01"
+        },
+        {
+          "from": "2025-02-01",
+          "state": "in-force",
+          "since": "2025-02-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-02-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-dien-luc-2024",
+        "en": "/en/van-ban/luat-dien-luc-2024"
+      }
+    },
+    {
+      "id": "nd-57-2025",
+      "number": "57/2025/NĐ-CP",
+      "status": "amended",
+      "title": {
+        "vi": "Nghị định quy định cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo với khách hàng sử dụng điện lớn",
+        "en": "Decree on the direct power purchase mechanism between renewable generators and large electricity consumers"
+      },
+      "effectiveOn": "2025-03-03",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-03-03"
+        },
+        {
+          "from": "2025-03-03",
+          "state": "in-force",
+          "since": "2025-03-03"
+        },
+        {
+          "from": "2026-06-26",
+          "state": "in-force",
+          "since": "2026-06-26",
+          "amended": true,
+          "byId": "nd-243-2026",
+          "byNumber": "243/2026/NĐ-CP"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-06-26",
+          "amended": true,
+          "byId": "nd-243-2026",
+          "byNumber": "243/2026/NĐ-CP"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-57-2025",
+        "en": "/en/van-ban/nd-57-2025"
+      }
+    },
+    {
+      "id": "nd-58-2025",
+      "number": "58/2025/NĐ-CP",
+      "status": "amended",
+      "title": {
+        "vi": "Nghị định quy định chi tiết một số điều của Luật Điện lực về phát triển điện năng lượng tái tạo, điện năng lượng mới",
+        "en": "Decree detailing the Electricity Law on the development of renewable and new energy electricity"
+      },
+      "effectiveOn": "2025-03-03",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-03-03"
+        },
+        {
+          "from": "2025-03-03",
+          "state": "in-force",
+          "since": "2025-03-03"
+        },
+        {
+          "from": "2026-06-26",
+          "state": "in-force",
+          "since": "2026-06-26",
+          "amended": true,
+          "byId": "nd-243-2026",
+          "byNumber": "243/2026/NĐ-CP"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-06-26",
+          "amended": true,
+          "byId": "nd-243-2026",
+          "byNumber": "243/2026/NĐ-CP"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-58-2025",
+        "en": "/en/van-ban/nd-58-2025"
+      }
+    },
+    {
+      "id": "nd-243-2026",
+      "number": "243/2026/NĐ-CP",
+      "status": "active",
+      "title": {
+        "vi": "Nghị định sửa đổi, bổ sung một số điều của Nghị định số 57/2025/NĐ-CP và Nghị định số 58/2025/NĐ-CP",
+        "en": "Decree amending Decree 57/2025/NĐ-CP and Decree 58/2025/NĐ-CP"
+      },
+      "effectiveOn": "2026-06-26",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2026-06-26"
+        },
+        {
+          "from": "2026-06-26",
+          "state": "in-force",
+          "since": "2026-06-26"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-06-26"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-243-2026",
+        "en": "/en/van-ban/nd-243-2026"
+      }
+    },
+    {
+      "id": "nd-61-2025",
+      "number": "61/2025/NĐ-CP",
+      "status": "active",
+      "title": {
+        "vi": "Nghị định quy định chi tiết một số điều của Luật Điện lực về giấy phép hoạt động điện lực",
+        "en": "Decree detailing the Electricity Law on electricity operation licences"
+      },
+      "effectiveOn": "2025-03-04",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-03-04"
+        },
+        {
+          "from": "2025-03-04",
+          "state": "in-force",
+          "since": "2025-03-04"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-03-04"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-61-2025",
+        "en": "/en/van-ban/nd-61-2025"
+      }
+    },
+    {
+      "id": "blds-2015",
+      "number": "91/2015/QH13",
+      "status": "active",
+      "title": {
+        "vi": "Bộ luật Dân sự",
+        "en": "Civil Code"
+      },
+      "effectiveOn": "2017-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2017-01-01"
+        },
+        {
+          "from": "2017-01-01",
+          "state": "in-force",
+          "since": "2017-01-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2017-01-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/blds-2015",
+        "en": "/en/van-ban/blds-2015"
+      }
+    },
+    {
+      "id": "bltds-2015",
+      "number": "92/2015/QH13",
+      "status": "amended",
+      "title": {
+        "vi": "Bộ luật Tố tụng dân sự",
+        "en": "Civil Procedure Code"
+      },
+      "effectiveOn": "2016-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2016-07-01"
+        },
+        {
+          "from": "2016-07-01",
+          "state": "in-force",
+          "since": "2016-07-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-85-2025",
+          "byNumber": "85/2025/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-85-2025",
+          "byNumber": "85/2025/QH15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/bltds-2015",
+        "en": "/en/van-ban/bltds-2015"
+      }
+    },
+    {
+      "id": "luat-85-2025",
+      "number": "85/2025/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Bộ luật Tố tụng dân sự, Luật Tố tụng hành chính, Luật Tư pháp người chưa thành niên và các luật liên quan",
+        "en": "Law amending the Civil Procedure Code, Law on Administrative Procedure, Law on Juvenile Justice and related laws"
+      },
+      "effectiveOn": "2025-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-85-2025",
+        "en": "/en/van-ban/luat-85-2025"
+      }
+    },
+    {
+      "id": "luat-ttm-2010",
+      "number": "54/2010/QH12",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Trọng tài thương mại",
+        "en": "Law on Commercial Arbitration"
+      },
+      "effectiveOn": "2011-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2011-01-01"
+        },
+        {
+          "from": "2011-01-01",
+          "state": "in-force",
+          "since": "2011-01-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-81-2025",
+          "byNumber": "81/2025/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-81-2025",
+          "byNumber": "81/2025/QH15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-ttm-2010",
+        "en": "/en/van-ban/luat-ttm-2010"
+      }
+    },
+    {
+      "id": "luat-81-2025",
+      "number": "81/2025/QH15",
+      "status": "active",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Tổ chức Tòa án nhân dân",
+        "en": "Law amending the Law on Organisation of People's Courts"
+      },
+      "effectiveOn": "2025-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-81-2025",
+        "en": "/en/van-ban/luat-81-2025"
+      }
+    },
+    {
+      "id": "luat-dn-2020",
+      "number": "59/2020/QH14",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Doanh nghiệp",
+        "en": "Law on Enterprises"
+      },
+      "effectiveOn": "2021-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2021-01-01"
+        },
+        {
+          "from": "2021-01-01",
+          "state": "in-force",
+          "since": "2021-01-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-76-2025",
+          "byNumber": "76/2025/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-76-2025",
+          "byNumber": "76/2025/QH15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-dn-2020",
+        "en": "/en/van-ban/luat-dn-2020"
+      }
+    },
+    {
+      "id": "luat-76-2025",
+      "number": "76/2025/QH15",
+      "status": "active",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Doanh nghiệp",
+        "en": "Law amending and supplementing a number of articles of the Law on Enterprises"
+      },
+      "effectiveOn": "2025-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2025-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-76-2025",
+        "en": "/en/van-ban/luat-76-2025"
+      }
+    },
+    {
+      "id": "luat-dau-tu-2025",
+      "number": "143/2025/QH15",
+      "status": "active",
+      "title": {
+        "vi": "Luật Đầu tư",
+        "en": "Law on Investment"
+      },
+      "effectiveOn": "2026-03-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2026-03-01"
+        },
+        {
+          "from": "2026-03-01",
+          "state": "in-force",
+          "since": "2026-03-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-03-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-dau-tu-2025",
+        "en": "/en/van-ban/luat-dau-tu-2025"
+      }
+    },
+    {
+      "id": "luat-dau-tu-2020",
+      "number": "61/2020/QH14",
+      "status": "expired",
+      "title": {
+        "vi": "Luật Đầu tư 2020",
+        "en": "Law on Investment 2020"
+      },
+      "effectiveOn": "2021-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2021-01-01"
+        },
+        {
+          "from": "2021-01-01",
+          "state": "in-force",
+          "since": "2021-01-01"
+        },
+        {
+          "from": "2026-03-01",
+          "state": "expired",
+          "since": "2026-03-01",
+          "byId": "luat-dau-tu-2025",
+          "byNumber": "143/2025/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-03-01",
+          "byId": "luat-dau-tu-2025",
+          "byNumber": "143/2025/QH15"
+        }
+      ],
+      "replacedBy": [
+        {
+          "id": "luat-dau-tu-2025",
+          "number": "143/2025/QH15"
+        }
+      ],
+      "path": {
+        "vi": "/vi/van-ban/luat-dau-tu-2020",
+        "en": "/en/van-ban/luat-dau-tu-2020"
+      }
+    },
+    {
+      "id": "luat-dat-dai-2024",
+      "number": "31/2024/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Đất đai",
+        "en": "Land Law"
+      },
+      "effectiveOn": "2024-08-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2024-08-01",
+          "state": "in-force",
+          "since": "2024-08-01",
+          "amended": true,
+          "byId": "luat-43-2024",
+          "byNumber": "43/2024/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2024-08-01",
+          "amended": true,
+          "byId": "luat-43-2024",
+          "byNumber": "43/2024/QH15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-dat-dai-2024",
+        "en": "/en/van-ban/luat-dat-dai-2024"
+      }
+    },
+    {
+      "id": "luat-43-2024",
+      "number": "43/2024/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Đất đai, Luật Nhà ở, Luật Kinh doanh bất động sản và Luật Các tổ chức tín dụng",
+        "en": "Law amending the Land Law, Housing Law, Law on Real Estate Business and Law on Credit Institutions"
+      },
+      "effectiveOn": "2024-08-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2024-08-01",
+          "state": "in-force",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2024-08-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-43-2024",
+        "en": "/en/van-ban/luat-43-2024"
+      }
+    },
+    {
+      "id": "luat-nha-o-2023",
+      "number": "27/2023/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Nhà ở",
+        "en": "Housing Law"
+      },
+      "effectiveOn": "2024-08-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2024-08-01",
+          "state": "in-force",
+          "since": "2024-08-01",
+          "amended": true,
+          "byId": "luat-43-2024",
+          "byNumber": "43/2024/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2024-08-01",
+          "amended": true,
+          "byId": "luat-43-2024",
+          "byNumber": "43/2024/QH15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-nha-o-2023",
+        "en": "/en/van-ban/luat-nha-o-2023"
+      }
+    },
+    {
+      "id": "luat-qlt-2025",
+      "number": "108/2025/QH15",
+      "status": "active",
+      "title": {
+        "vi": "Luật Quản lý thuế",
+        "en": "Law on Tax Administration"
+      },
+      "effectiveOn": "2026-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "in-force",
+          "since": "2026-07-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-07-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-qlt-2025",
+        "en": "/en/van-ban/luat-qlt-2025"
+      }
+    },
+    {
+      "id": "luat-qlt-2019",
+      "number": "38/2019/QH14",
+      "status": "expired",
+      "title": {
+        "vi": "Luật Quản lý thuế 2019",
+        "en": "Law on Tax Administration 2019"
+      },
+      "effectiveOn": "2020-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2020-07-01"
+        },
+        {
+          "from": "2020-07-01",
+          "state": "in-force",
+          "since": "2020-07-01"
+        },
+        {
+          "from": "2025-01-01",
+          "state": "in-force",
+          "since": "2025-01-01",
+          "amended": true,
+          "byId": "luat-56-2024",
+          "byNumber": "56/2024/QH15"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "luat-qlt-2025",
+          "byNumber": "108/2025/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "luat-qlt-2025",
+          "byNumber": "108/2025/QH15"
+        }
+      ],
+      "replacedBy": [
+        {
+          "id": "luat-qlt-2025",
+          "number": "108/2025/QH15"
+        }
+      ],
+      "path": {
+        "vi": "/vi/van-ban/luat-qlt-2019",
+        "en": "/en/van-ban/luat-qlt-2019"
+      }
+    },
+    {
+      "id": "luat-gtgt-2024",
+      "number": "48/2024/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Thuế giá trị gia tăng",
+        "en": "Law on Value-Added Tax"
+      },
+      "effectiveOn": "2025-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-07-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "in-force",
+          "since": "2025-07-01",
+          "amended": true,
+          "byId": "luat-90-2025",
+          "byNumber": "90/2025/QH15"
+        },
+        {
+          "from": "2026-04-24",
+          "state": "in-force",
+          "since": "2026-04-24",
+          "amended": true,
+          "byId": "luat-09-2026",
+          "byNumber": "09/2026/QH16"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-04-24",
+          "amended": true,
+          "byId": "luat-09-2026",
+          "byNumber": "09/2026/QH16"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-gtgt-2024",
+        "en": "/en/van-ban/luat-gtgt-2024"
+      }
+    },
+    {
+      "id": "luat-tndn-2025",
+      "number": "67/2025/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Thuế thu nhập doanh nghiệp",
+        "en": "Law on Corporate Income Tax"
+      },
+      "effectiveOn": "2025-10-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-10-01"
+        },
+        {
+          "from": "2025-10-01",
+          "state": "in-force",
+          "since": "2025-10-01"
+        },
+        {
+          "from": "2026-04-24",
+          "state": "in-force",
+          "since": "2026-04-24",
+          "amended": true,
+          "byId": "luat-09-2026",
+          "byNumber": "09/2026/QH16"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2026-04-24",
+          "amended": true,
+          "byId": "luat-09-2026",
+          "byNumber": "09/2026/QH16"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-tndn-2025",
+        "en": "/en/van-ban/luat-tndn-2025"
+      }
+    },
+    {
+      "id": "luat-09-2026",
+      "number": "09/2026/QH16",
+      "status": "active",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Thuế thu nhập cá nhân, Luật Thuế giá trị gia tăng, Luật Thuế thu nhập doanh nghiệp và Luật Thuế tiêu thụ đặc biệt",
+        "en": "Law amending the Law on Personal Income Tax, Law on Value-Added Tax, Law on Corporate Income Tax and Law on Special Consumption Tax"
+      },
+      "effectiveOn": "2026-04-24",
+      "verifiedOn": "2026-09-04",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2026-04-24"
+        },
+        {
+          "from": "2026-04-24",
+          "state": "in-force",
+          "since": "2026-04-24"
+        },
+        {
+          "from": "2026-09-04",
+          "state": "in-force",
+          "since": "2026-04-24"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-09-2026",
+        "en": "/en/van-ban/luat-09-2026"
+      }
+    },
+    {
+      "id": "nd-175-2024",
+      "number": "175/2024/NĐ-CP",
+      "status": "expired",
+      "title": {
+        "vi": "Nghị định quy định chi tiết một số điều và biện pháp thi hành Luật Xây dựng về quản lý hoạt động xây dựng",
+        "en": "Decree detailing and implementing the Construction Law on management of construction activity"
+      },
+      "effectiveOn": "2024-12-30",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-12-30"
+        },
+        {
+          "from": "2024-12-30",
+          "state": "in-force",
+          "since": "2024-12-30"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "nd-217-2026",
+          "byNumber": "217/2026/NĐ-CP"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "nd-217-2026",
+          "byNumber": "217/2026/NĐ-CP"
+        }
+      ],
+      "replacedBy": [
+        {
+          "id": "nd-217-2026",
+          "number": "217/2026/NĐ-CP"
+        }
+      ],
+      "path": {
+        "vi": "/vi/van-ban/nd-175-2024",
+        "en": "/en/van-ban/nd-175-2024"
+      }
+    },
+    {
+      "id": "nd-15-2021",
+      "number": "15/2021/NĐ-CP",
+      "status": "expired",
+      "title": {
+        "vi": "Nghị định quy định chi tiết một số nội dung về quản lý dự án đầu tư xây dựng",
+        "en": "Decree detailing management of construction investment projects"
+      },
+      "effectiveOn": "2021-03-03",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2021-03-03"
+        },
+        {
+          "from": "2021-03-03",
+          "state": "in-force",
+          "since": "2021-03-03"
+        },
+        {
+          "from": "2024-12-30",
+          "state": "expired",
+          "since": "2024-12-30",
+          "byId": "nd-175-2024",
+          "byNumber": "175/2024/NĐ-CP"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2024-12-30",
+          "byId": "nd-175-2024",
+          "byNumber": "175/2024/NĐ-CP"
+        }
+      ],
+      "replacedBy": [
+        {
+          "id": "nd-175-2024",
+          "number": "175/2024/NĐ-CP"
+        }
+      ],
+      "path": {
+        "vi": "/vi/van-ban/nd-15-2021",
+        "en": "/en/van-ban/nd-15-2021"
+      }
+    },
+    {
+      "id": "nd-06-2021",
+      "number": "06/2021/NĐ-CP",
+      "status": "expired",
+      "title": {
+        "vi": "Nghị định quy định chi tiết một số nội dung về quản lý chất lượng, thi công xây dựng và bảo trì công trình xây dựng",
+        "en": "Decree detailing quality management, construction execution and maintenance of construction works"
+      },
+      "effectiveOn": "2021-01-26",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2021-01-26"
+        },
+        {
+          "from": "2021-01-26",
+          "state": "in-force",
+          "since": "2021-01-26"
+        },
+        {
+          "from": "2023-06-20",
+          "state": "in-force",
+          "since": "2023-06-20",
+          "amended": true,
+          "byId": "nd-35-2023",
+          "byNumber": "35/2023/NĐ-CP"
+        },
+        {
+          "from": "2026-07-01",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "nd-207-2026",
+          "byNumber": "207/2026/NĐ-CP"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-07-01",
+          "byId": "nd-207-2026",
+          "byNumber": "207/2026/NĐ-CP"
+        }
+      ],
+      "replacedBy": [
+        {
+          "id": "nd-207-2026",
+          "number": "207/2026/NĐ-CP"
+        }
+      ],
+      "path": {
+        "vi": "/vi/van-ban/nd-06-2021",
+        "en": "/en/van-ban/nd-06-2021"
+      }
+    },
+    {
+      "id": "luat-dien-luc-2004",
+      "number": "28/2004/QH11",
+      "status": "expired",
+      "title": {
+        "vi": "Luật Điện lực 2004",
+        "en": "Law on Electricity 2004"
+      },
+      "effectiveOn": "2005-07-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2005-07-01"
+        },
+        {
+          "from": "2005-07-01",
+          "state": "unknown"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-09-24",
+          "recorded": true
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-dien-luc-2004",
+        "en": "/en/van-ban/luat-dien-luc-2004"
+      }
+    },
+    {
+      "id": "nd-80-2024",
+      "number": "80/2024/NĐ-CP",
+      "status": "expired",
+      "title": {
+        "vi": "Nghị định quy định về cơ chế mua bán điện trực tiếp giữa đơn vị phát điện năng lượng tái tạo với khách hàng sử dụng điện lớn",
+        "en": "Decree on the direct power purchase mechanism between renewable generators and large electricity users"
+      },
+      "effectiveOn": "2024-07-03",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-07-03"
+        },
+        {
+          "from": "2024-07-03",
+          "state": "unknown"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-09-24",
+          "recorded": true
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-80-2024",
+        "en": "/en/van-ban/nd-80-2024"
+      }
+    },
+    {
+      "id": "luat-56-2024",
+      "number": "56/2024/QH15",
+      "status": "expired",
+      "title": {
+        "vi": "Luật sửa đổi, bổ sung một số điều của Luật Chứng khoán, Luật Kế toán, Luật Kiểm toán độc lập, Luật Ngân sách nhà nước, Luật Quản lý, sử dụng tài sản công, Luật Quản lý thuế, Luật Thuế thu nhập cá nhân, Luật Dự trữ quốc gia, Luật Xử lý vi phạm hành chính",
+        "en": "Law amending the Law on Securities, the Accounting Law, the Independent Audit Law, the State Budget Law, the Law on Management and Use of Public Assets, the Tax Administration Law, the Personal Income Tax Law, the National Reserves Law and the Law on Handling of Administrative Violations"
+      },
+      "effectiveOn": "2025-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2025-01-01"
+        },
+        {
+          "from": "2025-01-01",
+          "state": "unknown"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2026-09-24",
+          "recorded": true
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-56-2024",
+        "en": "/en/van-ban/luat-56-2024"
+      }
+    },
+    {
+      "id": "luat-kdbds-2023",
+      "number": "29/2023/QH15",
+      "status": "amended",
+      "title": {
+        "vi": "Luật Kinh doanh bất động sản",
+        "en": "Law on Real Estate Business"
+      },
+      "effectiveOn": "2024-08-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2024-08-01",
+          "state": "in-force",
+          "since": "2024-08-01",
+          "amended": true,
+          "byId": "luat-43-2024",
+          "byNumber": "43/2024/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2024-08-01",
+          "amended": true,
+          "byId": "luat-43-2024",
+          "byNumber": "43/2024/QH15"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/luat-kdbds-2023",
+        "en": "/en/van-ban/luat-kdbds-2023"
+      }
+    },
+    {
+      "id": "nd-96-2024",
+      "number": "96/2024/NĐ-CP",
+      "status": "amended",
+      "title": {
+        "vi": "Nghị định quy định chi tiết một số điều của Luật Kinh doanh bất động sản",
+        "en": "Decree detailing the Law on Real Estate Business"
+      },
+      "effectiveOn": "2024-08-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2024-08-01",
+          "state": "in-force",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2024-08-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-96-2024",
+        "en": "/en/van-ban/nd-96-2024"
+      }
+    },
+    {
+      "id": "nd-102-2024",
+      "number": "102/2024/NĐ-CP",
+      "status": "amended",
+      "title": {
+        "vi": "Nghị định quy định chi tiết thi hành một số điều của Luật Đất đai",
+        "en": "Decree detailing the implementation of the Land Law"
+      },
+      "effectiveOn": "2024-08-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2024-08-01",
+          "state": "in-force",
+          "since": "2024-08-01"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2024-08-01"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-102-2024",
+        "en": "/en/van-ban/nd-102-2024"
+      }
+    },
+    {
+      "id": "luat-gtgt-2008",
+      "number": "13/2008/QH12",
+      "status": "expired",
+      "title": {
+        "vi": "Luật Thuế giá trị gia tăng 2008",
+        "en": "Law on Value Added Tax 2008"
+      },
+      "effectiveOn": "2009-01-01",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2009-01-01"
+        },
+        {
+          "from": "2009-01-01",
+          "state": "in-force",
+          "since": "2009-01-01"
+        },
+        {
+          "from": "2025-07-01",
+          "state": "expired",
+          "since": "2025-07-01",
+          "byId": "luat-gtgt-2024",
+          "byNumber": "48/2024/QH15"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "expired",
+          "since": "2025-07-01",
+          "byId": "luat-gtgt-2024",
+          "byNumber": "48/2024/QH15"
+        }
+      ],
+      "replacedBy": [
+        {
+          "id": "luat-gtgt-2024",
+          "number": "48/2024/QH15"
+        }
+      ],
+      "path": {
+        "vi": "/vi/van-ban/luat-gtgt-2008",
+        "en": "/en/van-ban/luat-gtgt-2008"
+      }
+    },
+    {
+      "id": "nd-35-2023",
+      "number": "35/2023/NĐ-CP",
+      "status": "amended",
+      "title": {
+        "vi": "Nghị định sửa đổi, bổ sung một số điều của các nghị định thuộc lĩnh vực quản lý nhà nước của Bộ Xây dựng",
+        "en": "Decree amending decrees in the state management fields of the Ministry of Construction"
+      },
+      "effectiveOn": "2023-06-20",
+      "verifiedOn": "2026-09-24",
+      "confidence": "verified",
+      "segments": [
+        {
+          "from": "",
+          "state": "pending",
+          "since": "2023-06-20"
+        },
+        {
+          "from": "2023-06-20",
+          "state": "in-force",
+          "since": "2023-06-20"
+        },
+        {
+          "from": "2026-09-24",
+          "state": "in-force",
+          "since": "2023-06-20"
+        }
+      ],
+      "replacedBy": [],
+      "path": {
+        "vi": "/vi/van-ban/nd-35-2023",
+        "en": "/en/van-ban/nd-35-2023"
+      }
+    }
+  ]
+}

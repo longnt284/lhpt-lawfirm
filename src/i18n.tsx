@@ -60,7 +60,7 @@ const DICTIONARY = {
     searchDocs: "Tìm văn bản",
     searchDocsPlaceholder: "Tìm theo tên hoặc số hiệu, ví dụ 31/2024, DPPA, đất đai…",
     loadMoreDocs: "Xem thêm {n} văn bản",
-    docsFootnote: "Tổng hợp phục vụ tham khảo · Đối chiếu công báo trước khi áp dụng",
+    docsFootnote: "Tổng hợp phục vụ tham khảo · Hiệu lực cập nhật theo Lex & Lineage · Đối chiếu công báo trước khi áp dụng",
     teamKicker: "Đội ngũ",
     teamTitle: "Kinh nghiệm đủ sâu để đi vào việc.",
     teamSub: "Mỗi hồ sơ được đặt vào đúng người phụ trách — người hiểu cả luật, ngành và áp lực vận hành phía sau quyết định.",
@@ -240,7 +240,7 @@ const DICTIONARY = {
     searchDocs: "Find a legal instrument",
     searchDocsPlaceholder: "Search by name or number, e.g. 31/2024, DPPA, land…",
     loadMoreDocs: "View {n} more instruments",
-    docsFootnote: "For reference only · Check the official gazette before application",
+    docsFootnote: "For reference only · Status kept in step with Lex & Lineage · Check the official gazette before application",
     teamKicker: "Our team",
     teamTitle: "Experience deep enough to get to the point.",
     teamSub: "Each matter is placed with the right counsel — someone who understands the law, the industry, and the operating pressure behind the decision.",
@@ -495,7 +495,12 @@ export function localizeCategory(value: string, locale: Locale) {
 
 export function localizeStatus(value: string, locale: Locale) {
   if (locale === "vi") return value;
-  return { "Còn hiệu lực": "In force", "Hết hiệu lực một phần": "Partially in force", "Hết hiệu lực": "Repealed" }[value] ?? value;
+  return {
+    "Còn hiệu lực": "In force",
+    "Hết hiệu lực một phần": "Partially in force",
+    "Hết hiệu lực": "Repealed",
+    "Chưa có hiệu lực": "Not yet in force",
+  }[value] ?? value;
 }
 
 export function localizeType(value: string, locale: Locale) {

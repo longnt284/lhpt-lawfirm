@@ -23,6 +23,19 @@ export const FIRM = {
   responseTime: "24 giờ làm việc",
 } as const;
 
+/* ================= LEX & LINEAGE ================= */
+/*
+ * Trang tra cứu gia phả văn bản pháp luật của cùng chủ sở hữu. Mục "Văn bản
+ * pháp luật" lấy tình trạng hiệu lực từ đó lúc build (xem
+ * `src/lib/lexLineage.ts`) và dẫn người đọc sang đó để xem đầy đủ. Đổi tên miền
+ * thì đặt `VITE_LEX_LINEAGE_URL`, không phải sửa mã; script đồng bộ đọc cùng
+ * biến này.
+ */
+export const LEX_LINEAGE = {
+  name: "Lex & Lineage",
+  url: (import.meta.env.VITE_LEX_LINEAGE_URL?.trim() || "https://lexnlineage.vercel.app").replace(/\/+$/, ""),
+} as const;
+
 /* ================= DỊCH VỤ ================= */
 
 export type Service = {

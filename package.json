@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/sync-lex-lineage.mjs --soft",
     "build": "vite build",
+    "sync:lex": "node scripts/sync-lex-lineage.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4173",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "typecheck": "tsc --noEmit"
