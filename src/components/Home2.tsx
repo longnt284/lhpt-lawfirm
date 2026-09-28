@@ -7,6 +7,7 @@ import {
   LAWYERS,
   LEGAL_DOCS,
   LEGAL_FIELDS,
+  LEX_LINEAGE,
   NEWS,
   POLICIES_PRIVACY,
   POLICIES_SERVICE,
@@ -14,7 +15,9 @@ import {
   type DocItem,
   type PolicyItem,
 } from "../data";
+import { LEX_BY_ID, LEX_BY_NUMBER } from "../content/lexLineage";
 import { useDebounced, useSpotlight } from "../hooks";
+import { isoToVn, syncLegalDoc, todayIso } from "../lib/lexLineage";
 import { AREA_BY_SERVICE, backendReady, describeError, sb } from "../lib/supabase";
 import {
   interpolate,
@@ -359,6 +362,7 @@ const STATUS_STYLE: Record<string, string> = {
   "Còn hiệu lực": "border-jade-500/40 text-jade-300",
   "Hết hiệu lực một phần": "border-brass-500/50 text-brass-300",
   "Hết hiệu lực": "border-fog-500/40 text-fog-400",
+  "Chưa có hiệu lực": "border-snow/25 text-snow/80",
 };
 
 /** Nhãn rút gọn cho cột hẹp; trạng thái đầy đủ nằm trong phần mở rộng. */
@@ -366,12 +370,14 @@ const STATUS_SHORT: Record<string, string> = {
   "Còn hiệu lực": "Còn hiệu lực",
   "Hết hiệu lực một phần": "Hiệu lực một phần",
   "Hết hiệu lực": "Hết hiệu lực",
+  "Chưa có hiệu lực": "Chưa hiệu lực",
 };
 
 const STATUS_DOT: Record<string, string> = {
   "Còn hiệu lực": "bg-jade-500",
   "Hết hiệu lực một phần": "bg-brass-400",
   "Hết hiệu lực": "bg-fog-500",
+  "Chưa có hiệu lực": "bg-snow/60",
 };
 
 export function Documents() {
@@ -381,11 +387,18 @@ export function Documents() {
   const [field, setField] = useState("Tất cả");
   const [openId, setOpenId] = useState<string | null>(null);
   const [shown, setShown] = useState(DOC_PAGE_SIZE);
+  // Tình trạng tính tại hôm nay từ các đoạn hiệu lực của Lex & Lineage, nên văn
+  // bản tới ngày có hiệu lực tự đổi nhãn mà không phải chờ lần build sau.
+  const today = useMemo(() => todayIso(), []);
 
   const corpus = useMemo(
     () =>
       LEGAL_DOCS.map((doc) => {
-        const localized = localizeLegalDoc(doc, locale);
+        const localized = syncLegalDoc(localizeLegalDoc(doc, locale), LEX_BY_NUMBER, LEX_BY_ID, {
+          date: today,
+          locale,
+          site: LEX_LINEAGE.url,
+        });
         return {
           doc,
           localized,
@@ -394,7 +407,7 @@ export function Documents() {
         };
       }),
     // contentVersion: xem chú thích ở Articles.
-    [locale, contentVersion]
+    [locale, contentVersion, today]
   );
 
   const list = useMemo(() => {
@@ -415,8 +428,8 @@ export function Documents() {
 
   const visible = list.slice(0, shown);
   const expiredCount = useMemo(
-    () => LEGAL_DOCS.filter((d) => d.status === "Hết hiệu lực").length,
-    []
+    () => corpus.filter((entry) => entry.localized.status === "Hết hiệu lực").length,
+    [corpus]
   );
 
   return (
@@ -444,6 +457,15 @@ export function Documents() {
               <p className="label mt-1.5 text-[10px] text-fog-500">
                 {isEnglish ? `${expiredCount} repealed or superseded` : `Trong đó ${expiredCount} đã hết hiệu lực`}
               </p>
+              <a
+                href={`${LEX_LINEAGE.url}/${locale}/van-ban`}
+                target="_blank"
+                rel="noopener"
+                className="label mt-3 inline-flex items-center gap-1.5 text-[9.5px] text-jade-400 transition-colors hover:text-jade-300"
+              >
+                {isEnglish ? "Full lookup on Lex & Lineage" : "Tra cứu đầy đủ trên Lex & Lineage"}
+                <IconArrowUpRight className="h-3 w-3" />
+              </a>
             </div>
           </Reveal>
         </div>
@@ -600,8 +622,44 @@ export function Documents() {
                             {d.replacedBy && (
                               <p className="mt-4 text-[12.5px] leading-[1.65] text-fog-400">
                                 <span className="text-fog-500">{isEnglish ? "Replaced by: " : "Được thay thế bởi: "}</span>
-                                <span className="text-jade-300">{d.replacedBy}</span>
+                                {d.lex?.replacedByUrl ? (
+                                  <a
+                                    href={d.lex.replacedByUrl}
+                                    target="_blank"
+                                    rel="noopener"
+                                    className="text-jade-300 underline decoration-jade-500/40 underline-offset-4 transition-colors hover:text-jade-200"
+                                  >
+                                    {d.replacedBy}
+                                  </a>
+                                ) : (
+                                  <span className="text-jade-300">{d.replacedBy}</span>
+                                )}
                               </p>
+                            )}
+
+                            {/* Nguồn của tình trạng hiệu lực, và lối sang trang gia
+                                phả của chính văn bản này. */}
+                            {d.lex && (
+                              <div className="mt-5 flex flex-col gap-2 border-t border-snow/8 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                                <p className="text-[12px] leading-[1.6] text-fog-500">
+                                  {isEnglish
+                                    ? `Status per Lex & Lineage, checked against official sources on ${isoToVn(d.lex.verifiedOn)}.`
+                                    : `Tình trạng theo Lex & Lineage, đối chiếu nguồn chính thống ngày ${isoToVn(d.lex.verifiedOn)}.`}
+                                  {d.lex.crossCheck &&
+                                    (isEnglish
+                                      ? " Some details are still awaiting an official source."
+                                      : " Còn chi tiết chưa đối chiếu được với nguồn chính thống.")}
+                                </p>
+                                <a
+                                  href={d.lex.url}
+                                  target="_blank"
+                                  rel="noopener"
+                                  className="label inline-flex shrink-0 items-center gap-1.5 text-[9.5px] text-jade-400 transition-colors hover:text-jade-300"
+                                >
+                                  {isEnglish ? "Lineage & validity timeline" : "Gia phả & diễn biến hiệu lực"}
+                                  <IconArrowUpRight className="h-3 w-3" />
+                                </a>
+                              </div>
                             )}
                           </div>
                         </motion.div>

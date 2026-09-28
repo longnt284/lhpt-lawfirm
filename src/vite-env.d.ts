@@ -9,6 +9,8 @@
 interface ImportMetaEnv {
   readonly VITE_SUPABASE_URL?: string;
   readonly VITE_SUPABASE_PUBLISHABLE_KEY?: string;
+  /** Gốc của Lex & Lineage; bỏ trống thì dùng địa chỉ đang chạy thật. */
+  readonly VITE_LEX_LINEAGE_URL?: string;
 }
 
 interface ImportMeta {

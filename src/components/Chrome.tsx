@@ -11,7 +11,7 @@ import {
 import { useEffect, useRef, useState, type AnchorHTMLAttributes, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../auth";
-import { FIRM, NAV_LINKS, NAV_SECTION_IDS } from "../firm";
+import { FIRM, LEX_LINEAGE, NAV_LINKS, NAV_SECTION_IDS } from "../firm";
 import type { DocItem } from "../content/types";
 import { formatReadingTime, useLocale } from "../i18n";
 import { EASE_LUXE, SCROLL, SOFT, VIEWPORT, fadeUp, fadeUpSmall, stagger } from "../motion";
@@ -58,6 +58,14 @@ export function SectionLink({
   "href"
 >) {
   const { pathname } = useLocation();
+  // Trang ngoài (Lex & Lineage) mở tab mới để khách không rời trang hãng.
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <a href={href} target="_blank" rel="noopener" {...rest}>
+        {children}
+      </a>
+    );
+  }
   if (!href.startsWith("#")) {
     return (
       <Link to={href} {...rest}>
@@ -940,6 +948,7 @@ const FOOTER_SYSTEM: [string, string][] = [
   ["Bài viết pháp lý", "#bai-viet"],
   ["Tin tức nổi bật", "#tin-tuc"],
   ["Hệ thống văn bản", "#van-ban"],
+  ["Tra cứu gia phả văn bản · Lex & Lineage", `${LEX_LINEAGE.url}/vi`],
   ["Đội ngũ luật sư", "#doi-ngu"],
   ["Bảng phí dịch vụ", "#bang-phi"],
 ];
@@ -980,6 +989,7 @@ function FooterColumn({
               {h.startsWith("/") && (
                 <span className="label text-[7.5px] text-brass-500">3D</span>
               )}
+              {/^https?:/.test(h) && <IconArrowUpRight className="h-3 w-3 self-center text-brass-500" />}
             </SectionLink>
           </li>
         ))}
@@ -1008,6 +1018,7 @@ export function Footer() {
         ["Legal insights", "#bai-viet"],
         ["Featured news", "#tin-tuc"],
         ["Legal library", "#van-ban"],
+        ["Law lineage lookup · Lex & Lineage", `${LEX_LINEAGE.url}/en`],
         ["Our lawyers", "#doi-ngu"],
         ["Fee schedule", "#bang-phi"],
       ]
