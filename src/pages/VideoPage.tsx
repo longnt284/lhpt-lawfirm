@@ -14,6 +14,7 @@ import { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Kicker } from "../components/Chrome";
 import { IconArrowUpRight } from "../components/Icons";
+import { IntroVideoSources } from "../components/IntroVideoSources";
 import { pick } from "../content/pages3d";
 import {
   INTRO_VIDEO,
@@ -100,8 +101,7 @@ export default function VideoPage() {
                 onTimeUpdate={onTimeUpdate}
                 aria-label={isEnglish ? "LHPT Law Firm introduction film" : "Video giới thiệu LHPT Law Firm"}
               >
-                <source src={INTRO_VIDEO.webm} type="video/webm" />
-                <source src={INTRO_VIDEO.mp4} type="video/mp4" />
+                <IntroVideoSources />
               </video>
             </div>
             <p className="mt-4 text-[12.5px] leading-[1.7] text-fog-500">

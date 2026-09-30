@@ -11,12 +11,7 @@
  */
 import type { Bilingual } from "./pages3d";
 
-export const INTRO_VIDEO = {
-  webm: "/video/gioi-thieu.webm",
-  mp4: "/video/gioi-thieu.mp4",
-  poster: "/video/gioi-thieu.jpg",
-  seconds: 60,
-} as const;
+export { INTRO_VIDEO } from "./introVideo.ts";
 
 export const VIDEO_BPM = 96;
 
