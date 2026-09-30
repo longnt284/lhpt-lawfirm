@@ -2,6 +2,8 @@
 // Usage:
 //   node render.mjs stills 1.2 3.4 ...   -> out/stills/*.jpg (seconds)
 //   node render.mjs video [workers]      -> out/video_silent.mp4
+//   node render.mjs video [workers] [fromFrame] [toFrame]
+//                                         -> out/video_part_<from>.mp4 (chỉ một đoạn)
 import { createServer } from 'node:http';
 import { readFile, mkdir, writeFile, rm } from 'node:fs/promises';
 import { spawn, execFileSync } from 'node:child_process';
@@ -64,14 +66,17 @@ if (mode === 'stills') {
   const page0 = await openPage(browser, port);
   const { dur, fps } = await page0.evaluate(() => ({ dur: window.DURATION, fps: window.FPS }));
   await page0.close();
-  const total = Math.round(dur * fps);
+  const all = Math.round(dur * fps);
+  const first = parseInt(args[1] || '0', 10), last = Math.min(all, parseInt(args[2] || String(all), 10));
+  const total = last - first;
   const per = Math.ceil(total / workers);
+  const outName = args[1] ? `video_part_${first}.mp4` : 'video_silent.mp4';
   const t0 = Date.now();
   let done = 0;
   const segs = [];
   await Promise.all(Array.from({ length: workers }, async (_, w) => {
-    const from = w * per, to = Math.min(total, from + per);
-    const seg = path.join(OUT, `seg${w}.mp4`); segs.push([w, seg]);
+    const from = first + w * per, to = Math.min(last, from + per);
+    const seg = path.join(OUT, `seg${first}_${w}.mp4`); segs.push([w, seg]);
     const page = await openPage(browser, port);
     const ff = spawn(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
       '-c:v', 'libx264', '-preset', 'slow', '-crf', '15', '-pix_fmt', 'yuv420p', '-tune', 'animation', seg], { stdio: ['pipe', 'inherit', 'inherit'] });
@@ -85,9 +90,9 @@ if (mode === 'stills') {
     await page.close();
   }));
   segs.sort((a, b) => a[0] - b[0]);
-  const list = path.join(OUT, 'segs.txt');
+  const list = path.join(OUT, `segs${first}.txt`);
   await writeFile(list, segs.map(([, s]) => `file '${s}'`).join('\n'));
-  execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', path.join(OUT, 'video_silent.mp4')]);
+  execFileSync(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', path.join(OUT, outName)]);
   for (const [, s] of segs) await rm(s);
   await rm(list);
   console.log(`video done: ${total} frames in ${((Date.now() - t0) / 1000).toFixed(0)}s`);

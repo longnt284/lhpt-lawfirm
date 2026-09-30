@@ -90,8 +90,8 @@ export const VIDEO_CHAPTERS: VideoChapter[] = [
     beat: 80,
     title: { vi: "LHPT Law Firm", en: "LHPT Law Firm" },
     line: {
-      vi: "Hiên cột thu về logo của hãng. lhpt.law · contact@lhpt.law",
-      en: "The portico folds into the firm's mark. lhpt.law · contact@lhpt.law",
+      vi: "Hiên cột thu về logo của hãng. lhptlawfirm.vn · (+84) 941563789",
+      en: "The portico folds into the firm's mark. lhptlawfirm.vn · (+84) 941563789",
     },
   },
 ];

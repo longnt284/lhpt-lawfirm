@@ -37,9 +37,13 @@ Mục lục ở trang `/video` (`src/content/video.ts`) tính mốc bằng cùng
 
 ## Nguồn nội dung và các lựa chọn pháp lý
 
-- Lĩnh vực, câu giới thiệu, đội ngũ, quy trình tiếp nhận, địa chỉ và liên hệ lấy nguyên
+- Lĩnh vực, câu giới thiệu, đội ngũ, quy trình tiếp nhận, địa chỉ và hotline lấy nguyên
   văn từ `src/firm.ts`. Sửa ở đó thì sửa `AREAS`, `TEAM`, `PLEDGES` trong `scene.js`, mục
   lục trong `src/content/video.ts`, rồi render lại.
+- Website ghi trong video là tên miền tạm `lhptlawfirm.vn` (hằng `WEBSITE` trong
+  `scene.js`), không phải `lhpt.law` như `src/firm.ts`. Video không ghi email cho tới khi
+  hộp thư theo tên miền chính thức được xác nhận. Đổi tên miền thì sửa `WEBSITE` và dòng
+  cuối mục lục trong `src/content/video.ts`, rồi render lại từ khung 3150 (xem Build).
 - Số hiệu văn bản nền tảng lấy từ `src/content/lexLineage.snapshot.json` (bản ghi đã đối
   chiếu) và `src/content/legalDocs.ts`. Video chỉ ghi số hiệu và tên, **không ghi tình
   trạng hiệu lực**: video là tệp cố định, tình trạng thì đổi theo thời gian. Lời miễn trừ
@@ -58,6 +62,11 @@ pip install numpy scipy imageio-ffmpeg
 export FFMPEG=$(python3 -c "import imageio_ffmpeg as i; print(i.get_ffmpeg_exe())")
 cd video
 node render.mjs video 4          # -> out/video_silent.mp4
+# Chỉ đổi đoạn chốt (từ nhịp 84, khung 3150)? Render lại riêng đoạn đó rồi ghép:
+#   node render.mjs video 4 3150   # -> out/video_part_3150.mp4
+#   $FFMPEG -i out/video_silent.mp4 -i out/video_part_3150.mp4 -filter_complex \
+#     "[0:v]trim=end_frame=3150,setpts=PTS-STARTPTS[a];[a][1:v]concat=n=2:v=1[v]" -map "[v]" \
+#     -c:v libx264 -preset slow -crf 15 -pix_fmt yuv420p -tune animation out/video_spliced.mp4
 python3 audio.py                 # -> out/audio.wav
 cd out
 # MP4 cho web, mã hóa 2 lượt

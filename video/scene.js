@@ -97,6 +97,12 @@ const TEAM = [
   { name: 'LS. Phú Hoàng', role: 'Luật sư Thành viên', years: '12 năm hành nghề', focus: 'Bảo mật dữ liệu · Tố tụng · Doanh nghiệp' },
 ];
 
+/* Tên miền tạm thời của website hãng, theo chỉ định của chủ sở hữu. src/firm.ts và
+ * thẻ canonical vẫn ghi lhpt.law, là tên miền chưa chạy. Video không ghi email: hộp
+ * thư theo tên miền mới chưa được xác nhận, và một địa chỉ sai trong tệp video thì
+ * không sửa được sau khi đã phát hành. */
+const WEBSITE = 'lhptlawfirm.vn';
+
 /* Quy trình tiếp nhận, đúng câu chữ ở POLICIES_SERVICE trong src/firm.ts. Video hứa
  * quy trình, không hứa kết quả vụ việc. */
 const PLEDGES = [
@@ -743,7 +749,7 @@ function S5(b) {
   riseT('LAW FIRM  ·  TP. HỒ CHÍ MINH', W / 2, 692, { ...LABEL, s: 18, ls: 8, c: C.fog400, a: 'center' }, prog(b, m1 + .7, m1 + 1.4), 12);
   ctx.fillStyle = C.brass500; const rw = 170 * E.outCubic(prog(b, m1 + 1, m1 + 1.8)); ctx.fillRect(W / 2 - rw / 2, 726, rw, 2);
   riseT('Nền pháp lý vững, cho mọi công trình.', W / 2, 796, { f: 'Lora', w: 500, s: 40, it: true, c: C.brass300, a: 'center' }, prog(b, m1 + 1.4, m1 + 2.2), 14);
-  riseT('lhpt.law     ·     contact@lhpt.law     ·     (+84) 941563789', W / 2, 872, { f: 'BVP', w: 500, s: 25, ls: 1, c: C.fog300, a: 'center' }, prog(b, m1 + 2.2, m1 + 3), 12);
+  riseT(`${WEBSITE}     ·     (+84) 941563789`, W / 2, 872, { f: 'BVP', w: 500, s: 25, ls: 1, c: C.fog300, a: 'center' }, prog(b, m1 + 2.2, m1 + 3), 12);
   riseT('Nguyễn Thị Minh Khai, phường Sài Gòn, TP. Hồ Chí Minh', W / 2, 912, { f: 'BVP', w: 400, s: 20, c: C.fog500, a: 'center' }, prog(b, m1 + 2.5, m1 + 3.3), 10);
   T('Nội dung giới thiệu dịch vụ, không phải ý kiến pháp lý cho vụ việc cụ thể. Số hiệu văn bản đối chiếu tháng 9/2026.', W / 2, 1012,
     { f: 'BVP', w: 400, s: 18, c: C.fog500, a: 'center', al: prog(b, m1 + 3, m1 + 4) * .85 });
