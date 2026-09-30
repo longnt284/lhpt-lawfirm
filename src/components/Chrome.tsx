@@ -945,6 +945,7 @@ const FOOTER_SERVICES = [
 const FOOTER_SYSTEM: [string, string][] = [
   ["Bản đồ năng lực", "/ban-do-nang-luc"],
   ["Nền móng pháp lý", "/nen-mong-phap-ly"],
+  ["Video giới thiệu", "/video"],
   ["Bài viết pháp lý", "#bai-viet"],
   ["Tin tức nổi bật", "#tin-tuc"],
   ["Hệ thống văn bản", "#van-ban"],
@@ -983,11 +984,12 @@ function FooterColumn({
               {t}
               {/*
                 Cùng quy ước với thanh điều hướng: href trỏ tới một trang riêng
-                thì đó là một trang 3D. Ở chân trang, nơi mọi mục trông giống hệt
-                nhau, cái nhãn này là thứ duy nhất phân biệt được chúng.
+                thì đó là một trang 3D — trừ trang video, mang nhãn của nó. Ở
+                chân trang, nơi mọi mục trông giống hệt nhau, cái nhãn này là
+                thứ duy nhất phân biệt được chúng.
               */}
               {h.startsWith("/") && (
-                <span className="label text-[7.5px] text-brass-500">3D</span>
+                <span className="label text-[7.5px] text-brass-500">{h === "/video" ? "Video" : "3D"}</span>
               )}
               {/^https?:/.test(h) && <IconArrowUpRight className="h-3 w-3 self-center text-brass-500" />}
             </SectionLink>
@@ -1015,6 +1017,7 @@ export function Footer() {
     ? [
         ["Practice map", "/ban-do-nang-luc"],
         ["Legal foundations", "/nen-mong-phap-ly"],
+        ["Introduction film", "/video"],
         ["Legal insights", "#bai-viet"],
         ["Featured news", "#tin-tuc"],
         ["Legal library", "#van-ban"],

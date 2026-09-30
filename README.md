@@ -14,7 +14,7 @@ npm install
 npm run dev        # máy chủ phát triển, cổng 3000
 npm run build      # bản tĩnh trong dist/
 npm run preview    # xem bản production
-npm test           # 23 test cho phần logic thuần
+npm test           # 27 test cho phần logic thuần
 npm run typecheck
 npm run sync:lex   # tải lại tình trạng hiệu lực từ Lex & Lineage
 ```
@@ -96,6 +96,22 @@ U+1EF2–1EF9 — nên theo quy tắc CSS thì mọi chữ "ỳ", "ỷ", "ỹ" t
 lượt trong `src/`, kéo về một file mà bộ `vietnamese` đã chứa sẵn. Chi tiết trong
 `src/fonts.css`.
 
+## Video giới thiệu
+
+Trang `/video` phát một video 60 giây kể lại màn mở đầu của trang chủ: hiên cột
+khung dây, máy quay hạ xuống phần chìm, bốn cọc, năm tầng đất — mỗi tầng một
+lĩnh vực kèm văn bản làm nền cho nó — rồi hiên cột thu về logo. Video dựng bằng
+code trong `video/` (Canvas 2D, Chromium headless, nhạc tổng hợp), không dùng
+tài nguyên của bên thứ ba; cách build và các lựa chọn về nội dung ở
+`video/README.md`.
+
+- Trình phát để `preload="none"`: chỉ ảnh bìa về máy khách cho tới khi khách bấm
+  xem. Trang chủ chỉ thêm một liên kết chữ ở hero và một mục ở chân trang.
+- Video không có lời thoại. Mục lục cạnh trình phát vừa để tua, vừa là bản chữ
+  của video cho trình đọc màn hình và cho khách đọc tiếng Anh.
+- Mục lục tính mốc bằng nhịp nhạc, cùng đơn vị với `video/scene.js`; test đọc
+  thẳng tệp đó để hai bên không lệch nhau.
+
 ## Liên kết với Lex & Lineage
 
 Lex & Lineage (repo `Research-Law-VN`, `https://lexnlineage.vercel.app`) là
@@ -137,6 +153,8 @@ cả trang lẫn script đồng bộ đọc cùng biến này.
 - `src/components/Chrome.tsx` — header, footer, modal bài viết, thanh hành động
   di động.
 - `src/components/three/` — năm cảnh 3D.
+- `src/pages/VideoPage.tsx`, `src/content/video.ts` — trang video và mục lục.
+- `video/` — mã nguồn video giới thiệu; bản xuất ở `public/video/`.
 - `src/lib/threeStage.ts` — vòng đời và vòng lặp vẽ dùng chung của mọi cảnh.
 - `src/lib/bloom.ts` — bloom giữ nguyên độ trong suốt.
 - `src/content/` — nội dung: bài viết, tin tức, văn bản pháp luật, bản tiếng Anh,

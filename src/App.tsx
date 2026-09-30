@@ -31,6 +31,8 @@ const AccountDialog = lazy(() =>
 const FoundationPage = lazy(() => import("./pages/FoundationPage"));
 const PracticeMapPage = lazy(() => import("./pages/PracticeMapPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+/* Trang video chỉ chứa trình phát và mục lục; tệp video chỉ tải khi khách bấm xem. */
+const VideoPage = lazy(() => import("./pages/VideoPage"));
 
 function SecondaryContentFallback() {
   return (
@@ -177,6 +179,14 @@ function Shell() {
             element={
               <Suspense fallback={<PageFallback />}>
                 <PracticeMapPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/video"
+            element={
+              <Suspense fallback={<PageFallback />}>
+                <VideoPage />
               </Suspense>
             }
           />
