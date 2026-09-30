@@ -27,6 +27,7 @@ import {
   IconCube,
   IconCursor,
   IconDeal,
+  IconPlay,
   IconScale,
   IconShield,
   IconSolar,
@@ -252,6 +253,17 @@ function Hero() {
                   </Link>
                 </span>
               ))}
+              {/* Video giới thiệu đứng cùng hàng nhưng tách bằng vạch: nó không phải trang 3D. */}
+              <span aria-hidden="true" className="mx-1 h-3.5 w-px bg-snow/20" />
+              <Link
+                to="/video"
+                onPointerEnter={() => prefetchPage("/video")}
+                onFocus={() => prefetchPage("/video")}
+                className="link-underline flex items-center gap-1.5 text-[12.5px] font-medium whitespace-nowrap text-fog-300 transition-colors duration-300 hover:text-brass-300"
+              >
+                <IconPlay className="h-3 w-3 shrink-0 text-brass-400" />
+                {isEnglish ? "1-minute film" : "Video 1 phút"}
+              </Link>
             </motion.div>
             <motion.p variants={fadeUpSmall} className="label mt-7 text-[10px] text-fog-500">
               {t("response")} · {t("confidential")}
@@ -622,10 +634,13 @@ const EXPLORE_PAGES = [
  *
  * Vite đã tách sẵn hai trang này thành chunk riêng (xem `lazy()` trong App.tsx),
  * nên `import()` ở đây trỏ đúng vào chunk đó chứ không tạo bản sao thứ hai.
+ * Trang video nhẹ hơn nhiều nhưng dùng chung cơ chế để lối vào ở hero phản hồi
+ * tức thì như hai lối kia.
  */
 const PAGE_CHUNKS: Record<string, () => Promise<unknown>> = {
   "/nen-mong-phap-ly": () => import("../pages/FoundationPage"),
   "/ban-do-nang-luc": () => import("../pages/PracticeMapPage"),
+  "/video": () => import("../pages/VideoPage"),
 };
 const prefetched = new Set<string>();
 

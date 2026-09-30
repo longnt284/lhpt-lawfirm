@@ -109,6 +109,13 @@ export const IconCursor = ({ className }: P) => (
   </svg>
 );
 
+/* Tam giác phát — dấu hiệu quy ước cho nội dung video. */
+export const IconPlay = ({ className }: P) => (
+  <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.7} aria-hidden="true">
+    <path d="M8 5.5v13l10.5-6.5z" />
+  </svg>
+);
+
 /* Khối lập phương dạng khung dây — dấu hiệu quy ước cho nội dung ba chiều. */
 export const IconCube = ({ className }: P) => (
   <svg viewBox="0 0 24 24" className={className} {...base} strokeWidth={1.6} aria-hidden="true">
