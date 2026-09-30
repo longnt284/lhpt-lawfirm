@@ -5,6 +5,7 @@ import { AuthProvider } from "./auth";
 import { ChainBackdrop } from "./components/ChainBackdrop";
 import { Ambient, ArticleModal, Footer, Header, MobileActionBar, ScrollTop } from "./components/Chrome";
 import { Explore, OpeningStage, Pricing, Services } from "./components/Home1";
+import { IntroFilm } from "./components/IntroFilm";
 import type { DocItem } from "./content/types";
 import { LocaleProvider } from "./i18n";
 import { runWithInstantScroll } from "./lib/instantScroll";
@@ -141,6 +142,8 @@ function HomeRoute({ onOpenDoc }: { onOpenDoc: (doc: DocItem | null) => void }) 
         báo `data-chain-occluder` trên chính nó, chứ không liệt kê ở đây.
       */}
       <ChainBackdrop fromRef={openingRef} />
+      {/* Video giới thiệu đứng ngay sau màn mở đầu: đó là chỗ khách lướt trang chủ chắc chắn đi qua. */}
+      <IntroFilm />
       <Services />
       <Explore />
       <Pricing />

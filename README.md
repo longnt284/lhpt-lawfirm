@@ -105,8 +105,12 @@ code trong `video/` (Canvas 2D, Chromium headless, nhạc tổng hợp), không 
 tài nguyên của bên thứ ba; cách build và các lựa chọn về nội dung ở
 `video/README.md`.
 
-- Trình phát để `preload="none"`: chỉ ảnh bìa về máy khách cho tới khi khách bấm
-  xem. Trang chủ chỉ thêm một liên kết chữ ở hero và một mục ở chân trang.
+- Trang chủ có khối video ngay sau màn mở đầu (`src/components/IntroFilm.tsx`):
+  trước cú bấm chỉ có ảnh bìa tải lười, thẻ `<video>` chỉ được dựng sau cú bấm.
+  Bản trước chỉ có một liên kết chữ ở hero, và khách lướt trang chủ không thấy
+  có video. Trang `/video` để `preload="none"`.
+- MP4 (H.264) đứng trước WebM: Safari trên iPhone đời cũ có thể nhận WebM rồi
+  giải mã VP9 hỏng. WebM còn lại cho các bản Chromium không kèm H.264.
 - Video không có lời thoại. Mục lục cạnh trình phát vừa để tua, vừa là bản chữ
   của video cho trình đọc màn hình và cho khách đọc tiếng Anh.
 - Mục lục tính mốc bằng nhịp nhạc, cùng đơn vị với `video/scene.js`; test đọc
