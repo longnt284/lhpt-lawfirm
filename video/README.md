@@ -67,6 +67,9 @@ node render.mjs video 4          # -> out/video_silent.mp4
 #   $FFMPEG -i out/video_silent.mp4 -i out/video_part_3150.mp4 -filter_complex \
 #     "[0:v]trim=end_frame=3150,setpts=PTS-STARTPTS[a];[a][1:v]concat=n=2:v=1[v]" -map "[v]" \
 #     -c:v libx264 -preset slow -crf 15 -pix_fmt yuv420p -tune animation out/video_spliced.mp4
+#   rồi dùng video_spliced.mp4 thay cho video_silent.mp4 ở các bước mã hóa dưới đây.
+# Trên máy 4 nhân không GPU, render đầy đủ mất khoảng 50 phút (khâu raster quầng sáng
+# chiếm gần hết), đoạn chốt khoảng 5 phút.
 python3 audio.py                 # -> out/audio.wav
 cd out
 # MP4 cho web, mã hóa 2 lượt
@@ -74,7 +77,7 @@ $FFMPEG -y -i video_silent.mp4 -c:v libx264 -preset slow -profile:v high -level:
 $FFMPEG -y -i video_silent.mp4 -i audio.wav -c:v libx264 -preset slow -profile:v high -level:v 4.2 -b:v 2500k -maxrate 4M -bufsize 6M -pix_fmt yuv420p -pass 2 \
   -c:a aac -b:a 160k -shortest -movflags +faststart ../../public/video/gioi-thieu.mp4
 # WebM cho trình duyệt ưu tiên VP9
-$FFMPEG -y -i video_silent.mp4 -i audio.wav -c:v libvpx-vp9 -b:v 0 -crf 36 -row-mt 1 -c:a libopus -b:a 128k -shortest ../../public/video/gioi-thieu.webm
+$FFMPEG -y -i video_silent.mp4 -i audio.wav -c:v libvpx-vp9 -b:v 0 -crf 36 -row-mt 1 -cpu-used 2 -c:a libopus -b:a 128k -shortest ../../public/video/gioi-thieu.webm
 # Ảnh bìa: logo đã khóa, nhịp 88
 node ../render.mjs stills 55 && $FFMPEG -y -i stills/t055.00.jpg -q:v 3 ../../public/video/gioi-thieu.jpg
 ```
