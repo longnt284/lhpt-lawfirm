@@ -65,7 +65,7 @@ node render.mjs video 4          # -> out/video_silent.mp4
 # Chỉ đổi đoạn chốt (từ nhịp 84, khung 3150)? Render lại riêng đoạn đó rồi ghép:
 #   node render.mjs video 4 3150   # -> out/video_part_3150.mp4
 #   $FFMPEG -i out/video_silent.mp4 -i out/video_part_3150.mp4 -filter_complex \
-#     "[0:v]trim=end_frame=3150,setpts=PTS-STARTPTS[a];[a][1:v]concat=n=2:v=1[v]" -map "[v]" \
+#     "[0:v]trim=end_frame=3150,setpts=PTS-STARTPTS[a];[a][1:v]concat=n=2:v=1[v]" -map "[v]" -r 60 \
 #     -c:v libx264 -preset slow -crf 15 -pix_fmt yuv420p -tune animation out/video_spliced.mp4
 #   rồi dùng video_spliced.mp4 thay cho video_silent.mp4 ở các bước mã hóa dưới đây.
 # Trên máy 4 nhân không GPU, render đầy đủ mất khoảng 50 phút (khâu raster quầng sáng
